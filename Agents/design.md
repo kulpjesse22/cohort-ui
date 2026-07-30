@@ -22,40 +22,76 @@ the standard.
   an app that demands attention. Closer to a well-set changelog than a chat app.
 - **Platforms:** web. Single breakpoint at Tailwind `lg` (1024px); below it the
   side panels become drawers.
-- **Light / dark:** dark only. There is no light theme and the app does not
-  respond to `prefers-color-scheme`.
+- **Light / dark:** both, as peer themes. Neither is the "real" one. Light is
+  the default for a first-time visitor, matching the Slack-adjacent comp;
+  the choice persists once made, and `prefers-color-scheme` seeds the
+  first visit.
 
 ## Colors
 
-Tailwind `zinc` is the entire neutral system. Accent hues carry meaning only —
-never decoration.
+Colors are **semantic tokens**, not raw Tailwind classes. Every token has a
+light and a dark value, defined once in `app/globals.css` and consumed as
+`bg-canvas`, `text-ink`, `border-line`, and so on. Never write a raw
+`zinc-*` class in a component — if a color is missing, add a token.
 
-| Token | Value | Use |
-| --- | --- | --- |
-| `color.bg` | `zinc-900` | Page background, main column |
-| `color.surface` | `zinc-950` | Sidebar, context rail |
-| `color.surface.raised` | `zinc-900/60` | Code blocks, fix lists |
-| `color.text` | `zinc-100` | Primary text |
-| `color.text.secondary` | `zinc-400` | Body copy, descriptions |
-| `color.text.muted` | `zinc-500` | Timestamps, labels |
-| `color.text.faint` | `zinc-600` | File paths, hints |
-| `color.border` | `zinc-800` | Dividers, panel edges |
-| `color.border.strong` | `zinc-700` | Inputs, buttons, badges |
+Neutrals:
 
-Meaning colors — used for verdicts and status, never for emphasis:
+| Token | Light | Dark | Use |
+| --- | --- | --- | --- |
+| `canvas` | `white` | `zinc-900` | Page background, main column |
+| `panel` | `#f7f7f8` | `#101014` | Context rail — a quiet step off canvas |
+| `raised` | `zinc-100` | `zinc-900/60` | Code blocks, fix lists, stat tiles |
+| `ink` | `zinc-900` | `zinc-100` | Primary text |
+| `ink-2` | `zinc-600` | `zinc-400` | Body copy, descriptions |
+| `ink-3` | `zinc-500` | `zinc-500` | Timestamps, section labels |
+| `ink-4` | `zinc-400` | `zinc-600` | File paths, hints |
+| `line` | `zinc-200` | `zinc-800` | Dividers, panel edges |
+| `line-strong` | `zinc-300` | `zinc-700` | Inputs, buttons, badges |
+| `hover` | `zinc-100` | `zinc-900` | Row hover |
+| `active` | `zinc-200` | `zinc-800` | Selected row |
 
-| Token | Value | Means |
-| --- | --- | --- |
-| `color.approved` | `emerald-*` | Approved, promotion, healthy |
-| `color.fixes` | `amber-*` | Approved with fixes |
-| `color.revise` | `rose-*` | Revise, error |
+`ink-3` is deliberately the same value in both themes: it is the metadata floor
+and holds AA against either ground.
 
-Per-agent identity hues, used only for avatars and registry names:
-Claudia `violet`, Augustus `sky`, Julius `teal`, Athena `amber`,
-Hephaestus `rose`.
+**The third neutral — the sidebar.** The left navigation carries its own
+identity and stays dark in *both* themes, the way Slack's does. It is a cool
+graphite rather than an aubergine, so it sits underneath the agent hues without
+competing with them. Because it never goes light, it needs its own text scale —
+never use `ink-*` inside the sidebar.
 
-- **Contrast target:** WCAG AA (4.5:1) for body text. `zinc-500` on `zinc-900`
-  is the floor and is reserved for non-essential metadata.
+| Token | Light | Dark | Use |
+| --- | --- | --- | --- |
+| `sidebar` | `#24262f` | `#131319` | Left nav background |
+| `sidebar-ink` | `#f2f2f4` | `zinc-100` | Primary text |
+| `sidebar-ink-2` | `#b4b8c4` | `zinc-400` | Secondary text |
+| `sidebar-ink-3` | `#878c9b` | `zinc-500` | Labels, metadata |
+| `sidebar-line` | `#33363f` | `zinc-800` | Dividers |
+| `sidebar-line-strong` | `#454955` | `zinc-700` | Badges, buttons |
+| `sidebar-hover` | `#2e313b` | `#1d1d23` | Row hover |
+| `sidebar-active` | `#3b3f4b` | `#2a2a31` | Selected row |
+
+Agent hues inside the sidebar always use the bright (300-level) tints in both
+themes — the light theme's 600-level values would disappear against it. The
+`.sidebar-scope` class handles this, so call sites stay identical.
+
+Meaning colors — verdicts and status, never emphasis. Each needs a light value
+that holds contrast on a bright ground, so the light theme steps *darker* rather
+than reusing the dark theme's tints:
+
+| Token | Light text | Dark text | Means |
+| --- | --- | --- | --- |
+| `approved` | `emerald-700` | `emerald-300` | Approved, promotion |
+| `fixes` | `amber-700` | `amber-300` | Approved with fixes |
+| `revise` | `rose-700` | `rose-300` | Revise, error |
+
+Per-agent identity hues, used only for avatars and registry names. Same rule —
+`600` in light, `300` in dark: Claudia `violet`, Augustus `sky`, Julius `teal`,
+Athena `amber`, Hephaestus `rose`.
+
+- **Contrast target:** WCAG AA (4.5:1) for body text, in **both** themes. A
+  token that passes in dark and fails in light is a bug, not a tradeoff.
+- Color is never the only signal (see `UX.md`), so hues may soften — but the
+  text label carrying the same meaning must always be present.
 
 ## Typography
 

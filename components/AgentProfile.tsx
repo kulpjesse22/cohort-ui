@@ -44,16 +44,16 @@ export function AgentProfile({ agentId }: { agentId: AgentId }) {
       <Avatar agentId={agentId} />
       <div className="min-w-0 flex-1">
         <div className="flex items-baseline gap-2">
-          <h1 className="truncate font-semibold text-zinc-100">{agent.name}</h1>
-          <span className="shrink-0 rounded border border-zinc-700 px-1.5 py-0.5 text-[10px] text-zinc-400">
+          <h1 className="truncate font-semibold text-ink">{agent.name}</h1>
+          <span className="shrink-0 rounded border border-line-strong px-1.5 py-0.5 text-[10px] text-ink-2">
             {agent.seniority}
           </span>
         </div>
-        <p className="truncate text-xs text-zinc-500">{agent.title}</p>
+        <p className="truncate text-xs text-ink-3">{agent.title}</p>
       </div>
       <Link
         href={`/c/${agentId}`}
-        className="hidden shrink-0 rounded-md border border-zinc-700 px-2.5 py-1.5 text-xs text-zinc-300 hover:bg-zinc-800 sm:block"
+        className="hidden shrink-0 rounded-md border border-line-strong px-2.5 py-1.5 text-xs text-ink-2 hover:bg-hover sm:block"
       >
         Message #{agentId}
       </Link>

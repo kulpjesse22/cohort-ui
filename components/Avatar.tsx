@@ -1,16 +1,18 @@
 import { AGENTS, getParticipant, type ActorId, type AgentId } from "@/lib/agents";
 
+// Hue, tint, and ring all come from one class so they move together between
+// themes. Defined in app/globals.css. See Agents/design.md § Colors.
 const RING: Record<string, string> = {
-  violet: "bg-violet-500/20 text-violet-300 ring-violet-500/30",
-  sky: "bg-sky-500/20 text-sky-300 ring-sky-500/30",
-  teal: "bg-teal-500/20 text-teal-300 ring-teal-500/30",
-  amber: "bg-amber-500/20 text-amber-300 ring-amber-500/30",
-  rose: "bg-rose-500/20 text-rose-300 ring-rose-500/30",
+  violet: "agent-violet agent-chip",
+  sky: "agent-sky agent-chip",
+  teal: "agent-teal agent-chip",
+  amber: "agent-amber agent-chip",
+  rose: "agent-rose agent-chip",
 };
 
 // Humans read differently from agents on purpose: neutral fill, fully round,
 // so a person is identifiable at a glance in a mixed stream.
-const HUMAN = "bg-zinc-700/60 text-zinc-200 ring-zinc-600/50";
+const HUMAN = "bg-raised text-ink-2 ring-line-strong";
 
 export function Avatar({
   agentId,
@@ -35,7 +37,7 @@ export function Avatar({
   if (agent) {
     return (
       <div
-        className={`flex ${dims} shrink-0 items-center justify-center rounded-md font-medium ring-1 ${RING[agent.color]}`}
+        className={`flex ${dims} shrink-0 items-center justify-center rounded-md font-medium ${RING[agent.color]}`}
         title={agent.name}
       >
         {agent.initials}

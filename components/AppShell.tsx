@@ -33,7 +33,7 @@ export function AppShell({
   const overlayOpen = sidebarOpen || railOpen;
 
   return (
-    <div className="relative flex h-screen w-full overflow-hidden bg-zinc-900">
+    <div className="relative flex h-screen w-full overflow-hidden bg-canvas">
       {overlayOpen && (
         <button
           aria-label="Close panel"
@@ -60,11 +60,11 @@ export function AppShell({
       </div>
 
       <main className="flex min-w-0 flex-1 flex-col">
-        <header className="flex items-center gap-3 border-b border-zinc-800 px-4 py-3 lg:px-5">
+        <header className="flex items-center gap-3 border-b border-line px-4 py-3 lg:px-5">
           <button
             aria-label="Open channels"
             onClick={() => setSidebarOpen(true)}
-            className="shrink-0 rounded-md p-1.5 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200 lg:hidden"
+            className="shrink-0 rounded-md p-1.5 text-ink-2 hover:bg-hover hover:text-ink lg:hidden"
           >
             <MenuIcon />
           </button>
@@ -74,7 +74,7 @@ export function AppShell({
           <button
             aria-label="Open pinned context"
             onClick={() => setRailOpen(true)}
-            className="shrink-0 rounded-md p-1.5 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200 lg:hidden"
+            className="shrink-0 rounded-md p-1.5 text-ink-2 hover:bg-hover hover:text-ink lg:hidden"
           >
             <InfoIcon />
           </button>

@@ -30,8 +30,8 @@ export function ProjectView() {
 
   const header = (
     <div className="min-w-0 flex-1">
-      <h1 className="truncate font-semibold text-zinc-100">Project timeline</h1>
-      <p className="truncate text-xs text-zinc-500">
+      <h1 className="truncate font-semibold text-ink">Project timeline</h1>
+      <p className="truncate text-xs text-ink-3">
         All work across the team — humans and agents — newest first.
       </p>
     </div>

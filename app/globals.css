@@ -1,26 +1,204 @@
 @import "tailwindcss";
 
+/* Theme is class-driven, not media-driven: the user's explicit choice has to be
+   able to win over the OS. `prefers-color-scheme` only seeds the first visit
+   (see the inline script in app/layout.tsx). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* --- Semantic tokens -------------------------------------------------------
+   Defined once here, consumed as bg-canvas / text-ink / border-line etc.
+   Components must not use raw zinc-* classes. See Agents/design.md § Colors. */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* neutrals — light */
+  --canvas: #ffffff;
+  --panel: #f7f7f8; /* right rail: a quiet step off canvas */
+  --raised: #f4f4f5; /* zinc-100 */
+
+  /* The third neutral: the left sidebar carries its own identity in both
+     themes, the way Slack's does — but a cool graphite rather than their
+     aubergine, so it sits under the agent hues without competing. It stays
+     dark in light mode, so it needs its own text scale. */
+  --sidebar: #24262f;
+  --sidebar-ink: #f2f2f4;
+  --sidebar-ink-2: #b4b8c4;
+  --sidebar-ink-3: #878c9b;
+  --sidebar-line: #33363f;
+  --sidebar-line-strong: #454955;
+  --sidebar-hover: #2e313b;
+  --sidebar-active: #3b3f4b;
+  --ink: #18181b; /* zinc-900 */
+  --ink-2: #52525b; /* zinc-600 */
+  --ink-3: #71717a; /* zinc-500 */
+  --ink-4: #a1a1aa; /* zinc-400 */
+  --line: #e4e4e7; /* zinc-200 */
+  --line-strong: #d4d4d8; /* zinc-300 */
+  --hover: #f4f4f5; /* zinc-100 */
+  --active: #e4e4e7; /* zinc-200 */
+
+  /* inverted control (the Send button): dark pill on light ground */
+  --control: #18181b;
+  --control-ink: #fafafa;
+
+  /* meaning — light steps darker to hold contrast on a bright ground */
+  --approved: #047857; /* emerald-700 */
+  --approved-bg: rgb(16 185 129 / 0.1);
+  --approved-line: rgb(16 185 129 / 0.35);
+  --fixes: #b45309; /* amber-700 */
+  --fixes-bg: rgb(245 158 11 / 0.12);
+  --fixes-line: rgb(245 158 11 / 0.4);
+  --revise: #be123c; /* rose-700 */
+  --revise-bg: rgb(244 63 94 / 0.1);
+  --revise-line: rgb(244 63 94 / 0.35);
+
+  /* agent identity */
+  --agent-violet: #7c3aed;
+  --agent-sky: #0284c7;
+  --agent-teal: #0d9488;
+  --agent-amber: #b45309;
+  --agent-rose: #e11d48;
+  --agent-tint: 0.12;
+  --agent-ring: 0.3;
+}
+
+.dark {
+  /* neutrals — dark */
+  --canvas: #18181b; /* zinc-900 */
+  --panel: #101014; /* sits with the sidebar rather than below it */
+  --raised: #1c1c1f;
+
+  /* Still distinct from canvas and rail, just with less distance to travel. */
+  --sidebar: #131319;
+  --sidebar-ink: #f4f4f5;
+  --sidebar-ink-2: #a1a1aa;
+  --sidebar-ink-3: #71717a;
+  --sidebar-line: #27272a;
+  --sidebar-line-strong: #3f3f46;
+  --sidebar-hover: #1d1d23;
+  --sidebar-active: #2a2a31;
+  --ink: #f4f4f5; /* zinc-100 */
+  --ink-2: #a1a1aa; /* zinc-400 */
+  --ink-3: #71717a; /* zinc-500 */
+  --ink-4: #52525b; /* zinc-600 */
+  --line: #27272a; /* zinc-800 */
+  --line-strong: #3f3f46; /* zinc-700 */
+  --hover: #18181b; /* zinc-900 */
+  --active: #27272a; /* zinc-800 */
+
+  --control: #f4f4f5;
+  --control-ink: #18181b;
+
+  --approved: #6ee7b7; /* emerald-300 */
+  --approved-bg: rgb(16 185 129 / 0.1);
+  --approved-line: rgb(16 185 129 / 0.4);
+  --fixes: #fcd34d; /* amber-300 */
+  --fixes-bg: rgb(245 158 11 / 0.1);
+  --fixes-line: rgb(245 158 11 / 0.4);
+  --revise: #fda4af; /* rose-300 */
+  --revise-bg: rgb(244 63 94 / 0.1);
+  --revise-line: rgb(244 63 94 / 0.4);
+
+  --agent-violet: #c4b5fd;
+  --agent-sky: #7dd3fc;
+  --agent-teal: #5eead4;
+  --agent-amber: #fcd34d;
+  --agent-rose: #fda4af;
+  --agent-tint: 0.2;
+  --agent-ring: 0.3;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-canvas: var(--canvas);
+  --color-panel: var(--panel);
+  --color-raised: var(--raised);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-ink: var(--sidebar-ink);
+  --color-sidebar-ink-2: var(--sidebar-ink-2);
+  --color-sidebar-ink-3: var(--sidebar-ink-3);
+  --color-sidebar-line: var(--sidebar-line);
+  --color-sidebar-line-strong: var(--sidebar-line-strong);
+  --color-sidebar-hover: var(--sidebar-hover);
+  --color-sidebar-active: var(--sidebar-active);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-ink-4: var(--ink-4);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-hover: var(--hover);
+  --color-active: var(--active);
+  --color-control: var(--control);
+  --color-control-ink: var(--control-ink);
+
+  --color-approved: var(--approved);
+  --color-approved-bg: var(--approved-bg);
+  --color-approved-line: var(--approved-line);
+  --color-fixes: var(--fixes);
+  --color-fixes-bg: var(--fixes-bg);
+  --color-fixes-line: var(--fixes-line);
+  --color-revise: var(--revise);
+  --color-revise-bg: var(--revise-bg);
+  --color-revise-line: var(--revise-line);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* The sidebar is dark in BOTH themes, so agent hues inside it always need the
+   bright tints — the light theme's 600-level values would disappear against it.
+   Scoping the vars here keeps every call site identical. */
+.sidebar-scope {
+  --agent-violet: #c4b5fd;
+  --agent-sky: #7dd3fc;
+  --agent-teal: #5eead4;
+  --agent-amber: #fcd34d;
+  --agent-rose: #fda4af;
+  --agent-tint: 0.2;
+}
+
+/* Agent identity: one class per agent so the hue, its tint, and its ring all
+   move together between themes. */
+.agent-violet {
+  --hue: var(--agent-violet);
+}
+.agent-sky {
+  --hue: var(--agent-sky);
+}
+.agent-teal {
+  --hue: var(--agent-teal);
+}
+.agent-amber {
+  --hue: var(--agent-amber);
+}
+.agent-rose {
+  --hue: var(--agent-rose);
+}
+
+.agent-fg {
+  color: var(--hue);
+}
+.agent-chip {
+  color: var(--hue);
+  background: color-mix(in srgb, var(--hue) calc(var(--agent-tint) * 100%), transparent);
+  box-shadow: inset 0 0 0 1px
+    color-mix(in srgb, var(--hue) calc(var(--agent-ring) * 100%), transparent);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--canvas);
+  color: var(--ink);
+}
+
+/* Theme swap should feel like a setting changing, not a page repainting. */
+body,
+body * {
+  transition-property: background-color, border-color, color;
+  transition-duration: 120ms;
+  transition-timing-function: ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  body,
+  body * {
+    transition: none;
+  }
 }

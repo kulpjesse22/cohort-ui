@@ -57,13 +57,13 @@ export function Workspace({ channelId }: { channelId: string }) {
   const header = (
     <div className="flex items-center gap-3">
       <div className="min-w-0 flex-1">
-        <h1 className="truncate font-semibold text-zinc-100">{channel.name}</h1>
-        <p className="truncate text-xs text-zinc-500">{channel.description}</p>
+        <h1 className="truncate font-semibold text-ink">{channel.name}</h1>
+        <p className="truncate text-xs text-ink-3">{channel.description}</p>
       </div>
       {isAgentChannel && (
         <Link
           href={`/agent/${channelId}`}
-          className="hidden shrink-0 rounded-md border border-zinc-700 px-2.5 py-1.5 text-xs text-zinc-300 hover:bg-zinc-800 sm:block"
+          className="hidden shrink-0 rounded-md border border-line-strong px-2.5 py-1.5 text-xs text-ink-2 hover:bg-hover sm:block"
         >
           View profile
         </Link>

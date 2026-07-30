@@ -105,7 +105,7 @@ export function DemoTour() {
   const channel = !isProfile ? getChannel(targetId) : null;
 
   return (
-    <div className="relative flex h-screen w-full overflow-hidden bg-zinc-900">
+    <div className="relative flex h-screen w-full overflow-hidden bg-canvas">
       <div
         className={`hidden transition-opacity duration-500 lg:block ${dim("sidebar", step.spotlight)}`}
       >
@@ -118,24 +118,24 @@ export function DemoTour() {
       <main
         className={`flex min-w-0 flex-1 flex-col transition-opacity duration-500 ${dim("main", step.spotlight)}`}
       >
-        <header className="flex items-center gap-3 border-b border-zinc-800 px-5 py-3">
+        <header className="flex items-center gap-3 border-b border-line px-5 py-3">
           {agent ? (
             <>
               <Avatar agentId={agent.id} />
               <div className="min-w-0 flex-1">
                 <div className="flex items-baseline gap-2">
-                  <h1 className="truncate font-semibold text-zinc-100">{agent.name}</h1>
-                  <span className="shrink-0 rounded border border-zinc-700 px-1.5 py-0.5 text-[10px] text-zinc-400">
+                  <h1 className="truncate font-semibold text-ink">{agent.name}</h1>
+                  <span className="shrink-0 rounded border border-line-strong px-1.5 py-0.5 text-[10px] text-ink-2">
                     {agent.seniority}
                   </span>
                 </div>
-                <p className="truncate text-xs text-zinc-500">{agent.title}</p>
+                <p className="truncate text-xs text-ink-3">{agent.title}</p>
               </div>
             </>
           ) : (
             <div className="min-w-0 flex-1">
-              <h1 className="truncate font-semibold text-zinc-100">{channel?.name}</h1>
-              <p className="truncate text-xs text-zinc-500">{channel?.description}</p>
+              <h1 className="truncate font-semibold text-ink">{channel?.name}</h1>
+              <p className="truncate text-xs text-ink-3">{channel?.description}</p>
             </div>
           )}
         </header>
@@ -210,9 +210,9 @@ function CaptionBar({
 }) {
   return (
     <div className="pointer-events-none absolute inset-x-0 bottom-0 z-50 p-4 lg:p-6">
-      <div className="pointer-events-auto mx-auto max-w-3xl rounded-xl border border-zinc-700 bg-zinc-950/95 p-4 shadow-2xl backdrop-blur lg:p-5">
+      <div className="pointer-events-auto mx-auto max-w-3xl rounded-xl border border-line-strong bg-panel/95 p-4 shadow-2xl backdrop-blur lg:p-5">
         <div className="mb-2 flex items-center gap-2">
-          <span className="font-mono text-[11px] text-zinc-500">
+          <span className="font-mono text-[11px] text-ink-3">
             {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
           </span>
           <div className="flex flex-1 gap-1">
@@ -220,44 +220,44 @@ function CaptionBar({
               <span
                 key={i}
                 className={`h-0.5 flex-1 rounded-full transition-colors duration-300 ${
-                  i <= index ? "bg-zinc-300" : "bg-zinc-800"
+                  i <= index ? "bg-ink-3" : "bg-line"
                 }`}
               />
             ))}
           </div>
           <Link
             href="/c/claudia"
-            className="shrink-0 text-[11px] text-zinc-500 hover:text-zinc-300"
+            className="shrink-0 text-[11px] text-ink-3 hover:text-ink"
           >
             Exit
           </Link>
         </div>
 
-        <h2 className="text-base font-semibold text-zinc-100">{title}</h2>
-        <p className="mt-1 text-[13px] leading-relaxed text-zinc-400">{body}</p>
+        <h2 className="text-base font-semibold text-ink">{title}</h2>
+        <p className="mt-1 text-[13px] leading-relaxed text-ink-2">{body}</p>
 
         <div className="mt-3 flex items-center gap-2">
           <button
             onClick={onPrev}
             disabled={index === 0}
-            className="rounded-md border border-zinc-700 px-2.5 py-1.5 text-xs text-zinc-300 transition-opacity hover:bg-zinc-800 disabled:opacity-30"
+            className="rounded-md border border-line-strong px-2.5 py-1.5 text-xs text-ink-2 transition-opacity hover:bg-hover disabled:opacity-30"
           >
             Back
           </button>
           <button
             onClick={onToggle}
-            className="rounded-md bg-zinc-100 px-3 py-1.5 text-xs font-medium text-zinc-900 hover:bg-white"
+            className="rounded-md bg-control px-3 py-1.5 text-xs font-medium text-control-ink hover:opacity-90"
           >
             {isLast && !playing ? "Replay" : playing ? "Pause" : "Play"}
           </button>
           <button
             onClick={onNext}
             disabled={isLast}
-            className="rounded-md border border-zinc-700 px-2.5 py-1.5 text-xs text-zinc-300 transition-opacity hover:bg-zinc-800 disabled:opacity-30"
+            className="rounded-md border border-line-strong px-2.5 py-1.5 text-xs text-ink-2 transition-opacity hover:bg-hover disabled:opacity-30"
           >
             Next
           </button>
-          <span className="ml-auto hidden text-[11px] text-zinc-600 sm:block">
+          <span className="ml-auto hidden text-[11px] text-ink-4 sm:block">
             ← → to step · space to pause
           </span>
         </div>

@@ -39,8 +39,8 @@ export function Composer({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="border-t border-zinc-800 px-4 py-3 lg:px-5">
-      <div className="flex items-end gap-2 rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 focus-within:border-zinc-500">
+    <form onSubmit={handleSubmit} className="border-t border-line px-4 py-3 lg:px-5">
+      <div className="flex items-end gap-2 rounded-lg border border-line-strong bg-canvas px-3 py-2 focus-within:border-ink-3">
         <textarea
           ref={textareaRef}
           value={text}
@@ -56,12 +56,12 @@ export function Composer({
           }}
           placeholder={`Message ${channelName}`}
           rows={1}
-          className="max-h-40 flex-1 resize-none bg-transparent text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none"
+          className="max-h-40 flex-1 resize-none bg-transparent text-sm text-ink placeholder:text-ink-3 focus:outline-none"
         />
         <button
           type="submit"
           disabled={!text.trim() || sending}
-          className="shrink-0 rounded-md bg-zinc-100 px-3 py-1.5 text-xs font-medium text-zinc-900 transition-opacity disabled:cursor-not-allowed disabled:opacity-40"
+          className="shrink-0 rounded-md bg-control px-3 py-1.5 text-xs font-medium text-control-ink transition-opacity disabled:cursor-not-allowed disabled:opacity-40"
         >
           {sending ? "Sending…" : "Send"}
         </button>

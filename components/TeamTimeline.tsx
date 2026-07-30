@@ -4,14 +4,8 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { getParticipant, isAgent, type ActorId } from "@/lib/agents";
 import { getEntriesByDate, getActiveActorIds, type TimelineEntry } from "@/lib/timeline";
-import { KIND_DOT, KIND_LABEL } from "./AgentTimeline";
+import { KIND_DOT, KIND_LABEL, VERDICT_STYLE } from "./AgentTimeline";
 import { Avatar } from "./Avatar";
-
-const VERDICT_STYLE: Record<string, string> = {
-  Approved: "border-emerald-500/40 bg-emerald-500/10 text-emerald-300",
-  "Approved with fixes": "border-amber-500/40 bg-amber-500/10 text-amber-300",
-  Revise: "border-rose-500/40 bg-rose-500/10 text-rose-300",
-};
 
 function formatDate(iso: string): string {
   return new Date(`${iso}T12:00:00Z`).toLocaleDateString(undefined, {
@@ -36,21 +30,21 @@ function Entry({ entry }: { entry: TimelineEntry }) {
           {linkable ? (
             <Link
               href={`/agent/${entry.agentId}`}
-              className="text-sm font-medium text-zinc-100 hover:underline"
+              className="text-sm font-medium text-ink hover:underline"
             >
               {name}
             </Link>
           ) : (
-            <span className="text-sm font-medium text-zinc-100">{name}</span>
+            <span className="text-sm font-medium text-ink">{name}</span>
           )}
 
           {participant?.kind === "human" && (
-            <span className="rounded border border-zinc-700 px-1 text-[10px] text-zinc-400">
+            <span className="rounded border border-line-strong px-1 text-[10px] text-ink-2">
               human
             </span>
           )}
 
-          <span className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-zinc-600">
+          <span className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-ink-4">
             <span className={`h-1.5 w-1.5 rounded-full ${KIND_DOT[entry.kind]}`} />
             {KIND_LABEL[entry.kind]}
           </span>
@@ -64,17 +58,17 @@ function Entry({ entry }: { entry: TimelineEntry }) {
           )}
         </div>
 
-        <p className="mt-0.5 text-[13px] font-medium text-zinc-200">{entry.title}</p>
-        <p className="mt-0.5 text-[13px] leading-relaxed text-zinc-400">{entry.detail}</p>
+        <p className="mt-0.5 text-[13px] font-medium text-ink">{entry.title}</p>
+        <p className="mt-0.5 text-[13px] leading-relaxed text-ink-2">{entry.detail}</p>
 
         {entry.from && entry.to && (
-          <p className="mt-1 font-mono text-[11px] text-emerald-400/80">
+          <p className="mt-1 font-mono text-[11px] text-approved">
             {entry.from} → {entry.to}
           </p>
         )}
 
         {entry.artifact && (
-          <div className="mt-1 font-mono text-[10px] text-zinc-600">{entry.artifact}</div>
+          <div className="mt-1 font-mono text-[10px] text-ink-4">{entry.artifact}</div>
         )}
       </div>
     </div>
@@ -95,7 +89,7 @@ export function TeamTimeline() {
     <div className="flex-1 overflow-y-auto px-4 py-5 lg:px-6">
       <div className="mx-auto max-w-3xl">
         <div className="mb-5">
-          <p className="text-[13px] leading-relaxed text-zinc-400">
+          <p className="text-[13px] leading-relaxed text-ink-2">
             Everything that happened on this project, in one stream — human
             decisions and agent work side by side. Filter by participant, or open
             anyone&apos;s profile to see their record on its own.
@@ -107,8 +101,8 @@ export function TeamTimeline() {
             onClick={() => setFilter(null)}
             className={`rounded-md border px-2.5 py-1 text-xs transition-colors ${
               filter === null
-                ? "border-zinc-500 bg-zinc-800 text-zinc-100"
-                : "border-zinc-700 text-zinc-400 hover:bg-zinc-900 hover:text-zinc-200"
+                ? "border-ink-3 bg-raised text-ink"
+                : "border-line-strong text-ink-2 hover:bg-hover hover:text-ink"
             }`}
           >
             Everyone
@@ -123,13 +117,13 @@ export function TeamTimeline() {
                 onClick={() => setFilter(active ? null : id)}
                 className={`flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs transition-colors ${
                   active
-                    ? "border-zinc-500 bg-zinc-800 text-zinc-100"
-                    : "border-zinc-700 text-zinc-400 hover:bg-zinc-900 hover:text-zinc-200"
+                    ? "border-ink-3 bg-raised text-ink"
+                    : "border-line-strong text-ink-2 hover:bg-hover hover:text-ink"
                 }`}
               >
                 {p.name}
                 {p.kind === "human" && (
-                  <span className="text-[9px] uppercase tracking-wider text-zinc-600">
+                  <span className="text-[9px] uppercase tracking-wider text-ink-4">
                     human
                   </span>
                 )}
@@ -139,17 +133,17 @@ export function TeamTimeline() {
         </div>
 
         <div className="mb-3 flex items-baseline justify-between">
-          <h2 className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
+          <h2 className="text-[11px] font-semibold uppercase tracking-wider text-ink-3">
             Project history
           </h2>
-          <span className="text-[11px] text-zinc-600">
+          <span className="text-[11px] text-ink-4">
             {total} {total === 1 ? "entry" : "entries"}
             {filter ? ` · ${getParticipant(filter)?.name}` : ""}
           </span>
         </div>
 
         {groups.length === 0 ? (
-          <p className="rounded-lg border border-dashed border-zinc-800 px-4 py-6 text-center text-sm text-zinc-500">
+          <p className="rounded-lg border border-dashed border-line px-4 py-6 text-center text-sm text-ink-3">
             Nothing recorded yet.
           </p>
         ) : (
@@ -157,11 +151,11 @@ export function TeamTimeline() {
             {groups.map((group) => (
               <section key={group.date}>
                 <div className="mb-3 flex items-center gap-3">
-                  <h3 className="shrink-0 text-xs font-medium text-zinc-300">
+                  <h3 className="shrink-0 text-xs font-medium text-ink-2">
                     {formatDate(group.date)}
                   </h3>
-                  <span className="h-px flex-1 bg-zinc-800" />
-                  <span className="shrink-0 text-[11px] text-zinc-600">
+                  <span className="h-px flex-1 bg-raised" />
+                  <span className="shrink-0 text-[11px] text-ink-4">
                     {group.entries.length}
                   </span>
                 </div>
