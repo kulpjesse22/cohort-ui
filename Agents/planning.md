@@ -32,6 +32,7 @@ Outward acts approved: publish to a public repo for feedback
 
 ## 1. Inbox (untriaged)
 
+- **[ ]** (design) **Light mode** — next up. See T-6 in the backlog.
 - **[ ]** (feature) Derive seniority from timeline evidence instead of a static label
 - **[ ]** (feature) Read timeline entries from `handoffs/` and `lessons/` instead of seed data
 - **[ ]** (experiment) Wire the composer to a real agent session
@@ -45,6 +46,36 @@ Outward acts approved: publish to a public repo for feedback
 | T-3 | Live agent wiring | experiment | P2 | inbox | - | Decides whether Cohort is a control surface or a viewer. |
 | T-4 | Figma / SVG asset export | feature | P3 | inbox | - | From the original concept; not started. |
 | T-5 | Edit-sync back from Figma | feature | P3 | inbox | - | Depends on T-4. |
+| T-6 | Light mode | design | P1 | next | - | User request, next session. `design.md` currently states "dark only" — that decision is being revisited, so the guide is the first thing to update, not the last. |
+
+### T-6 notes (pre-work, not yet assigned)
+
+The blocker is not CSS, it is that `design.md` commits to dark only and every
+color in the app is a literal Tailwind `zinc-*` / accent class. There is no
+token layer to swap.
+
+Likely shape of the work, for whoever picks it up:
+
+1. **Hephaestus first.** `design.md` § Colors and § Overview both assert dark
+   only. Revise to define each token's light and dark value, and decide whether
+   light is a peer theme or the new default. This is a design decision, not an
+   implementation detail — it changes what the product's calm/quiet intent means
+   when the background is bright.
+2. **Introduce the token layer.** Colors are currently hardcoded at call sites
+   (`bg-zinc-900`, `text-zinc-400`, `border-zinc-800`, and the verdict/agent
+   hues). Map `design.md`'s token names onto CSS variables in `app/globals.css`
+   under `@theme`, then replace literals with semantic classes.
+3. **Re-check meaning colors.** Verdict hues (emerald/amber/rose) and the five
+   agent identity hues were chosen against a dark ground; they need light-mode
+   values that hold the same AA contrast. `UX.md` requires color never be the
+   only signal, so the text labels already carry the meaning — but the hues
+   still must not wash out.
+4. **Remove the `dark` class** hardcoded on `<html>` in `app/layout.tsx`, and
+   decide the switching mechanism: `prefers-color-scheme`, an explicit toggle,
+   or both.
+5. **Athena review** against the revised guide, with attention to the dimmed
+   spotlight states in `/demo` — `opacity-25` on a light ground reads very
+   differently than on a dark one.
 
 ## 3. Active Queue
 
