@@ -8,6 +8,7 @@ import type { ContextDoc } from "@/lib/harness";
 import { AppShell } from "./AppShell";
 import { MessageThread } from "./MessageThread";
 import { Composer } from "./Composer";
+import { Facepile } from "./Facepile";
 
 export function Workspace({ channelId }: { channelId: string }) {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -60,14 +61,17 @@ export function Workspace({ channelId }: { channelId: string }) {
         <h1 className="truncate font-semibold text-ink">{channel.name}</h1>
         <p className="truncate text-xs text-ink-3">{channel.description}</p>
       </div>
-      {isAgentChannel && (
-        <Link
-          href={`/agent/${channelId}`}
-          className="hidden shrink-0 rounded-md border border-line-strong px-2.5 py-1.5 text-xs text-ink-2 hover:bg-hover sm:block"
-        >
-          View profile
-        </Link>
-      )}
+            <div className="hidden shrink-0 items-center gap-1.5 sm:flex">
+        <Facepile memberIds={[...channel.memberIds, "jesse"]} />
+        {isAgentChannel && (
+          <Link
+            href={`/agent/${channelId}`}
+            className="shrink-0 rounded-md border border-line-strong px-2.5 py-1.5 text-xs text-ink-3 transition-colors hover:bg-hover hover:text-ink"
+          >
+            View profile
+          </Link>
+        )}
+      </div>
     </div>
   );
 

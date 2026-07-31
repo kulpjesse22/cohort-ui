@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import type { ContextDoc } from "@/lib/harness";
 import { AppShell } from "./AppShell";
 import { TeamTimeline } from "./TeamTimeline";
+import { Facepile } from "./Facepile";
+import { getActiveActorIds } from "@/lib/timeline";
 
 export function ProjectView() {
   const [contextDocs, setContextDocs] = useState<ContextDoc[]>([]);
@@ -29,11 +31,18 @@ export function ProjectView() {
   }, []);
 
   const header = (
-    <div className="min-w-0 flex-1">
-      <h1 className="truncate font-semibold text-ink">Project timeline</h1>
-      <p className="truncate text-xs text-ink-3">
-        All work across the team — humans and agents — newest first.
-      </p>
+    <div className="flex items-center gap-3">
+      <div className="min-w-0 flex-1">
+        <h1 className="truncate text-[15px] font-semibold tracking-[-0.01em] text-ink">
+          Project timeline
+        </h1>
+        <p className="truncate text-[11px] text-ink-3">
+          All work across the team — humans and agents — newest first.
+        </p>
+      </div>
+      <div className="hidden shrink-0 sm:block">
+        <Facepile memberIds={getActiveActorIds()} label="Contributors" />
+      </div>
     </div>
   );
 
