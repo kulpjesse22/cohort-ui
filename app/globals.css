@@ -11,30 +11,32 @@
 
 :root {
   /* neutrals — light */
-  --canvas: #ffffff;
-  --panel: #f7f7f8; /* right rail: a quiet step off canvas */
-  --raised: #f4f4f5; /* zinc-100 */
+  /* Warm neutrals, not pure grey. Notion's off-white reads as paper; #fff plus
+     zinc reads as a spreadsheet. */
+  --canvas: #fdfdfc;
+  --panel: #f7f6f4; /* right rail: a quiet step off canvas */
+  --raised: #f2f1ee;
 
   /* The third neutral: the left sidebar carries its own identity in both
      themes, the way Slack's does — but a cool graphite rather than their
      aubergine, so it sits under the agent hues without competing. It stays
      dark in light mode, so it needs its own text scale. */
-  --sidebar: #24262f;
-  --sidebar-ink: #f2f2f4;
-  --sidebar-ink-2: #b4b8c4;
-  --sidebar-ink-3: #878c9b;
-  --sidebar-line: #33363f;
-  --sidebar-line-strong: #454955;
-  --sidebar-hover: #2e313b;
-  --sidebar-active: #3b3f4b;
-  --ink: #18181b; /* zinc-900 */
-  --ink-2: #52525b; /* zinc-600 */
-  --ink-3: #71717a; /* zinc-500 */
-  --ink-4: #a1a1aa; /* zinc-400 */
-  --line: #e4e4e7; /* zinc-200 */
-  --line-strong: #d4d4d8; /* zinc-300 */
-  --hover: #f4f4f5; /* zinc-100 */
-  --active: #e4e4e7; /* zinc-200 */
+  --sidebar: #262229;
+  --sidebar-ink: #f4f2f4;
+  --sidebar-ink-2: #bdb5be;
+  --sidebar-ink-3: #8f8792;
+  --sidebar-line: #363039;
+  --sidebar-line-strong: #494151;
+  --sidebar-hover: #322c36;
+  --sidebar-active: #443c4a;
+  --ink: #191917;
+  --ink-2: #55524c;
+  --ink-3: #78746c;
+  --ink-4: #a5a19a;
+  --line: #e7e5e0;
+  --line-strong: #d6d3cc;
+  --hover: #f2f1ee;
+  --active: #e7e5e0;
 
   /* inverted control (the Send button): dark pill on light ground */
   --control: #18181b;
@@ -63,9 +65,9 @@
 
 .dark {
   /* neutrals — dark */
-  --canvas: #18181b; /* zinc-900 */
-  --panel: #101014; /* sits with the sidebar rather than below it */
-  --raised: #1c1c1f;
+  --canvas: #1a1a1c;
+  --panel: #131315; /* sits with the sidebar rather than below it */
+  --raised: #212124;
 
   /* Still distinct from canvas and rail, just with less distance to travel. */
   --sidebar: #131319;

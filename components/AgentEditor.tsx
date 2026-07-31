@@ -4,13 +4,11 @@ import { useRef, useState } from "react";
 import { AGENTS, type AgentId } from "@/lib/agents";
 import {
   COLOR_OPTIONS,
-  MARK_OPTIONS,
   VOICES,
   type AgentCustomization,
   type ColorId,
-  type MarkId,
 } from "@/lib/roster";
-import { AgentMark } from "./AgentMark";
+import { Avatar } from "./Avatar";
 
 const CHIP: Record<string, string> = {
   violet: "agent-violet agent-chip",
@@ -107,11 +105,7 @@ export function AgentEditor({
   return (
     <div className="rounded-xl border border-line bg-raised p-4 lg:p-5">
       <div className="mb-4 flex items-start gap-3">
-        <div
-          className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-[8px] ${CHIP[draft.color]}`}
-        >
-          <AgentMark agentId={draft.mark} size={21} />
-        </div>
+        <Avatar agentId={agentId} size="lg" />
         <div className="min-w-0 flex-1">
           <h2 className="text-[15px] font-semibold tracking-[-0.01em] text-ink">
             Customize {AGENTS[agentId].name}
@@ -151,25 +145,6 @@ export function AgentEditor({
             rows={2}
             className="w-full resize-none rounded-md border border-line-strong bg-canvas px-2.5 py-1.5 text-[13px] leading-relaxed text-ink outline-none focus:border-ink-3"
           />
-        </Field>
-
-        <Field label="Mark">
-          <div className="flex flex-wrap gap-1.5">
-            {MARK_OPTIONS.map((m) => (
-              <button
-                key={m}
-                onClick={() => set("mark", m as MarkId)}
-                aria-pressed={draft.mark === m}
-                className={`flex h-9 w-9 items-center justify-center rounded-[8px] border transition-colors ${
-                  draft.mark === m
-                    ? `border-transparent ${CHIP[draft.color]}`
-                    : "border-line-strong text-ink-3 hover:text-ink"
-                }`}
-              >
-                <AgentMark agentId={m} size={17} />
-              </button>
-            ))}
-          </div>
         </Field>
 
         <Field label="Colour">

@@ -9,15 +9,7 @@ import type { ContextDoc } from "@/lib/harness";
 import { AppShell } from "./AppShell";
 import { AgentTimeline } from "./AgentTimeline";
 import { AgentEditor } from "./AgentEditor";
-import { AgentMark } from "./AgentMark";
-
-const CHIP: Record<string, string> = {
-  violet: "agent-violet agent-chip",
-  sky: "agent-sky agent-chip",
-  teal: "agent-teal agent-chip",
-  amber: "agent-amber agent-chip",
-  rose: "agent-rose agent-chip",
-};
+import { Avatar } from "./Avatar";
 
 export function AgentProfile({ agentId }: { agentId: AgentId }) {
   const [contextDocs, setContextDocs] = useState<ContextDoc[]>([]);
@@ -55,16 +47,10 @@ export function AgentProfile({ agentId }: { agentId: AgentId }) {
 
   const name = custom?.displayName ?? agent.name;
   const title = custom?.title ?? agent.title;
-  const color = custom?.color ?? agent.color;
-  const mark = custom?.mark ?? agentId;
 
   const header = (
     <div className="flex items-center gap-3">
-      <div
-        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-[7px] ${CHIP[color]}`}
-      >
-        <AgentMark agentId={mark} size={17} />
-      </div>
+      <Avatar agentId={agentId} size="lg" />
       <div className="min-w-0 flex-1">
         <div className="flex items-baseline gap-2">
           <h1 className="truncate text-[15px] font-semibold tracking-[-0.01em] text-ink">

@@ -3,14 +3,6 @@ import { AGENT_ORDER, AGENTS, CHANNELS } from "@/lib/agents";
 import { Avatar } from "./Avatar";
 import { ThemeToggle } from "./ThemeToggle";
 
-const TEXT: Record<string, string> = {
-  violet: "agent-violet agent-fg",
-  sky: "agent-sky agent-fg",
-  teal: "agent-teal agent-fg",
-  amber: "agent-amber agent-fg",
-  rose: "agent-rose agent-fg",
-};
-
 export function Sidebar({
   activeChannelId,
   onSelect,
@@ -50,7 +42,7 @@ export function Sidebar({
               <button
                 key={channel.id}
                 onClick={() => onSelect(channel.id)}
-                className={`flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left transition-colors ${
+                className={`flex w-full items-center gap-2 rounded-md px-2.5 py-[7px] text-left transition-colors ${
                   active
                     ? "bg-sidebar-active text-sidebar-ink"
                     : "text-sidebar-ink-2 hover:bg-sidebar-hover hover:text-sidebar-ink"
@@ -73,11 +65,11 @@ export function Sidebar({
               <li key={id}>
                 <Link
                   href={`/agent/${id}`}
-                  className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left hover:bg-sidebar-hover"
+                  className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left transition-colors hover:bg-sidebar-hover"
                 >
                   <Avatar agentId={id} size="sm" />
                   <span className="min-w-0 flex-1">
-                    <span className={`block truncate font-medium ${TEXT[agent.color]}`}>
+                    <span className="block truncate text-[13px] font-medium text-sidebar-ink">
                       {agent.name}
                     </span>
                     <span className="block truncate text-[11px] text-sidebar-ink-3">
