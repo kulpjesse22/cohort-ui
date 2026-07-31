@@ -58,8 +58,8 @@ function Entry({ entry }: { entry: TimelineEntry }) {
           )}
         </div>
 
-        <p className="mt-0.5 text-[13px] font-medium text-ink">{entry.title}</p>
-        <p className="mt-0.5 text-[13px] leading-relaxed text-ink-2">{entry.detail}</p>
+        <p className="mt-0.5 text-[14px] font-semibold text-ink">{entry.title}</p>
+        <p className="mt-0.5 text-[14px] leading-relaxed text-ink-2">{entry.detail}</p>
 
         {entry.from && entry.to && (
           <p className="mt-1 font-mono text-[11px] text-approved">
@@ -89,7 +89,7 @@ export function TeamTimeline() {
     <div className="flex-1 overflow-y-auto px-4 py-5 lg:px-6">
       <div className="mx-auto max-w-3xl">
         <div className="mb-5">
-          <p className="text-[13px] leading-relaxed text-ink-2">
+          <p className="text-[14px] leading-relaxed text-ink-2">
             Everything that happened on this project, in one stream — human
             decisions and agent work side by side. Filter by participant, or open
             anyone&apos;s profile to see their record on its own.

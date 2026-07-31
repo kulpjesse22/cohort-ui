@@ -77,7 +77,7 @@ export function MessageThread({
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-2 px-6 text-center">
         <p className="text-sm font-medium text-ink">No messages yet</p>
-        <p className="max-w-xs text-[13px] leading-relaxed text-ink-3">
+        <p className="max-w-xs text-[14px] leading-relaxed text-ink-3">
           Brief them like you would a colleague. Whatever gets decided here
           should end up in the repo, not just the thread.
         </p>
@@ -120,7 +120,7 @@ export function MessageThread({
               <div className="min-w-0 flex-1">
                 {!grouped && (
                   <div className="flex items-baseline gap-2">
-                    <span className="text-[13px] font-semibold tracking-[-0.01em] text-ink">
+                    <span className="text-[14px] font-semibold tracking-[-0.01em] text-ink">
                       {message.authorName}
                     </span>
                     <span className="text-[11px] text-ink-4">
@@ -133,7 +133,7 @@ export function MessageThread({
                     )}
                   </div>
                 )}
-                <p className="whitespace-pre-wrap text-[13px] leading-[1.65] text-ink-2">
+                <p className="whitespace-pre-wrap text-[14px] leading-[1.62] text-ink-2">
                   {message.text}
                 </p>
               </div>

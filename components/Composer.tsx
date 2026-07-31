@@ -163,7 +163,7 @@ export function Composer({
             onKeyDown={onKeyDown}
             placeholder={`Message ${channelName}`}
             rows={1}
-            className="block max-h-52 w-full resize-none bg-transparent px-3 pb-1 pt-2.5 text-[13px] leading-[1.6] text-ink placeholder:text-ink-4 focus:outline-none"
+            className="block max-h-52 w-full resize-none bg-transparent px-3 pb-1 pt-2.5 text-[14px] leading-[1.6] text-ink placeholder:text-ink-4 focus:outline-none"
           />
 
           <div className="flex items-center gap-0.5 px-2 pb-2">

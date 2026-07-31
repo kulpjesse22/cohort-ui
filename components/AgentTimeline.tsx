@@ -87,7 +87,7 @@ function PromotionEntry({ entry }: { entry: TimelineEntry }) {
             </div>
           )}
 
-          <p className="mt-2.5 text-[13px] leading-relaxed text-ink-2">{entry.detail}</p>
+          <p className="mt-2.5 text-[14px] leading-relaxed text-ink-2">{entry.detail}</p>
         </div>
       </div>
     </div>
@@ -139,7 +139,7 @@ function StandardEntry({ entry }: { entry: TimelineEntry }) {
         </span>
       </div>
 
-      <p className="mt-1 text-[13px] leading-relaxed text-ink-2">{entry.detail}</p>
+      <p className="mt-1 text-[14px] leading-relaxed text-ink-2">{entry.detail}</p>
 
       {entry.fixes && entry.fixes.length > 0 && (
         <ul className="mt-2 space-y-1 rounded-md border border-line bg-raised px-3 py-2">

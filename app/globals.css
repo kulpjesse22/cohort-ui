@@ -142,8 +142,8 @@
   --color-revise-bg: var(--revise-bg);
   --color-revise-line: var(--revise-line);
 
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-sans-ui);
+  --font-mono: var(--font-mono-ui);
 }
 
 /* The sidebar is dark in BOTH themes, so agent hues inside it always need the

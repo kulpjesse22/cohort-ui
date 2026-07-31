@@ -1,15 +1,24 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Lato, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Lato is what Slack ships in its product UI. Humanist rather than geometric:
+// open apertures and warmer letterforms, which is the difference between
+// "workplace tool" and "generated dashboard". Slack's headline face, Larsseit,
+// is proprietary and not licensable, so Lato does the whole job here.
+const sans = Lato({
+  variable: "--font-sans-ui",
   subsets: ["latin"],
+  weight: ["400", "700", "900"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+// Lato has no monospace companion. JetBrains Mono has a tall x-height, so file
+// paths sit optically level with Lato body text instead of shrinking beside it.
+const mono = JetBrains_Mono({
+  variable: "--font-mono-ui",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -34,7 +43,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${sans.variable} ${mono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>

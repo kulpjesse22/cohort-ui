@@ -123,8 +123,19 @@ Athena `amber`, Hephaestus `rose`.
 
 ## Typography
 
-- **UI:** Geist Sans. **Mono:** Geist Mono, for file paths, seniority
-  transitions, and step counters only.
+- **UI:** Lato — the face Slack ships in its own product. Humanist rather than
+  geometric: open apertures and warmer letterforms. Geist, the previous face,
+  read cold and generic, which worked against a product about teammates.
+- **Mono:** JetBrains Mono, for file paths, seniority transitions, and step
+  counters only. Chosen for its tall x-height, which sits optically level with
+  Lato instead of shrinking beside it.
+
+**Lato ships 400 / 700 / 900 — there is no 500 or 600.** Browsers resolve
+`font-semibold` (600) up to 700 and `font-medium` (500) down to 400. That is
+fine as used here: semibold carries names and titles and correctly lands on
+bold, and medium only appears on small uppercase labels where the weight was
+never doing the work. Do not reach for medium to create emphasis — it will
+silently render as regular.
 
 | Role | Size | Weight | Tracking | Notes |
 | --- | --- | --- | --- | --- |
@@ -132,7 +143,7 @@ Athena `amber`, Hephaestus `rose`.
 | Stat value | `text-2xl` | 600 | `-0.02em` | Timeline summary numbers |
 | Page title | `text-[15px]` | 600 | `-0.01em` | Channel name, agent name |
 | Entry title | `text-sm` | 600 | `-0.01em` | Timeline entries, message authors |
-| Body | `text-[13px]` | 400 | normal | Message text, entry detail |
+| Body | `text-[14px]` | 400 | normal | Message text, entry detail |
 | Meta | `text-[11px]` | 400 | normal | Timestamps, descriptions |
 | Micro | `text-[10px]` | 500 | `0.06em` | Badges, kind labels |
 | Mono | `text-[10px]` | 400 | normal | File paths, seniority transitions |
@@ -145,8 +156,10 @@ Two rules do most of the work:
 - **Section labels are the only uppercase.** `0.06em` tracking, `ink-3`, 500
   weight — never larger than 11px, so they recede rather than compete.
 
-Body sits at 13px deliberately: the product is read in volume, and 14px pushed
-too little content into view.
+Body sits at 14px. It was 13px under Geist, but Lato has a smaller x-height, so
+the same nominal size read noticeably tighter. Metrics travel with the typeface:
+when the face changes, re-check the scale rather than assuming the numbers hold.
+Dense metadata stays at 10–11px.
 
 ## Spacing & Layout
 
