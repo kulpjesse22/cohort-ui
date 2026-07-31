@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import type { ContextDoc } from "@/lib/harness";
 import { Sidebar } from "./Sidebar";
 import { ContextRail } from "./ContextRail";
+import { CommandPalette } from "./CommandPalette";
 
 export function AppShell({
   activeChannelId,
@@ -23,6 +24,19 @@ export function AppShell({
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [railOpen, setRailOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  // Cmd/Ctrl-K opens search from anywhere, the way Slack and Notion do.
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setSearchOpen((v) => !v);
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   // Close both drawers whenever the route's subject changes.
   useEffect(() => {
@@ -72,6 +86,19 @@ export function AppShell({
           <div className="min-w-0 flex-1">{header}</div>
 
           <button
+            onClick={() => setSearchOpen(true)}
+            aria-label="Search"
+            className="hidden items-center gap-2 rounded-md border border-line-strong px-2.5 py-1.5 text-[12px] text-ink-3 transition-colors hover:bg-hover hover:text-ink-2 sm:flex"
+          >
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <circle cx="7.2" cy="7.2" r="4.6" stroke="currentColor" strokeWidth="1.4" />
+              <path d="m10.7 10.7 2.8 2.8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+            </svg>
+            Search
+            <kbd className="rounded border border-line px-1 text-[10px]">⌘K</kbd>
+          </button>
+
+          <button
             aria-label="Open pinned context"
             onClick={() => setRailOpen(true)}
             className="shrink-0 rounded-md p-1.5 text-ink-2 hover:bg-hover hover:text-ink lg:hidden"
@@ -90,6 +117,8 @@ export function AppShell({
       >
         <ContextRail docs={contextDocs} loading={loadingContext} />
       </div>
+
+      <CommandPalette open={searchOpen} onClose={() => setSearchOpen(false)} />
     </div>
   );
 }
