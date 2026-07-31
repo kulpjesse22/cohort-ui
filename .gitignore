@@ -38,6 +38,7 @@ yarn-error.log*
 
 # runtime-persisted composer messages (seed data lives in lib/messages.ts, not here)
 /data/messages/*.json
+/data/roster.json
 
 # typescript
 *.tsbuildinfo

@@ -4,14 +4,26 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AGENTS, type AgentId } from "@/lib/agents";
 import { getTimeline, getTimelineSummary } from "@/lib/timeline";
+import type { AgentCustomization } from "@/lib/roster";
 import type { ContextDoc } from "@/lib/harness";
 import { AppShell } from "./AppShell";
 import { AgentTimeline } from "./AgentTimeline";
-import { Avatar } from "./Avatar";
+import { AgentEditor } from "./AgentEditor";
+import { AgentMark } from "./AgentMark";
+
+const CHIP: Record<string, string> = {
+  violet: "agent-violet agent-chip",
+  sky: "agent-sky agent-chip",
+  teal: "agent-teal agent-chip",
+  amber: "agent-amber agent-chip",
+  rose: "agent-rose agent-chip",
+};
 
 export function AgentProfile({ agentId }: { agentId: AgentId }) {
   const [contextDocs, setContextDocs] = useState<ContextDoc[]>([]);
   const [loadingContext, setLoadingContext] = useState(true);
+  const [custom, setCustom] = useState<AgentCustomization | null>(null);
+  const [editing, setEditing] = useState(false);
 
   const agent = AGENTS[agentId];
   const entries = getTimeline(agentId);
@@ -20,43 +32,64 @@ export function AgentProfile({ agentId }: { agentId: AgentId }) {
   useEffect(() => {
     let active = true;
     setLoadingContext(true);
+    setEditing(false);
 
     fetch(`/api/context/${agentId}`)
-      .then((res) => res.json())
+      .then((r) => r.json())
       .then((json) => {
         if (!active) return;
         setContextDocs(json.docs ?? []);
         setLoadingContext(false);
       })
-      .catch(() => {
-        if (!active) return;
-        setContextDocs([]);
-        setLoadingContext(false);
-      });
+      .catch(() => active && setLoadingContext(false));
+
+    fetch(`/api/roster/${agentId}`)
+      .then((r) => r.json())
+      .then((json) => active && setCustom(json.customization ?? null))
+      .catch(() => {});
 
     return () => {
       active = false;
     };
   }, [agentId]);
 
+  const name = custom?.displayName ?? agent.name;
+  const title = custom?.title ?? agent.title;
+  const color = custom?.color ?? agent.color;
+  const mark = custom?.mark ?? agentId;
+
   const header = (
     <div className="flex items-center gap-3">
-      <Avatar agentId={agentId} />
+      <div
+        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-[7px] ${CHIP[color]}`}
+      >
+        <AgentMark agentId={mark} size={17} />
+      </div>
       <div className="min-w-0 flex-1">
         <div className="flex items-baseline gap-2">
-          <h1 className="truncate font-semibold text-ink">{agent.name}</h1>
+          <h1 className="truncate text-[15px] font-semibold tracking-[-0.01em] text-ink">
+            {name}
+          </h1>
           <span className="shrink-0 rounded border border-line-strong px-1.5 py-0.5 text-[10px] text-ink-2">
             {agent.seniority}
           </span>
         </div>
-        <p className="truncate text-xs text-ink-3">{agent.title}</p>
+        <p className="truncate text-[11px] text-ink-3">{title}</p>
       </div>
-      <Link
-        href={`/c/${agentId}`}
-        className="hidden shrink-0 rounded-md border border-line-strong px-2.5 py-1.5 text-xs text-ink-2 hover:bg-hover sm:block"
-      >
-        Message #{agentId}
-      </Link>
+      <div className="hidden shrink-0 items-center gap-1.5 sm:flex">
+        <button
+          onClick={() => setEditing((v) => !v)}
+          className="rounded-md border border-line-strong px-2.5 py-1.5 text-xs text-ink-2 transition-colors hover:bg-hover hover:text-ink"
+        >
+          {editing ? "Close" : "Customize"}
+        </button>
+        <Link
+          href={`/c/${agentId}`}
+          className="rounded-md border border-line-strong px-2.5 py-1.5 text-xs text-ink-2 transition-colors hover:bg-hover hover:text-ink"
+        >
+          Message #{agentId}
+        </Link>
+      </div>
     </div>
   );
 
@@ -67,6 +100,18 @@ export function AgentProfile({ agentId }: { agentId: AgentId }) {
       contextDocs={contextDocs}
       loadingContext={loadingContext}
     >
+      {editing && custom && (
+        <div className="border-b border-line px-4 py-4 lg:px-6">
+          <div className="mx-auto max-w-2xl">
+            <AgentEditor
+              agentId={agentId}
+              value={custom}
+              onChange={setCustom}
+              onClose={() => setEditing(false)}
+            />
+          </div>
+        </div>
+      )}
       <AgentTimeline entries={entries} summary={summary} />
     </AppShell>
   );

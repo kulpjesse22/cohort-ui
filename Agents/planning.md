@@ -32,7 +32,7 @@ Outward acts approved: publish to a public repo for feedback
 
 ## 1. Inbox (untriaged)
 
-- **[ ]** (design) **Consumer-grade visual polish** — next up. See T-7.
+- **[ ]** (feature) Write customization back to the role docs — see T-8 notes.
 - **[ ]** (feature) Derive seniority from timeline evidence instead of a static label
 - **[ ]** (feature) Read timeline entries from `handoffs/` and `lessons/` instead of seed data
 - **[ ]** (experiment) Wire the composer to a real agent session
@@ -47,7 +47,43 @@ Outward acts approved: publish to a public repo for feedback
 | T-4 | Figma / SVG asset export | feature | P3 | inbox | - | From the original concept; not started. |
 | T-5 | Edit-sync back from Figma | feature | P3 | inbox | - | Depends on T-4. |
 | T-6 | Light mode | design | P1 | done | Julius | Shipped. Semantic token layer, three neutrals, persisted toggle. |
-| T-7 | Consumer-grade visual polish | design | P1 | next | - | User request. Blocked on a design decision first — see below. |
+| T-7 | Consumer-grade visual polish | design | P1 | in progress | Julius | Stance resolved: craft within restraint. Type scale, agent marks, and the promotion card have shipped. Empty states and focus states remain. |
+| T-8 | Customizable agent identity | feature | P1 | in progress | Augustus | Prototype shipped: name, title, mark, colour, voice, working style — with live ElevenLabs preview. Persistence is a local JSON store, not the role docs. See below. |
+
+### T-8 notes — customizable identity
+
+Inspired by character.ai / ElevenLabs, but the framing that makes it fit here:
+**the harness already stores agent personality as markdown.** `Agents/athena.md`
+is a character definition — her review lenses, what she rewards and flags, her
+decision philosophy. So this is not a new personality system; it is an editor
+for the role docs that already exist.
+
+**The line that must hold.** Identity is customizable: display name, title,
+mark, colour, voice, working style. Scope and boundaries are **structural** and
+come from the role doc. You can make Athena warmer; you cannot make her write
+product code. If customization ever becomes purely decorative, it undermines the
+product's own claim that these are professional roles with fixed scope.
+
+Shipped in the prototype:
+
+- `lib/roster.ts` — client-safe constants, voice catalog, defaults.
+- `lib/roster-store.ts` — server-only persistence. Kept separate because a
+  client component importing `node:fs` breaks the Turbopack build.
+- `app/api/roster/[agentId]` — GET / PUT / DELETE with validation.
+- `app/api/voice-preview` — synthesizes a line in the chosen voice. The API key
+  is read server-side and never reaches the browser.
+- `components/AgentEditor.tsx` — the editor, opened from the profile header.
+
+**Known gap, and the next task.** Customization persists to `data/roster.json`,
+*not* to `Agents/*.md`. That is a real inconsistency with repo-as-truth: the app
+currently displays role docs as the source of truth while storing identity
+somewhere else. Closing it means deciding how structured edits map onto prose
+role docs — probably a fenced, tool-owned block inside the doc rather than
+rewriting a human's paragraphs. Do not ship this as "customization is durable"
+until that lands.
+
+**Voice constraint.** Only ElevenLabs *premade* voices are offered. Library
+voices return HTTP 402 on a free plan even after being added to My Voices.
 
 ### T-7 notes (pre-work, not yet assigned)
 
