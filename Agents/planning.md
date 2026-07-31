@@ -32,7 +32,7 @@ Outward acts approved: publish to a public repo for feedback
 
 ## 1. Inbox (untriaged)
 
-- **[ ]** (design) **Light mode** — next up. See T-6 in the backlog.
+- **[ ]** (design) **Consumer-grade visual polish** — next up. See T-7.
 - **[ ]** (feature) Derive seniority from timeline evidence instead of a static label
 - **[ ]** (feature) Read timeline entries from `handoffs/` and `lessons/` instead of seed data
 - **[ ]** (experiment) Wire the composer to a real agent session
@@ -46,7 +46,55 @@ Outward acts approved: publish to a public repo for feedback
 | T-3 | Live agent wiring | experiment | P2 | inbox | - | Decides whether Cohort is a control surface or a viewer. |
 | T-4 | Figma / SVG asset export | feature | P3 | inbox | - | From the original concept; not started. |
 | T-5 | Edit-sync back from Figma | feature | P3 | inbox | - | Depends on T-4. |
-| T-6 | Light mode | design | P1 | next | - | User request, next session. `design.md` currently states "dark only" — that decision is being revisited, so the guide is the first thing to update, not the last. |
+| T-6 | Light mode | design | P1 | done | Julius | Shipped. Semantic token layer, three neutrals, persisted toggle. |
+| T-7 | Consumer-grade visual polish | design | P1 | next | - | User request. Blocked on a design decision first — see below. |
+
+### T-7 notes (pre-work, not yet assigned)
+
+Goal: make the product feel distinctive and crafted rather than merely correct.
+
+**The decision that has to come first.** `design.md` currently commits to the
+opposite of consumer polish, in writing:
+
+- Design intent: "calm, dense, and quiet… closer to a well-set changelog than a
+  chat app."
+- Elevation: "depth comes from background steps and borders, not shadows."
+- Motion: "only three things animate… nothing animates on load."
+- Don't: "add shadows, gradients, or entrance animations."
+
+So most of what "polish" usually means is currently *forbidden by the guide*.
+Hephaestus has to resolve this before any implementation, and the honest options
+are not equivalent:
+
+1. **Raise the craft inside the current stance.** Keep restraint; win on
+   typography, optical alignment, spacing rhythm, better empty states, a real
+   icon set, considered focus states. Nothing in the guide changes. Lower risk,
+   and it suits a product whose thesis is "a record you review, not a feed."
+2. **Revise the stance.** Explicitly allow depth, motion, and expressive
+   moments; rewrite the Motion / Elevation / Do's sections. Higher ceiling for
+   "stands out," but it puts the visual language in tension with the product's
+   own argument about calm.
+
+Do not split the difference silently. Pick one, write it into `design.md`, then
+build.
+
+**Candidate work, once the stance is settled:**
+
+- Type: the interface is one weight and near one size. A real display scale for
+  timeline moments would carry most of the perceived quality.
+- The promotion card is the product's emotional peak and currently looks like
+  every other row. It is the strongest candidate for an expressive treatment.
+- Avatars are initials in squares. A generated identity mark per agent would do
+  more for distinctiveness than any other single change.
+- Empty and first-run states are plain sentences — the highest-leverage place
+  for personality, and currently the blandest.
+- The guided tour's dimming is functional but flat; a real spotlight/scrim
+  treatment would sell it in a screen recording.
+- Iconography is three hand-rolled SVGs. Inconsistent by default.
+
+**Constraint that survives either option:** contrast and state clarity are not
+negotiable. `UX.md` requires color never be the only signal, and the light theme
+must keep AA. Polish must not cost legibility.
 
 ### T-6 notes (pre-work, not yet assigned)
 
