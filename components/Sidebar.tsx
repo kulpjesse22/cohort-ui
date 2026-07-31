@@ -40,7 +40,7 @@ export function Sidebar({
           <span className="truncate">Project timeline</span>
         </Link>
 
-        <div className="px-2 pb-1.5 text-[11px] font-semibold uppercase tracking-wider text-sidebar-ink-3">
+        <div className="px-2 pb-1.5 text-[10px] font-medium uppercase tracking-[0.06em] text-sidebar-ink-3">
           Channels
         </div>
         <nav className="mb-4 space-y-0.5">
@@ -63,7 +63,7 @@ export function Sidebar({
           })}
         </nav>
 
-        <div className="px-2 pb-1.5 text-[11px] font-semibold uppercase tracking-wider text-sidebar-ink-3">
+        <div className="px-2 pb-1.5 text-[10px] font-medium uppercase tracking-[0.06em] text-sidebar-ink-3">
           Registry
         </div>
         <ul className="space-y-1">

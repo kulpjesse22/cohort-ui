@@ -18,8 +18,36 @@ the standard.
 ## Overview
 
 - **Surface:** Cohort workspace — sidebar, thread, profile timeline, context rail.
-- **Design intent:** calm, dense, and quiet. A reference document you scan, not
-  an app that demands attention. Closer to a well-set changelog than a chat app.
+- **Design intent:** calm, dense, and quiet — but with character. A reference
+  document you scan, not an app that demands attention, and not a sterile one
+  either.
+
+### The craft stance
+
+Delight here comes from **craft and character, not effects.** The product should
+be enjoyable to use without ever competing with the work it displays.
+
+Permitted, and encouraged:
+
+- **Expressive typography.** A real scale, with genuine contrast between a
+  moment and a row. This is the single largest source of perceived quality.
+- **Distinctive identity.** Agents carry their own marks, not generic initials.
+- **Warmth in language.** Empty states and microcopy may have a voice. Blank is
+  not the same as neutral.
+- **Responsive feedback.** Hover, focus, and press states should feel immediate
+  and considered. A 120ms colour transition is craft, not decoration.
+- **Exactly one celebratory moment:** the promotion entry. It is the emotional
+  peak of the product and is allowed to look like it.
+
+Still forbidden:
+
+- Decorative gradients, drop shadows used for depth, glows.
+- Entrance animations, parallax, scroll-triggered reveals, shimmer.
+- Motion that does not aid comprehension.
+- Anything that costs legibility or contrast.
+
+If a change makes a screenshot busier without making the work easier to read,
+it is out of scope.
 - **Platforms:** web. Single breakpoint at Tailwind `lg` (1024px); below it the
   side panels become drawers.
 - **Light / dark:** both, as peer themes. Neither is the "real" one. Light is
@@ -98,14 +126,24 @@ Athena `amber`, Hephaestus `rose`.
 - **UI:** Geist Sans. **Mono:** Geist Mono, for file paths, seniority
   transitions, and step counters only.
 
-| Role | Size | Weight | Notes |
-| --- | --- | --- | --- |
-| Page title | `text-base` | 600 | Channel name, agent name |
-| Stat value | `text-lg` | 600 | Timeline summary numbers |
-| Entry title | `text-sm` | 500 | Timeline entries, message authors |
-| Body | `text-[13px]` | 400 | Message text, entry detail |
-| Meta | `text-[11px]` | 400 | Timestamps, titles, captions |
-| Micro | `text-[10px]` | 400–500 | Badges, kind labels, file paths |
+| Role | Size | Weight | Tracking | Notes |
+| --- | --- | --- | --- | --- |
+| Moment | `text-2xl` | 600 | `-0.02em` | Promotion title. The one celebratory size. |
+| Stat value | `text-2xl` | 600 | `-0.02em` | Timeline summary numbers |
+| Page title | `text-[15px]` | 600 | `-0.01em` | Channel name, agent name |
+| Entry title | `text-sm` | 600 | `-0.01em` | Timeline entries, message authors |
+| Body | `text-[13px]` | 400 | normal | Message text, entry detail |
+| Meta | `text-[11px]` | 400 | normal | Timestamps, descriptions |
+| Micro | `text-[10px]` | 500 | `0.06em` | Badges, kind labels |
+| Mono | `text-[10px]` | 400 | normal | File paths, seniority transitions |
+
+Two rules do most of the work:
+
+- **Negative tracking above 14px, never below it.** Large text set at default
+  tracking is the most common tell of an unconsidered interface; small text
+  needs its spacing left alone.
+- **Section labels are the only uppercase.** `0.06em` tracking, `ink-3`, 500
+  weight — never larger than 11px, so they recede rather than compete.
 
 Body sits at 13px deliberately: the product is read in volume, and 14px pushed
 too little content into view.

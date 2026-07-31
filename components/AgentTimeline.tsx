@@ -43,24 +43,73 @@ function formatDate(iso: string): string {
 function Stat({ value, label }: { value: string; label: string }) {
   return (
     <div className="rounded-lg border border-line bg-raised px-3 py-2.5">
-      <div className="text-lg font-semibold text-ink">{value}</div>
-      <div className="text-[11px] text-ink-3">{label}</div>
+      <div className="text-2xl font-semibold tracking-[-0.02em] text-ink">{value}</div>
+      <div className="mt-0.5 text-[11px] text-ink-3">{label}</div>
     </div>
   );
 }
 
+/**
+ * The one celebratory moment the design guide permits. Everything else on the
+ * timeline is a row; this is a card, and it is allowed to look like an event.
+ * Craft rather than effects: a larger type step, the seniority transition set
+ * as a proper visual, and a laurel mark. No animation, no gradient, no glow.
+ */
 function PromotionEntry({ entry }: { entry: TimelineEntry }) {
   return (
-    <div className="rounded-lg border border-approved-line bg-approved-bg px-4 py-3">
-      <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-        <span className="text-sm font-semibold text-approved">{entry.title}</span>
-        <span className="font-mono text-[11px] text-approved opacity-80">
-          {entry.from} → {entry.to}
+    <div className="rounded-xl border border-approved-line bg-approved-bg px-4 py-4">
+      <div className="flex items-start gap-3">
+        <span className="mt-0.5 shrink-0 text-approved" aria-hidden="true">
+          <LaurelIcon />
         </span>
-        <span className="ml-auto text-[11px] text-ink-3">{formatDate(entry.date)}</span>
+
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <h3 className="text-2xl font-semibold leading-tight tracking-[-0.02em] text-approved">
+              {entry.title}
+            </h3>
+            <span className="ml-auto shrink-0 text-[11px] text-ink-3">
+              {formatDate(entry.date)}
+            </span>
+          </div>
+
+          {entry.from && entry.to && (
+            <div className="mt-2 flex items-center gap-2 font-mono text-[11px]">
+              <span className="rounded border border-line-strong px-1.5 py-0.5 text-ink-3">
+                {entry.from}
+              </span>
+              <span className="text-approved" aria-hidden="true">
+                →
+              </span>
+              <span className="rounded border border-approved-line bg-approved-bg px-1.5 py-0.5 font-medium text-approved">
+                {entry.to}
+              </span>
+            </div>
+          )}
+
+          <p className="mt-2.5 text-[13px] leading-relaxed text-ink-2">{entry.detail}</p>
+        </div>
       </div>
-      <p className="mt-1 text-[13px] leading-relaxed text-ink-2">{entry.detail}</p>
     </div>
+  );
+}
+
+function LaurelIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <path
+        d="M10 3.2c-1.9 1.5-2.8 3.6-2.8 5.8 0 2.2.9 4.3 2.8 5.8 1.9-1.5 2.8-3.6 2.8-5.8 0-2.2-.9-4.3-2.8-5.8Z"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M4.8 7.4c0 3.3 2.2 5.7 5.2 6.6M15.2 7.4c0 3.3-2.2 5.7-5.2 6.6M10 14v2.6"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+      />
+    </svg>
   );
 }
 
@@ -74,7 +123,7 @@ function StandardEntry({ entry }: { entry: TimelineEntry }) {
         <span className="text-[10px] uppercase tracking-wider text-ink-4">
           {KIND_LABEL[entry.kind]}
         </span>
-        <span className="text-sm font-medium text-ink">{entry.title}</span>
+        <span className="text-sm font-semibold tracking-[-0.01em] text-ink">{entry.title}</span>
         {entry.verdict && (
           <span
             className={`rounded border px-1.5 py-0.5 text-[10px] font-medium ${VERDICT_STYLE[entry.verdict]}`}
@@ -145,7 +194,7 @@ export function AgentTimeline({
           <Stat value={String(summary.lessons)} label="Lessons logged" />
         </div>
 
-        <h2 className="mb-3 text-[11px] font-semibold uppercase tracking-wider text-ink-3">
+        <h2 className="mb-3 text-[10px] font-medium uppercase tracking-[0.06em] text-ink-3">
           History
         </h2>
 

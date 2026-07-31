@@ -133,7 +133,7 @@ export function TeamTimeline() {
         </div>
 
         <div className="mb-3 flex items-baseline justify-between">
-          <h2 className="text-[11px] font-semibold uppercase tracking-wider text-ink-3">
+          <h2 className="text-[10px] font-medium uppercase tracking-[0.06em] text-ink-3">
             Project history
           </h2>
           <span className="text-[11px] text-ink-4">
