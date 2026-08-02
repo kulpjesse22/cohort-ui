@@ -186,6 +186,33 @@
     color-mix(in srgb, var(--hue) calc(var(--agent-ring) * 100%), transparent);
 }
 
+/* --- Mobile / iOS ----------------------------------------------------------
+   Safari zooms the page when a focused input's text is under 16px. The fix is
+   the font size itself, not a viewport lock, because disabling zoom removes a
+   real accessibility affordance. Desktop keeps the denser 14px. */
+@media (max-width: 640px) {
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
+
+/* Keep the composer and drawers clear of the home indicator and notch. */
+.safe-b {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+.safe-x {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Momentum scrolling inside the panes, and no rubber-banding of the page. */
+html,
+body {
+  overscroll-behavior: none;
+}
+
 body {
   background: var(--canvas);
   color: var(--ink);

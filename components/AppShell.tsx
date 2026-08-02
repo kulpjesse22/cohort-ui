@@ -78,7 +78,7 @@ export function AppShell({
           <button
             aria-label="Open channels"
             onClick={() => setSidebarOpen(true)}
-            className="shrink-0 rounded-md p-1.5 text-ink-2 hover:bg-hover hover:text-ink lg:hidden"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-ink-2 transition-colors hover:bg-hover hover:text-ink lg:hidden"
           >
             <MenuIcon />
           </button>
@@ -88,20 +88,22 @@ export function AppShell({
           <button
             onClick={() => setSearchOpen(true)}
             aria-label="Search"
-            className="hidden items-center gap-2 rounded-md border border-line-strong px-2.5 py-1.5 text-[12px] text-ink-3 transition-colors hover:bg-hover hover:text-ink-2 sm:flex"
+            className="flex h-10 w-10 items-center justify-center gap-2 rounded-md text-[12px] text-ink-3 transition-colors hover:bg-hover hover:text-ink-2 sm:h-auto sm:w-auto sm:border sm:border-line-strong sm:px-2.5 sm:py-1.5"
           >
             <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
               <circle cx="7.2" cy="7.2" r="4.6" stroke="currentColor" strokeWidth="1.4" />
               <path d="m10.7 10.7 2.8 2.8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
             </svg>
-            Search
-            <kbd className="rounded border border-line px-1 text-[10px]">⌘K</kbd>
+            <span className="hidden sm:inline">Search</span>
+            <kbd className="hidden rounded border border-line px-1 text-[10px] sm:inline">
+              ⌘K
+            </kbd>
           </button>
 
           <button
             aria-label="Open pinned context"
             onClick={() => setRailOpen(true)}
-            className="shrink-0 rounded-md p-1.5 text-ink-2 hover:bg-hover hover:text-ink lg:hidden"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-ink-2 transition-colors hover:bg-hover hover:text-ink lg:hidden"
           >
             <InfoIcon />
           </button>

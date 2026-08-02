@@ -62,7 +62,7 @@ export function AgentProfile({ agentId }: { agentId: AgentId }) {
         </div>
         <p className="truncate text-[11px] text-ink-3">{title}</p>
       </div>
-      <div className="hidden shrink-0 items-center gap-1.5 sm:flex">
+      <div className="flex shrink-0 items-center gap-1.5">
         <button
           onClick={() => setEditing((v) => !v)}
           className="rounded-md border border-line-strong px-2.5 py-1.5 text-xs text-ink-2 transition-colors hover:bg-hover hover:text-ink"
@@ -71,7 +71,7 @@ export function AgentProfile({ agentId }: { agentId: AgentId }) {
         </button>
         <Link
           href={`/c/${agentId}`}
-          className="rounded-md border border-line-strong px-2.5 py-1.5 text-xs text-ink-2 transition-colors hover:bg-hover hover:text-ink"
+          className="hidden rounded-md border border-line-strong px-2.5 py-1.5 text-xs text-ink-2 transition-colors hover:bg-hover hover:text-ink sm:block"
         >
           Message #{agentId}
         </Link>

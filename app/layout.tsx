@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Lato, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -24,6 +24,21 @@ const mono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Cohort — HAI-Harness",
   description: "A Slack-style workspace for the HAI-Harness agent roster.",
+  appleWebApp: { capable: true, statusBarStyle: "default", title: "Cohort" },
+};
+
+// viewportFit=cover lets the layout reach under the notch and home indicator,
+// which the .safe-* classes then pad back. userScalable stays on — zoom is an
+// accessibility affordance, and the 16px input rule already prevents the
+// unwanted auto-zoom on focus.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fdfdfc" },
+    { media: "(prefers-color-scheme: dark)", color: "#1a1a1c" },
+  ],
 };
 
 // Runs before first paint, so the stored choice is applied without a flash of

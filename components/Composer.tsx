@@ -118,7 +118,7 @@ export function Composer({
   }
 
   return (
-    <div className="px-4 pb-4 pt-1 lg:px-6">
+    <div className="safe-b safe-x px-4 pt-1 lg:px-6 lg:pb-4">
       <div className="relative">
         {matches.length > 0 && (
           <div className="absolute bottom-full left-0 z-20 mb-2 w-64 overflow-hidden rounded-lg border border-line-strong bg-canvas py-1 shadow-2xl">
@@ -228,7 +228,7 @@ function FormatButton({
       onClick={onClick}
       title={label}
       aria-label={label}
-      className="flex h-7 w-7 items-center justify-center rounded text-ink-3 transition-colors hover:bg-hover hover:text-ink"
+      className="flex h-9 w-9 items-center justify-center rounded text-ink-3 transition-colors hover:bg-hover hover:text-ink sm:h-7 sm:w-7"
     >
       {children}
     </button>
