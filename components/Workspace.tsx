@@ -15,6 +15,7 @@ export function Workspace({ channelId }: { channelId: string }) {
   const [contextDocs, setContextDocs] = useState<ContextDoc[]>([]);
   const [loadingMessages, setLoadingMessages] = useState(true);
   const [loadingContext, setLoadingContext] = useState(true);
+  const [typing, setTyping] = useState<string | null>(null);
 
   const channel = getChannel(channelId)!;
   const isAgentChannel = channel.kind === "agent";
@@ -51,8 +52,19 @@ export function Workspace({ channelId }: { channelId: string }) {
       const body = await res.json().catch(() => null);
       throw new Error(body?.error ?? "Failed to send message");
     }
-    const { message } = await res.json();
+    const { message, reply } = await res.json();
     setMessages((prev) => [...prev, message]);
+
+    // Hold the reply behind a short typing state. The answer is already
+    // computed; the pause is so a reply does not appear in the same frame as
+    // the message it answers, which reads as canned.
+    if (reply) {
+      setTyping(reply.authorId);
+      setTimeout(() => {
+        setTyping(null);
+        setMessages((prev) => [...prev, reply]);
+      }, 700);
+    }
   }
 
   const header = (
@@ -82,7 +94,7 @@ export function Workspace({ channelId }: { channelId: string }) {
       contextDocs={contextDocs}
       loadingContext={loadingContext}
     >
-      <MessageThread messages={messages} loading={loadingMessages} />
+      <MessageThread messages={messages} loading={loadingMessages} typing={typing} />
       <Composer channelName={channel.name} onSend={handleSend} />
     </AppShell>
   );

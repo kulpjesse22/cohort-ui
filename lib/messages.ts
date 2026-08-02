@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
-import type { AgentId } from "./agents";
+import { AGENTS, type AgentId } from "./agents";
 
 export interface Message {
   id: string;
@@ -157,6 +157,31 @@ export async function appendMessage(
     authorName: "You",
     text,
     ts: new Date().toISOString(),
+  };
+  persisted.push(message);
+  await fs.writeFile(filePathFor(channelId), JSON.stringify(persisted, null, 2));
+  return message;
+}
+
+/**
+ * Persists an agent's reply. Timestamped a second later so it always sorts
+ * after the message it answers, even within the same clock second.
+ */
+export async function appendAgentReply(
+  channelId: string,
+  agentId: AgentId,
+  text: string,
+  afterTs: string
+): Promise<Message> {
+  await ensureDir();
+  const persisted = await readPersisted(channelId);
+  const message: Message = {
+    id: randomUUID(),
+    channelId,
+    authorId: agentId,
+    authorName: AGENTS[agentId].name,
+    text,
+    ts: new Date(new Date(afterTs).getTime() + 1000).toISOString(),
   };
   persisted.push(message);
   await fs.writeFile(filePathFor(channelId), JSON.stringify(persisted, null, 2));

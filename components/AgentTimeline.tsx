@@ -1,4 +1,5 @@
 import { AGENTS } from "@/lib/agents";
+import { ArtifactLink } from "./ArtifactLink";
 import type { TimelineEntry, TimelineSummary, Verdict } from "@/lib/timeline";
 
 /** Callback ref: centers a newly-highlighted entry without an effect. */
@@ -153,7 +154,9 @@ function StandardEntry({ entry }: { entry: TimelineEntry }) {
       )}
 
       {entry.artifact && (
-        <div className="mt-1.5 font-mono text-[10px] text-ink-4">{entry.artifact}</div>
+        <div className="mt-1.5">
+          <ArtifactLink path={entry.artifact} />
+        </div>
       )}
     </div>
   );

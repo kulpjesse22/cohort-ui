@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import type { Message } from "@/lib/messages";
+import { AGENTS, type AgentId } from "@/lib/agents";
 import { Avatar } from "./Avatar";
 
 function formatTime(iso: string): string {
@@ -58,18 +59,45 @@ function DayDivider({ label }: { label: string }) {
   );
 }
 
+function TypingRow({ agentId }: { agentId: AgentId }) {
+  return (
+    <div className="flex gap-3 px-4 py-1.5 lg:px-6">
+      <div className="w-9 shrink-0">
+        <Avatar agentId={agentId} />
+      </div>
+      <div className="flex min-w-0 flex-1 items-center gap-2">
+        <span className="text-[14px] font-semibold tracking-[-0.01em] text-ink">
+          {AGENTS[agentId].name}
+        </span>
+        <span className="flex items-end gap-[3px]" aria-label="typing">
+          {[0, 1, 2].map((i) => (
+            <span
+              key={i}
+              className="h-1.5 w-1.5 animate-bounce rounded-full bg-ink-4"
+              style={{ animationDelay: `${i * 140}ms`, animationDuration: "900ms" }}
+            />
+          ))}
+        </span>
+      </div>
+    </div>
+  );
+}
+
 export function MessageThread({
   messages,
   loading,
+  typing,
 }: {
   messages: Message[];
   loading: boolean;
+  /** Agent id currently composing a reply, if any. */
+  typing?: string | null;
 }) {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!loading) bottomRef.current?.scrollIntoView({ block: "end" });
-  }, [messages, loading]);
+  }, [messages, loading, typing]);
 
   if (loading) return <ThreadSkeleton />;
 
@@ -141,6 +169,9 @@ export function MessageThread({
           </div>
         );
       })}
+      {typing && AGENTS[typing as AgentId] && (
+        <TypingRow agentId={typing as AgentId} />
+      )}
       <div ref={bottomRef} />
     </div>
   );

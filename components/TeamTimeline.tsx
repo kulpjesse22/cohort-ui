@@ -6,6 +6,7 @@ import { getParticipant, isAgent, type ActorId } from "@/lib/agents";
 import { getEntriesByDate, getActiveActorIds, type TimelineEntry } from "@/lib/timeline";
 import { KIND_DOT, KIND_LABEL, VERDICT_STYLE } from "./AgentTimeline";
 import { Avatar } from "./Avatar";
+import { ArtifactLink } from "./ArtifactLink";
 
 function formatDate(iso: string): string {
   return new Date(`${iso}T12:00:00Z`).toLocaleDateString(undefined, {
@@ -68,7 +69,9 @@ function Entry({ entry }: { entry: TimelineEntry }) {
         )}
 
         {entry.artifact && (
-          <div className="mt-1 font-mono text-[10px] text-ink-4">{entry.artifact}</div>
+          <div className="mt-1">
+            <ArtifactLink path={entry.artifact} />
+          </div>
         )}
       </div>
     </div>
@@ -88,12 +91,19 @@ export function TeamTimeline() {
   return (
     <div className="flex-1 overflow-y-auto px-4 py-5 lg:px-6">
       <div className="mx-auto max-w-3xl">
-        <div className="mb-5">
-          <p className="text-[14px] leading-relaxed text-ink-2">
+        <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
+          <p className="max-w-xl text-[14px] leading-relaxed text-ink-2">
             Everything that happened on this project, in one stream — human
             decisions and agent work side by side. Filter by participant, or open
             anyone&apos;s profile to see their record on its own.
           </p>
+          <Link
+            href="/demo"
+            className="flex shrink-0 items-center gap-1.5 rounded-md border border-line-strong px-2.5 py-1.5 text-xs text-ink-2 transition-colors hover:bg-hover hover:text-ink"
+          >
+            <span aria-hidden="true">▶</span>
+            New here? Take the tour
+          </Link>
         </div>
 
         <div className="mb-6 flex flex-wrap gap-1.5">
