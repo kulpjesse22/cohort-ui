@@ -24,7 +24,7 @@ export function Sidebar({
           className="h-auto w-24"
         />
         <div className="mt-0.5 text-[11px] text-sidebar-ink-3">
-          A shared workspace for people and agents.
+          Where people and agents work under the same rules.
         </div>
       </div>
 
