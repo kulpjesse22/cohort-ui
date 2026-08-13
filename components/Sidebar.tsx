@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { AGENT_ORDER, AGENTS, CHANNELS } from "@/lib/agents";
 import { Avatar } from "./Avatar";
 import { ThemeToggle } from "./ThemeToggle";
@@ -13,23 +14,39 @@ export function Sidebar({
 }) {
   return (
     <aside className="sidebar-scope flex h-full w-64 shrink-0 flex-col border-r border-sidebar-line bg-sidebar text-sm shadow-2xl lg:shadow-none">
-      <div className="flex items-center gap-2 border-b border-sidebar-line px-4 py-4">
-        <div className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
-        <div>
-          <div className="font-semibold text-sidebar-ink">Cohort</div>
-          <div className="text-xs text-sidebar-ink-3">HAI-Harness workspace</div>
+      <div className="border-b border-sidebar-line px-4 py-3">
+        <Image
+          src="/cohort-wordmark-transparent.png"
+          alt="Cohort"
+          width={1550}
+          height={440}
+          priority
+          className="h-auto w-24"
+        />
+        <div className="mt-0.5 text-[11px] text-sidebar-ink-3">
+          A shared workspace for people and agents.
         </div>
       </div>
 
       <div className="flex-1 overflow-y-auto px-2 py-3">
         <Link
-          href="/"
-          className="mb-4 flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sidebar-ink-2 transition-colors hover:bg-sidebar-hover hover:text-sidebar-ink"
+          href="/timeline"
+          className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sidebar-ink-2 transition-colors hover:bg-sidebar-hover hover:text-sidebar-ink"
         >
           <span aria-hidden="true" className="text-sidebar-ink-3">
             ◈
           </span>
           <span className="truncate">Project timeline</span>
+        </Link>
+
+        <Link
+          href="/memory"
+          className="mb-4 flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sidebar-ink-2 transition-colors hover:bg-sidebar-hover hover:text-sidebar-ink"
+        >
+          <span aria-hidden="true" className="text-sidebar-ink-3">
+            ◆
+          </span>
+          <span className="truncate">Team memory</span>
         </Link>
 
         <div className="px-2 pb-1.5 text-[10px] font-medium uppercase tracking-[0.06em] text-sidebar-ink-3">
@@ -95,9 +112,6 @@ export function Sidebar({
           Guided tour
         </Link>
         <ThemeToggle />
-        <p className="text-[11px] text-sidebar-ink-3">
-          Seniority is a placeholder label, not yet derived from anything.
-        </p>
       </div>
     </aside>
   );

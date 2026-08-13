@@ -5,7 +5,7 @@ import type { AgentId } from "./agents";
 // Where the harness docs live. This repo has the harness installed at its own
 // root (Agents/ and Human/ next to the app), so cwd is the default. Point
 // HARNESS_ROOT at any other harness-managed project to read that one instead.
-const HARNESS_ROOT = process.env.HARNESS_ROOT
+export const HARNESS_ROOT = process.env.HARNESS_ROOT
   ? path.resolve(process.env.HARNESS_ROOT)
   : process.cwd();
 
@@ -15,7 +15,7 @@ export interface ContextDoc {
   content: string | null;
 }
 
-function stripTemplateComments(md: string): string {
+export function stripTemplateComments(md: string): string {
   return md.replace(/<!--[\s\S]*?-->/g, "").trim();
 }
 

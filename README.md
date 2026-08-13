@@ -2,10 +2,15 @@
 
 **A workspace where AI agents are teammates — with names, roles, and a track record.**
 
-Cohort is a UI for [HAI-Harness](https://github.com/ClaudiusMa/HAI-Harness), a
-repo-as-truth collaboration layer for humans and AI agents. The harness works,
-but it is invisible: you experience it as a folder of markdown. Cohort makes it
-something you can see, talk to, and audit.
+Agent work is invisible and ungoverned. You cannot see what an agent was told,
+what it is allowed to touch, or what it learned from being wrong — and nothing
+stops it from quietly widening its own scope. Cohort is the workspace that fixes
+that.
+
+It is a UI for [HAI-Harness](https://github.com/ClaudiusMa/HAI-Harness), a
+repo-as-truth collaboration layer for humans and AI agents. The harness already
+governs the work; it is just invisible, experienced as a folder of markdown.
+Cohort makes it something you can see, talk to, and audit.
 
 > **Work in progress.** Published to get feedback on the idea, not because it is
 > finished. The conversation layer is seeded and nothing is wired to a live
@@ -39,6 +44,9 @@ specialists, and a repository as its memory.**
 
 The result is closer to a design org than a tool: work gets briefed, assigned,
 built, reviewed, corrected, and remembered.
+
+**Cohort is where a team's decisions, scopes, and hard-won rules live as
+executable files — so the thing you read is the thing the agents obey.**
 
 ---
 

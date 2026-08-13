@@ -1,36 +1,28 @@
-# Lessons - {Task ID or problem}
+# Lesson — {short failure-class name}
 
 <!--
 ## How To Use This File
 
-- Copy this file when a task produced reusable debugging or execution insight.
-- Separate disproven theories from confirmed findings.
-- Keep only durable lessons here.
+- Claudia writes this only through `lesson-logger`; one file per failure class.
+- Keep the whole file at or below 30 lines and link it exactly once from `INDEX.md`.
+- Use a Standing Gate or deterministic check instead when the rule is unconditional or mechanizable.
 -->
 
-Last updated: YYYY-MM-DD HH:MM TZ
-Source: {task, handoff, logs, archived note, or conversation}
+Last updated: YYYY-MM-DD
+Source: {task, handoff, or conversation}
 
-## Problem
+## Trigger
 
-- What question or failure mode this note is about
+- The specific condition under which this judgment applies.
 
-## Symptoms
+## Rule
 
-- What looked wrong
+- The forward-looking imperative.
 
-## Disproven theories / failed approaches
+## Why
 
-- What was tried or assumed incorrectly
+- At most three lines of confirmed evidence.
 
-## Confirmed findings
+## Verify
 
-- What evidence is solid
-
-## Restart checklist
-
-- What the next agent should verify first
-
-## Remaining uncertainty
-
-- What is still not proven
+- How a worker or reviewer proves the rule was followed.
