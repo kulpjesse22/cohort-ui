@@ -1,6 +1,6 @@
 # Cohort
 
-**A workspace where AI agents are teammates — with names, roles, and a track record.**
+**What it looks like when agent work is governed, not just visible.**
 
 Agent work is ungoverned. You cannot see what an agent was told, what it is
 allowed to touch, or what it learned from being wrong — and, more to the point,
@@ -15,12 +15,12 @@ never blocks anything. Cohort is the workspace where the rules bite.
 It is a UI for [HAI-Harness](https://github.com/ClaudiusMa/HAI-Harness), a
 repo-as-truth collaboration layer for humans and AI agents. The harness already
 governs the work; it is just invisible, experienced as a folder of markdown.
-Cohort makes it something you can see, talk to, and audit.
+Cohort makes the rules — and the moments they bite — something you can watch
+happen.
 
-> **This is an argument, not a product.** It is a working demo built to make a
-> way of thinking about agents concrete enough to disagree with — not something
-> to adopt. Some of it is real and reads off disk; some is staged to show a
-> shape. Both are labelled, here and in the app. See
+> **Some of this is real, some is staged.** The context rail and team memory
+> read this repository off disk. The conversations and the growth arc are
+> written to show a shape. Both are labelled, here and in the app. See
 > [What's real and what's mocked](#whats-real-and-whats-mocked).
 
 ---
@@ -293,7 +293,7 @@ Genuinely open questions, and the reason this is public:
 1. **Is the growth arc convincing, or does it read as gamification?** Seniority
    badges were flagged in review for exactly this risk.
 2. **Should the composer talk to a live agent, or is observation the point?**
-   This changes what the product is.
+   This is the fork between a control surface and an observation deck.
 3. **What evidence should actually earn a promotion?**
 4. **Does splitting `design.md` and `UX.md` match how you'd organize it?**
 
