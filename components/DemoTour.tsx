@@ -11,6 +11,7 @@ import { Sidebar } from "./Sidebar";
 import { MessageThread } from "./MessageThread";
 import { ContextRail } from "./ContextRail";
 import { AgentTimeline } from "./AgentTimeline";
+import { LessonLadder } from "./LessonLadder";
 import { Avatar } from "./Avatar";
 
 function dim(region: Spotlight, active: Spotlight): string {
@@ -101,8 +102,9 @@ export function DemoTour() {
   }, [go]);
 
   const isProfile = step.view.kind === "profile";
+  const isMemory = step.view.kind === "memory";
   const agent = isProfile ? AGENTS[targetId as AgentId] : null;
-  const channel = !isProfile ? getChannel(targetId) : null;
+  const channel = step.view.kind === "channel" ? getChannel(targetId) : null;
 
   return (
     <div className="relative flex h-screen w-full overflow-hidden bg-canvas">
@@ -134,8 +136,14 @@ export function DemoTour() {
             </>
           ) : (
             <div className="min-w-0 flex-1">
-              <h1 className="truncate font-semibold text-ink">{channel?.name}</h1>
-              <p className="truncate text-xs text-ink-3">{channel?.description}</p>
+              <h1 className="truncate font-semibold text-ink">
+                {isMemory ? "Team memory" : channel?.name}
+              </h1>
+              <p className="truncate text-xs text-ink-3">
+                {isMemory
+                  ? "What the team learned the hard way, and what it does about it."
+                  : channel?.description}
+              </p>
             </div>
           )}
         </header>
@@ -148,6 +156,8 @@ export function DemoTour() {
             dimStats={step.spotlight === "main" && Boolean(step.focusEntryId)}
             dimEntries={step.spotlight === "stats"}
           />
+        ) : isMemory ? (
+          <LessonLadder />
         ) : (
           <MessageThread messages={messages} loading={loadingMessages} />
         )}
@@ -220,16 +230,16 @@ function CaptionBar({
               <span
                 key={i}
                 className={`h-0.5 flex-1 rounded-full transition-colors duration-300 ${
-                  i <= index ? "bg-ink-3" : "bg-line"
+                  i <= index ? "bg-brand" : "bg-line"
                 }`}
               />
             ))}
           </div>
           <Link
-            href="/c/claudia"
+            href="/start"
             className="shrink-0 text-[11px] text-ink-3 hover:text-ink"
           >
-            Exit
+            Start with Claudia
           </Link>
         </div>
 

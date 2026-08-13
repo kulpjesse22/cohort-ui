@@ -6,8 +6,15 @@ export type Spotlight = "sidebar" | "main" | "rail" | "stats" | null;
 export interface DemoStep {
   title: string;
   body: string;
-  /** A channel thread, or an agent's profile timeline. */
-  view: { kind: "channel"; id: string } | { kind: "profile"; id: AgentId };
+  /**
+   * A channel thread, an agent's profile timeline, or the lesson ladder. The
+   * memory view still carries an id so the context rail has something to pin;
+   * lessons are Claudia-owned, so it pins hers.
+   */
+  view:
+    | { kind: "channel"; id: string }
+    | { kind: "profile"; id: AgentId }
+    | { kind: "memory"; id: "claudia" };
   spotlight: Spotlight;
   /** Timeline entry to scroll to and ring, on profile views. */
   focusEntryId?: string;
@@ -109,5 +116,16 @@ export const DEMO_STEPS: DemoStep[] = [
     view: { kind: "profile", id: "julius" },
     spotlight: "stats",
     holdMs: 11000,
+  },
+  // Name the seam. Everything before this beat is seeded illustration, and a
+  // viewer who discovers that on their own discounts the parts that are real
+  // too. Saying it here costs one sentence and buys the live panel its
+  // credibility — then the ladder closes on the claim worth defending.
+  {
+    title: "That arc was staged. This is live.",
+    body: "Everything you just watched is seeded — a plausible history, written to show the shape. This panel is not: it's read off disk right now. Rules this team learned the hard way, under caps that force each one to be promoted, mechanized, or dropped. Memory that gets smaller.",
+    view: { kind: "memory", id: "claudia" },
+    spotlight: "main",
+    holdMs: 15000,
   },
 ];
