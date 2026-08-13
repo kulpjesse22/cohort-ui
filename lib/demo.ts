@@ -16,13 +16,20 @@ export interface DemoStep {
 }
 
 export const DEMO_STEPS: DemoStep[] = [
-  // Open on the problem, not the answer. Without this beat the tour is nine
-  // steps of solution to a question the viewer was never asked — and the whole
-  // workspace stays lit, because the point is what ISN'T on the screen anywhere
-  // else.
+  // Open on the problem, not the answer. Without this beat the tour is a
+  // solution to a question the viewer was never asked.
+  //
+  // The three absences are deliberately the tour's own table of contents, in
+  // negative: doesn't ask -> Claudia's clarifying question; can't see what it
+  // may touch -> the assigned task file; nothing changes when it's wrong -> the
+  // correction becoming memory. You can't screenshot an absence, so each one
+  // has to be redeemed by a later beat that shows the artifact instead.
+  //
+  // The whole workspace stays lit here. Step two dims to the roster, so the
+  // reveal has something to reveal from.
   {
-    title: "You can't see what your agent was told",
-    body: "Or what it was allowed to touch, or what it learned from being wrong. Giving an agent more responsibility is a judgment call — and most agent work leaves you no evidence to make it with.",
+    title: "Most agents just start",
+    body: "They don't ask what you meant. You can't see what they think they're allowed to touch. And when one gets something wrong, nothing about it changes. Giving an agent more to do is a judgment call — with nothing to base it on.",
     view: { kind: "channel", id: "claudia" },
     spotlight: null,
     holdMs: 10000,
@@ -36,7 +43,7 @@ export const DEMO_STEPS: DemoStep[] = [
   },
   {
     title: "You brief the planner like a colleague",
-    body: "Work starts as a conversation in a scoped channel. Claudia turns the request into an assigned queue — explicit order, dependencies, and stop conditions — and refuses to assign ambiguous work.",
+    body: "Work starts as a conversation in a scoped channel. Claudia turns the request into an assigned queue — explicit order, dependencies, stop conditions. When something's missing that only you can decide, she asks instead of guessing.",
     view: { kind: "channel", id: "claudia" },
     spotlight: "main",
     holdMs: 11000,
