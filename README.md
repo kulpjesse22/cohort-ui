@@ -4,8 +4,9 @@
 
 Agent work is invisible and ungoverned. You cannot see what an agent was told,
 what it is allowed to touch, or what it learned from being wrong — and nothing
-stops it from quietly widening its own scope. Cohort is the workspace that fixes
-that.
+stops it from quietly widening its own scope. That is what stands between a
+useful assistant and a teammate you can hand real work to: **you cannot expand a
+role you cannot audit.** Cohort is the workspace that fixes that.
 
 It is a UI for [HAI-Harness](https://github.com/ClaudiusMa/HAI-Harness), a
 repo-as-truth collaboration layer for humans and AI agents. The harness already

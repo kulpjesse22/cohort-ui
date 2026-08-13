@@ -16,6 +16,17 @@ export interface DemoStep {
 }
 
 export const DEMO_STEPS: DemoStep[] = [
+  // Open on the problem, not the answer. Without this beat the tour is nine
+  // steps of solution to a question the viewer was never asked — and the whole
+  // workspace stays lit, because the point is what ISN'T on the screen anywhere
+  // else.
+  {
+    title: "You can't see what your agent was told",
+    body: "Or what it was allowed to touch, or what it learned from being wrong. Giving an agent more responsibility is a judgment call — and most agent work leaves you no evidence to make it with.",
+    view: { kind: "channel", id: "claudia" },
+    spotlight: null,
+    holdMs: 10000,
+  },
   {
     title: "A team, not a tool",
     body: "Five agents, each with a defined role and a scope that doesn't move. Not one generalist you re-prompt until the session degrades — a planner, two builders, and two reviewers.",
