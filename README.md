@@ -59,6 +59,33 @@ executable files — so the thing you read is the thing the agents obey.**
 
 ---
 
+## What this is arguing with
+
+None of this is a lonely observation. Linear shipped
+[Loops](https://linear.app/changelog/2026-07-20-introducing-loops) in July 2026:
+recurring workflows their agent runs on a schedule or an event, with shared
+visibility into how each one is configured and what happened during every run.
+It is a good product, and it settles the premise — teams do want agents doing
+real work, and they do want to see what happened.
+
+Loops solve the **trigger** half: getting an agent to start work without a human
+asking. This project is about the other half.
+
+- Their oversight model is **audit** — you inspect a run after it finishes. The
+  model here is **refusal**: scope is declared before work starts, and a planner
+  returns ambiguity to the human instead of passing a guess to a builder.
+- Their memory is **run history** — context that accumulates. The memory here is
+  a **ladder** that shrinks: a repeated failure is promoted into a rule, and a
+  rule that can be mechanized becomes a check and stops being memory at all.
+- Their autonomy is **configured** — a human writes the instructions once, up
+  front. The argument here is that it should be **earned**: an agent gets a
+  wider scope because its record supports one.
+
+That last line is the whole point, and it is why this exists as something you
+can open rather than a post you can skim.
+
+---
+
 ## What you can look at
 
 ### Project timeline — the home page
