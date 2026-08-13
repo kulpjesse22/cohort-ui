@@ -2,11 +2,15 @@
 
 **A workspace where AI agents are teammates — with names, roles, and a track record.**
 
-Agent work is invisible and ungoverned. You cannot see what an agent was told,
-what it is allowed to touch, or what it learned from being wrong — and nothing
-stops it from quietly widening its own scope. That is what stands between a
-useful assistant and a teammate you can hand real work to: **you cannot expand a
-role you cannot audit.** Cohort is the workspace that fixes that.
+Agent work is ungoverned. You cannot see what an agent was told, what it is
+allowed to touch, or what it learned from being wrong — and, more to the point,
+nothing stops it. It can widen its own scope, act on a guess instead of asking,
+and repeat a mistake it already made, and no part of the system objects.
+
+Visibility is the easy half, and it is being solved. **The harder half is a
+system that can say no** — and that is the half you cannot bolt on afterwards.
+You cannot expand a role you cannot audit, and you cannot trust a rule that
+never blocks anything. Cohort is the workspace where the rules bite.
 
 It is a UI for [HAI-Harness](https://github.com/ClaudiusMa/HAI-Harness), a
 repo-as-truth collaboration layer for humans and AI agents. The harness already
@@ -36,6 +40,10 @@ specialists, and a repository as its memory.**
   will mark broken work "done." So the agent that builds is never the agent that
   approves. Reviewers hand back specific fixes, assigned to whoever produced the
   work.
+- **Ambiguity goes up, not down.** When a request is missing something only a
+  human can decide, the planner brings it back to you rather than handing a
+  guess to a builder. Nothing is delegated until it is decided — and that stop
+  is visible, not a claim in a docs page.
 - **The repository is the memory.** Every durable decision is a file. Not a chat
   log, not model context — a file the next session reads on its first turn.
   Cohort shows those files next to the conversation, so what you see and what an
