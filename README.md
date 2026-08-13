@@ -175,12 +175,15 @@ assemble it.
 
 ### Guided tour
 
-`/demo` walks the whole loop in about two minutes: twelve beats that drive the
-real UI, dimming everything except the part being explained. Arrow keys and
-space drive it manually, which is what you want when screen recording.
+`/demo` is deliberately much smaller than the app: **four beats, about a
+minute.** The problem, the planner refusing to guess, the memory ladder, and a
+note on which parts were staged. It drives the real UI, dimming everything
+except the part being explained; arrow keys and space drive it manually, which
+is what you want when screen recording.
 
-It opens on the problem rather than the answer, and it ends by telling you which
-parts of what you just watched were staged.
+It used to walk the whole org — roles, scopes, verdicts, an agent's growth arc —
+which charged a lot of context before paying anything. Those screens are all
+still here to click through. They just aren't the argument.
 
 ---
 

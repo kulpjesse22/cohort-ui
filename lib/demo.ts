@@ -22,110 +22,48 @@ export interface DemoStep {
   holdMs: number;
 }
 
+/**
+ * Four beats: the problem, the stop, the ladder, and what was staged.
+ *
+ * The tour used to walk the whole org — roles, scopes, review verdicts, an
+ * agent's growth arc — which meant a viewer paid for a lot of context before
+ * reaching an idea. This shows the two moments that nothing else does, and
+ * leaves the org chart to be found by anyone who wants it.
+ *
+ * The opening names two absences and both are redeemed: "doesn't ask" by the
+ * stop, "nothing changes when it's wrong" by the ladder. Don't add a third
+ * without adding the beat that pays it off.
+ *
+ * It also bookends on spotlight: the first and last beats leave the whole
+ * workspace lit, so the tour opens and closes on the room rather than a panel.
+ */
 export const DEMO_STEPS: DemoStep[] = [
-  // Open on the problem, not the answer. Without this beat the tour is a
-  // solution to a question the viewer was never asked.
-  //
-  // The three absences are deliberately the tour's own table of contents, in
-  // negative: doesn't ask -> Claudia's clarifying question; can't see what it
-  // may touch -> the assigned task file; nothing changes when it's wrong -> the
-  // correction becoming memory. You can't screenshot an absence, so each one
-  // has to be redeemed by a later beat that shows the artifact instead.
-  //
-  // The whole workspace stays lit here. Step two dims to the roster, so the
-  // reveal has something to reveal from.
   {
     title: "Most agents just start",
-    body: "They don't ask what you meant. You can't see what they think they're allowed to touch. And when one gets something wrong, nothing about it changes. Giving an agent more to do is a judgment call — with nothing to base it on.",
+    body: "They don't ask what you meant. And when one gets something wrong, nothing about it changes. Giving an agent more to do is a judgment call — with nothing to base it on.",
     view: { kind: "channel", id: "claudia" },
     spotlight: null,
     holdMs: 10000,
   },
   {
-    title: "A team, not a tool",
-    body: "Five agents, each with a defined role and a scope that doesn't move. Not one generalist you re-prompt until the session degrades — a planner, two builders, and two reviewers.",
-    view: { kind: "channel", id: "claudia" },
-    spotlight: "sidebar",
-    holdMs: 9000,
-  },
-  {
-    title: "You brief the planner like a colleague",
-    body: "Work starts as a conversation in a scoped channel. Claudia turns the request into an assigned queue — explicit order, dependencies, stop conditions. When something's missing that only you can decide, she asks instead of guessing.",
-    view: { kind: "channel", id: "claudia" },
-    spotlight: "main",
-    holdMs: 11000,
-  },
-  // Redeems the opening's first absence. The claim "she asks instead of
-  // guessing" is worthless until you watch it happen, so this beat sits on the
-  // exchange itself rather than describing it again.
-  {
     title: "She asks you, not the builder",
-    body: "The request had two readings that build different products. Claudia named the decision, said it wasn't hers to make, and handed it back. Nothing moved until you answered — ambiguity doesn't get passed down to whoever is holding the keyboard.",
+    body: "The request had two readings that build different products. The planner named the decision, said it wasn't hers to make, and handed it back. Nothing moved until you answered — ambiguity doesn't get passed down to whoever is holding the keyboard.",
     view: { kind: "channel", id: "claudia" },
     spotlight: "main",
-    holdMs: 12000,
+    holdMs: 13000,
   },
   {
-    title: "The repo is the source of truth",
-    body: "Decisions land in files, not chat logs. This panel is read live from the repository — the same files a brand-new session would read on its first turn. Nothing depends on anyone remembering.",
-    view: { kind: "channel", id: "claudia" },
-    spotlight: "rail",
-    holdMs: 11000,
-  },
-  {
-    title: "Scope is assigned, not improvised",
-    body: "Each builder's work comes from their own task file. They don't infer what they own, and they stop rather than widen scope when an assumption breaks.",
-    view: { kind: "channel", id: "augustus" },
-    spotlight: "main",
-    holdMs: 10000,
-  },
-  {
-    title: "Execution and judgment are separate",
-    body: "Models are confidently wrong. So the agent who builds is never the agent who approves — reviewers work against the design and UX guides and hand findings back.",
-    view: { kind: "channel", id: "design-crit" },
-    spotlight: "main",
-    holdMs: 10000,
-  },
-  {
-    title: "The reviewer catches what the builder missed",
-    body: "Julius shipped a settings panel with no empty, loading, or error states. Hephaestus returned Revise with three specific fixes — assigned back to Julius, not quietly fixed around him.",
-    view: { kind: "profile", id: "julius" },
-    spotlight: "main",
-    focusEntryId: "ju-2",
-    holdMs: 12000,
-  },
-  {
-    title: "The correction becomes memory",
-    body: "He fixed all three, then wrote down why he'd missed them. The lesson outlives the session — it's a file the next agent reads, not something that evaporates when the chat ends.",
-    view: { kind: "profile", id: "julius" },
-    spotlight: "main",
-    focusEntryId: "ju-5",
-    holdMs: 11000,
-  },
-  {
-    title: "And the agent grows",
-    body: "Two builds later, states were handled in the first pass without being asked. That's the promotion — earned from evidence on the record, not assigned by vibes.",
-    view: { kind: "profile", id: "julius" },
-    spotlight: "main",
-    focusEntryId: "ju-6",
-    holdMs: 11000,
-  },
-  {
-    title: "The track record writes itself",
-    body: "Every task, verdict, correction, and lesson stays on the timeline. It's exactly what a person would bring to a performance review — except nobody had to assemble it.",
-    view: { kind: "profile", id: "julius" },
-    spotlight: "stats",
-    holdMs: 11000,
-  },
-  // Name the seam. Everything before this beat is seeded illustration, and a
-  // viewer who discovers that on their own discounts the parts that are real
-  // too. Saying it here costs one sentence and buys the live panel its
-  // credibility — then the ladder closes on the claim worth defending.
-  {
-    title: "That arc was staged. This is live.",
-    body: "Everything you just watched is seeded — a plausible history, written to show the shape. This panel is not: it's read off disk right now. Rules this team learned the hard way, under caps that force each one to be promoted, mechanized, or dropped. Memory that gets smaller.",
+    title: "And a mistake becomes a rule",
+    body: "Read off disk right now. A confirmed mistake becomes a lesson; a lesson that keeps firing becomes an always-on rule; a rule that can be automated becomes a check and stops being memory at all. Every tier is capped, so this gets smaller as the team learns.",
     view: { kind: "memory", id: "claudia" },
     spotlight: "main",
+    holdMs: 14000,
+  },
+  {
+    title: "What was staged, and what wasn't",
+    body: "That conversation was written to show the shape — no live model is wired up here. This page is not: these are rules this project actually learned. The rest of the workspace is real too, and yours to poke at — five roles, their scopes, and what each has shipped.",
+    view: { kind: "memory", id: "claudia" },
+    spotlight: null,
     holdMs: 15000,
   },
 ];
