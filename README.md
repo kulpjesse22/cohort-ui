@@ -17,9 +17,11 @@ repo-as-truth collaboration layer for humans and AI agents. The harness already
 governs the work; it is just invisible, experienced as a folder of markdown.
 Cohort makes it something you can see, talk to, and audit.
 
-> **Work in progress.** Published to get feedback on the idea, not because it is
-> finished. The conversation layer is seeded and nothing is wired to a live
-> model yet. See [What's real and what's mocked](#whats-real-and-whats-mocked).
+> **This is an argument, not a product.** It is a working demo built to make a
+> way of thinking about agents concrete enough to disagree with — not something
+> to adopt. Some of it is real and reads off disk; some is staged to show a
+> shape. Both are labelled, here and in the app. See
+> [What's real and what's mocked](#whats-real-and-whats-mocked).
 
 ---
 
@@ -30,29 +32,42 @@ drifts, the session degrades, and everything it learned dies when you close the
 tab. Ask it three months later why something was built a certain way and it has
 no idea. Neither do you.
 
-Cohort starts from a different premise, borrowed from the harness: **a team of
-specialists, and a repository as its memory.**
+Two claims are load-bearing here. Everything else in this repository exists to
+make them concrete enough to argue with.
 
-- **Agents have fixed roles.** Five of them, each with a scope that doesn't
-  move: a planner, two builders, and two reviewers. They are not
-  interchangeable, and the UI won't let one do another's job.
-- **Execution is separate from judgment.** Models are confidently wrong — they
-  will mark broken work "done." So the agent that builds is never the agent that
-  approves. Reviewers hand back specific fixes, assigned to whoever produced the
-  work.
+**1. Memory should get smaller and harder over time.**
+
+Most agent memory accumulates — a log you search, a history you re-read, growing
+until nobody carries it. This inverts that. A confirmed failure becomes a
+conditional lesson; a lesson that keeps firing is promoted to an always-on rule;
+a rule that can be mechanized becomes a check, and the memory is then *deleted*,
+because the check is the memory. Every tier is capped, so a new rule has to
+displace an old one rather than pile on. What survives is the smallest set of
+judgment a team actually has to hold. You can watch this happen in
+[Team memory](#team-memory--the-ladder).
+
+**2. Scope should be earned, not configured.**
+
+Elsewhere, an agent's autonomy is set up front: a human writes instructions into
+a box, once. Here the argument is that scope should follow evidence — review
+verdicts, corrections that stopped recurring, lessons that stopped firing. An
+agent gets more room because its record supports it, the same way a person does.
+
+The supporting structure, all borrowed from the harness:
+
+- **Roles are fixed and execution is separate from judgment.** Models are
+  confidently wrong — they will mark broken work "done." So the agent that
+  builds is never the agent that approves.
 - **Ambiguity goes up, not down.** When a request is missing something only a
   human can decide, the planner brings it back to you rather than handing a
   guess to a builder. Nothing is delegated until it is decided — and that stop
   is visible, not a claim in a docs page.
-- **The repository is the memory.** Every durable decision is a file. Not a chat
-  log, not model context — a file the next session reads on its first turn.
-  Cohort shows those files next to the conversation, so what you see and what an
-  agent reads cannot drift apart.
-- **Humans and agents are peers.** A human decision and an agent's shipped task
-  are the same kind of event, recorded the same way, in one shared history.
-
-The result is closer to a design org than a tool: work gets briefed, assigned,
-built, reviewed, corrected, and remembered.
+- **Every durable decision is a file.** Not a chat log, not model context — a
+  file the next session reads on its first turn. Cohort shows those files next
+  to the conversation, so what you see and what an agent reads cannot drift
+  apart.
+- **One shared record.** A human decision and an agent's shipped task are the
+  same kind of event, recorded the same way, in one history.
 
 **Cohort is where a team's decisions, scopes, and hard-won rules live as
 executable files — so the thing you read is the thing the agents obey.**
@@ -114,6 +129,28 @@ normal state, not an error.
 
 This is what makes "repo as truth" concrete rather than a slogan.
 
+### Team memory — the ladder
+
+`/memory` is the first claim above, made visible. It reads
+`Agents/lessons/INDEX.md` and the standing-gates block of
+`Agents/project_context.md` off disk and lays them out by how much force each
+rule carries:
+
+| Tier | | Cap |
+|---|---|---|
+| **0 — Becoming code** | Queued for a deterministic check. When the check lands, the memory is deleted. | — |
+| **1 — Always on** | Unconditional rules, loaded with project context every turn. | 7 |
+| **2 — Conditional** | Judgment that applies only under a named trigger. | 25 |
+
+The caps are the interesting part. They force a team to promote, merge, or
+retire a rule instead of hoarding it — and a lesson that keeps firing is flagged
+as a promotion candidate, because a rule the trigger did not prevent belongs one
+rung down.
+
+**Everything on this page is real.** The seeded content elsewhere in the app
+demonstrates a shape; these are rules this project actually learned, including
+one about pasting API keys into chat that was earned the hard way.
+
 ### Agent profiles — the growth arc
 
 Click anyone in the registry. You get their history: tasks shipped, reviews
@@ -138,9 +175,12 @@ assemble it.
 
 ### Guided tour
 
-`/demo` walks the whole loop in about ninety seconds: nine beats that drive the
+`/demo` walks the whole loop in about two minutes: twelve beats that drive the
 real UI, dimming everything except the part being explained. Arrow keys and
 space drive it manually, which is what you want when screen recording.
+
+It opens on the problem rather than the answer, and it ends by telling you which
+parts of what you just watched were staged.
 
 ---
 
@@ -212,6 +252,9 @@ Being explicit, because a demo that overclaims is worse than no demo.
 
 **Real:**
 - The context rail reads actual files from this repository at runtime.
+- **Team memory is real.** `/memory` parses `Agents/lessons/INDEX.md` and the
+  standing-gates block of `project_context.md` off disk. The rules there are
+  ones this project actually learned; the lesson files open from the repo.
 - The five roles, their scopes, and their boundaries come from the harness.
 - Every view is a URL; reload lands where you were.
 - The harness install, including filled-in `design.md`, `UX.md`,
@@ -219,9 +262,12 @@ Being explicit, because a demo that overclaims is worse than no demo.
 
 **Mocked or absent:**
 - **Conversation is seeded.** No live model. The composer persists what you type
-  to a local JSON file, and nothing replies.
+  to a local JSON file, and nothing replies. The exchanges are written to show
+  the shape of the thing, including Claudia stopping to ask before she assigns —
+  a real pattern, staged here rather than captured.
 - **Timeline history is seeded.** Not yet derived from `handoffs/` and
-  `lessons/`, though those are the obvious sources.
+  `lessons/`, though those are the obvious sources. Julius's growth arc is an
+  illustration, not a log. The guided tour says so out loud at the end.
 - **Seniority is a static label.** It is not computed from the timeline sitting
   directly above it. The UI says so wherever it appears.
 
