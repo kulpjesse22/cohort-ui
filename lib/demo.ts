@@ -48,6 +48,16 @@ export const DEMO_STEPS: DemoStep[] = [
     spotlight: "main",
     holdMs: 11000,
   },
+  // Redeems the opening's first absence. The claim "she asks instead of
+  // guessing" is worthless until you watch it happen, so this beat sits on the
+  // exchange itself rather than describing it again.
+  {
+    title: "She asks you, not the builder",
+    body: "The request had two readings that build different products. Claudia named the decision, said it wasn't hers to make, and handed it back. Nothing moved until you answered — ambiguity doesn't get passed down to whoever is holding the keyboard.",
+    view: { kind: "channel", id: "claudia" },
+    spotlight: "main",
+    holdMs: 12000,
+  },
   {
     title: "The repo is the source of truth",
     body: "Decisions land in files, not chat logs. This panel is read live from the repository — the same files a brand-new session would read on its first turn. Nothing depends on anyone remembering.",
