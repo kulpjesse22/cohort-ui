@@ -6,6 +6,7 @@ import type { ContextDoc } from "@/lib/harness";
 import { Sidebar } from "./Sidebar";
 import { ContextRail } from "./ContextRail";
 import { CommandPalette } from "./CommandPalette";
+import { AgentRelay, SCENARIOS } from "./AgentRelay";
 
 export function AppShell({
   activeChannelId,
@@ -108,6 +109,13 @@ export function AppShell({
             <InfoIcon />
           </button>
         </header>
+
+        {/* Coordination, above the record of it. The thread below says what was
+            decided; this says who is holding the work right now. Hidden on
+            narrow screens, where six actors and a travelling pill do not fit. */}
+        <div className="hidden shrink-0 border-b border-line px-4 sm:block lg:px-5">
+          <AgentRelay scenario={SCENARIOS[0]} loop />
+        </div>
 
         {children}
       </main>

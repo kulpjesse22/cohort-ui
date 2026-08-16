@@ -117,9 +117,12 @@ function useReducedMotion(): boolean {
 
 export function AgentRelay({
   scenario,
+  loop = false,
   onFinished,
 }: {
   scenario: Scenario;
+  /** Ambient use: settle on the outcome, then run it again. */
+  loop?: boolean;
   onFinished?: () => void;
 }) {
   const railRef = useRef<HTMLDivElement>(null);
@@ -165,6 +168,17 @@ export function AgentRelay({
 
   // Shuttle until the exchange has run its legs, then advance. Reduced motion
   // holds one position and lets the dots carry the waiting.
+  // Ambient rails restart rather than stopping on a stale outcome.
+  useEffect(() => {
+    if (!finished || !loop) return;
+    const timer = setTimeout(() => {
+      setIndex(0);
+      setLeg(0);
+      setFinished(false);
+    }, 2600);
+    return () => clearTimeout(timer);
+  }, [finished, loop]);
+
   useEffect(() => {
     if (finished || !exchange) return;
 
