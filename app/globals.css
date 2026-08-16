@@ -42,6 +42,13 @@
   --control: #18181b;
   --control-ink: #fafafa;
 
+  /* Signature accent — fixed across both themes, not a semantic or per-agent
+     hue. Reserved for a small, deliberate set of brand-only moments (app
+     icon, primary landing CTA, tour spotlight) so it keeps standing out
+     rather than blending into decoration. See Agents/design.md § Colors. */
+  --brand: #ff1493;
+  --brand-ink: #ffffff;
+
   /* meaning — light steps darker to hold contrast on a bright ground */
   --approved: #047857; /* emerald-700 */
   --approved-bg: rgb(16 185 129 / 0.1);
@@ -131,6 +138,8 @@
   --color-active: var(--active);
   --color-control: var(--control);
   --color-control-ink: var(--control-ink);
+  --color-brand: var(--brand);
+  --color-brand-ink: var(--brand-ink);
 
   --color-approved: var(--approved);
   --color-approved-bg: var(--approved-bg);
@@ -174,6 +183,45 @@
 }
 .agent-rose {
   --hue: var(--agent-rose);
+}
+
+/* The human on the agent rail. Neutral on purpose: a person is not one more
+   coloured agent, and the rail should not imply they are. */
+.agent-slate {
+  --hue: var(--ink-3);
+}
+
+/* Bloom behind whoever currently holds the work. */
+.agent-halo {
+  background: radial-gradient(
+    circle at center,
+    color-mix(in srgb, var(--hue) 26%, transparent) 0%,
+    transparent 70%
+  );
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--hue) 22%, transparent);
+}
+
+/* Work in flight. The stagger reads as "still going", not "stuck". */
+.relay-dot {
+  animation: relay-pulse 1.15s ease-in-out infinite;
+}
+
+@keyframes relay-pulse {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .relay-dot {
+    animation-duration: 2.4s;
+  }
 }
 
 .agent-fg {
