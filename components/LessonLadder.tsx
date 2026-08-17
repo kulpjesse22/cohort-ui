@@ -65,7 +65,7 @@ export function LessonLadder() {
           of judgment the team has to carry by hand.
         </p>
 
-        <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 border-y border-line py-3">
+        <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-line pt-4">
           <Stat label="Queued checks" value={pending.length} />
           <Stat label="Standing gates" value={gates.length} max={limits.gates} />
           <Stat label="Conditional lessons" value={entries.length} max={limits.entries} />
@@ -127,20 +127,19 @@ export function LessonLadder() {
           ) : (
             entries.map((entry) => (
               <Row key={entry.file}>
-                <div className="flex items-baseline gap-2">
+                {/* The kind is one word. It earns colour, because a prohibition
+                    is not the same as a preference — but it does not earn a box. */}
+                <p className="text-[11px] leading-relaxed text-ink-3">
                   <span
-                    className={`shrink-0 rounded border px-1.5 py-0.5 font-mono text-[10px] uppercase ${
-                      entry.kind === "never"
-                        ? "border-revise-line bg-revise-bg text-revise"
-                        : "border-line-strong text-ink-3"
+                    className={`font-mono uppercase ${
+                      entry.kind === "never" ? "text-revise" : "text-ink-4"
                     }`}
                   >
                     {entry.kind}
                   </span>
-                  <p className="min-w-0 text-[11px] leading-relaxed text-ink-3">
-                    when {entry.trigger}
-                  </p>
-                </div>
+                  <span className="text-ink-4"> · </span>
+                  when {entry.trigger}
+                </p>
 
                 <p className="mt-1.5 text-[13px] leading-relaxed text-ink">
                   {entry.imperative}
@@ -154,12 +153,12 @@ export function LessonLadder() {
                     {entry.fired === 1 ? " time" : " times"}
                   </Meta>
                   {entry.fired >= PROMOTION_PRESSURE && (
-                    <span className="rounded border border-fixes-line bg-fixes-bg px-1.5 py-0.5 text-[10px] text-fixes">
+                    <span className="text-[11px] font-medium text-fixes">
                       promotion candidate
                     </span>
                   )}
                   {entry.broken && (
-                    <span className="rounded border border-revise-line bg-revise-bg px-1.5 py-0.5 text-[10px] text-revise">
+                    <span className="text-[11px] font-medium text-revise">
                       lesson file missing
                     </span>
                   )}
@@ -228,34 +227,41 @@ function Section({
   children: ReactNode;
 }) {
   return (
-    <section className="mt-7">
-      <div className="flex items-baseline gap-2">
-        <span className="font-mono text-[10px] uppercase tracking-[0.06em] text-ink-4">
+    // Space, not enclosure, is what separates one tier from the next. The
+    // generous top margin is the only thing marking the boundary, and it is
+    // enough.
+    <section className="mt-9">
+      <div className="flex items-baseline gap-2.5">
+        <h2 className="text-[13px] font-semibold text-ink">{name}</h2>
+        <span className="font-mono text-[11px] uppercase tracking-[0.06em] text-ink-4">
           {tier}
         </span>
-        <h2 className="text-[13px] font-semibold text-ink">{name}</h2>
       </div>
-      <p className="mt-0.5 max-w-xl text-[11px] leading-relaxed text-ink-3">{blurb}</p>
-      <div className="mt-2.5 space-y-2">{children}</div>
+      <p className="mt-1 max-w-xl text-[11px] leading-relaxed text-ink-3">{blurb}</p>
+      <div className="mt-3 divide-y divide-line">{children}</div>
     </section>
   );
 }
 
+/**
+ * No card. A rule is a line of text, and a box around each one turns a short
+ * list into a stack of containers competing with the words inside them. The
+ * hairline between rows comes from the parent's divide, so the last row does
+ * not end in a dangling edge.
+ */
 function Row({ children }: { children: ReactNode }) {
-  return (
-    <div className="rounded-lg border border-line bg-panel px-3.5 py-3">{children}</div>
-  );
+  return <div className="py-3.5 first:pt-0 last:pb-0">{children}</div>;
 }
 
 function Meta({ children }: { children: ReactNode }) {
-  return <span className="text-[10px] text-ink-4">{children}</span>;
+  return <span className="text-[11px] text-ink-4">{children}</span>;
 }
 
 function EmptyNote({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <div className="rounded-lg border border-dashed border-line px-3.5 py-3">
-      <p className="text-[13px] font-medium text-ink-2">{title}</p>
-      <p className="mt-1 max-w-md text-[11px] leading-relaxed text-ink-3">{children}</p>
+    <div className="py-3.5 first:pt-0">
+      <p className="text-[13px] text-ink-3">{title}</p>
+      <p className="mt-0.5 max-w-md text-[11px] leading-relaxed text-ink-4">{children}</p>
     </div>
   );
 }
@@ -267,7 +273,8 @@ function LadderSkeleton() {
         {[0, 1, 2].map((i) => (
           <div key={i} className="animate-pulse space-y-2">
             <div className="h-3 w-40 rounded bg-raised" />
-            <div className="h-16 rounded-lg bg-raised" />
+            <div className="h-3 w-full rounded bg-raised" />
+            <div className="h-3 w-2/3 rounded bg-raised" />
           </div>
         ))}
       </div>
