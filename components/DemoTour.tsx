@@ -14,8 +14,21 @@ import { AgentTimeline } from "./AgentTimeline";
 import { LessonLadder } from "./LessonLadder";
 import { TeamTimeline } from "./TeamTimeline";
 import { WelcomeScreen } from "./WelcomeScreen";
-import { LeadHandoffIndicator } from "./LeadHandoffIndicator";
+import { LeadHandoffIndicator, type HandoffDetails } from "./LeadHandoffIndicator";
 import { Avatar } from "./Avatar";
+
+/**
+ * The handoff the tour is standing on. The final beat tells the viewer to open
+ * the chip, so it has to have something true behind it — and the source is a
+ * real file, so the claim can be checked rather than taken.
+ */
+const TOUR_HANDOFF: HandoffDetails = {
+  from: "Claudia · Planner",
+  to: "Augustus · Builder",
+  why: "Brand direction settled with Jesse, so the poster work is unblocked and scoped.",
+  source: "Agents/tasks/augustus.md",
+  next: "Athena reviews the first pass before anything ships.",
+};
 
 function dim(region: Spotlight, active: Spotlight): string {
   if (active === null) return "opacity-100";
@@ -204,7 +217,11 @@ export function DemoTour() {
             step.spotlight
           )}`}
         >
-          <LeadHandoffIndicator label="Sending to Lead..." compact />
+          <LeadHandoffIndicator
+            label="Sending to Lead..."
+            details={TOUR_HANDOFF}
+            compact
+          />
         </div>
 
         {isProfile ? (
@@ -273,11 +290,13 @@ function CaptionBar({
               />
             ))}
           </div>
+          {/* The way out of the tour is into the workspace, not into one
+              agent's channel. Cohort is the product; Claudia is a role in it. */}
           <Link
-            href="/start"
+            href="/cohort"
             className="shrink-0 text-[11px] text-ink-3 hover:text-ink"
           >
-            Start with Claudia
+            Open Cohort
           </Link>
         </div>
 

@@ -39,22 +39,22 @@ export interface DemoStep {
  */
 export const DEMO_STEPS: DemoStep[] = [
   {
-    title: "A team developing, not jobs running",
-    body: "Most agent tools show you jobs executing. That chip is something else: work moving between accountable roles — who holds it now, and who handed it over.",
+    title: "Cohort is where an AI team develops",
+    body: "Not a place to launch agents — a place to grow them. That chip is the difference: work moving between accountable roles, each pass leaving a record of who owned it and what came back.",
     view: { kind: "splash", id: "claudia" },
     spotlight: null,
     holdMs: 11000,
   },
   {
     title: "The lead is not a chatbot persona",
-    body: "Claudia owns routing, and owns making context durable. She hands a decision back rather than guessing at it, then writes what got settled into files the next session reads on its first turn.",
+    body: "Claudia owns routing, and owns making context durable. She hands a decision back rather than guessing at it, then writes what got settled into files the next agent reads on its first turn.",
     view: { kind: "channel", id: "claudia" },
     spotlight: "main",
     holdMs: 13000,
   },
   {
-    title: "A record of the team, not a run log",
-    body: "Recurring workflows produce logs. Fleets of coding sessions produce logs. This is a history of named agents with roles — what they shipped, what came back in review, and what they learned.",
+    title: "The team's record, not an execution log",
+    body: "An execution log tells you what ran. This tells you who owned each piece of work, what came back in review, which lessons were logged, and who was promoted on the evidence.",
     view: { kind: "timeline", id: "claudia" },
     spotlight: "main",
     holdMs: 13000,
@@ -68,14 +68,14 @@ export const DEMO_STEPS: DemoStep[] = [
   },
   {
     title: "Memory that outlives the chat",
-    body: "Nothing here depends on a session remembering. Decisions and lessons are written back to the repo, capped, and pushed toward automation until they stop being memory at all. This page is read off disk right now.",
+    body: "Nothing here depends on anyone remembering. Decisions and lessons are written back to the repo, capped, and pushed toward automation until they stop being memory at all. This page is read off disk right now.",
     view: { kind: "memory", id: "claudia" },
     spotlight: "main",
     holdMs: 14000,
   },
   {
     title: "The handoff is the primitive",
-    body: "Everything you just saw is an expression of one thing. Every piece of work should answer four questions: who owned it, who reviewed it, what changed, and what did the team learn?",
+    body: "Everything you just saw is an expression of one thing. Open the chip: From, To, Why, the file it was recorded in, and who reviews it next. Every piece of work should answer those.",
     view: { kind: "channel", id: "claudia" },
     spotlight: "handoff",
     holdMs: 14000,
