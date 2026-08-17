@@ -185,22 +185,6 @@
   --hue: var(--agent-rose);
 }
 
-/* The human on the agent rail. Neutral on purpose: a person is not one more
-   coloured agent, and the rail should not imply they are. */
-.agent-slate {
-  --hue: var(--ink-3);
-}
-
-/* Bloom behind whoever currently holds the work. */
-.agent-halo {
-  background: radial-gradient(
-    circle at center,
-    color-mix(in srgb, var(--hue) 26%, transparent) 0%,
-    transparent 70%
-  );
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--hue) 22%, transparent);
-}
-
 /* A relay token is an identity, not a portrait. On this strip the subject is
    the work moving between people, so the actors are reduced to colour — a
    glossy bead, lit from the upper left, the way a physical counter would be. */
@@ -230,30 +214,43 @@
   filter: blur(1px);
 }
 
-/* The ring that says this one is in the exchange. */
-.relay-ring {
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--hue) 18%, transparent);
+.lead-handoff {
+  --lead-handoff-hue: var(--agent-violet);
+  color: var(--lead-handoff-hue);
 }
 
-/* Work in flight. The stagger reads as "still going", not "stuck". */
-.relay-dot {
-  animation: relay-pulse 1.15s ease-in-out infinite;
+.handoff-bead {
+  background: color-mix(in srgb, var(--hue) 9%, var(--canvas));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--hue) 26%, transparent),
+    0 0 0 5px color-mix(in srgb, var(--hue) 10%, transparent);
 }
 
-@keyframes relay-pulse {
+.handoff-pill {
+  border-color: color-mix(in srgb, var(--lead-handoff-hue) 18%, var(--line));
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.04),
+    inset 0 0 0 1px color-mix(in srgb, var(--lead-handoff-hue) 8%, transparent);
+}
+
+.handoff-dot {
+  animation: handoff-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes handoff-pulse {
   0%,
   100% {
-    opacity: 0.3;
-    transform: scale(0.8);
+    opacity: 0.32;
+    transform: translateY(0) scale(0.82);
   }
-  50% {
+  45% {
     opacity: 1;
-    transform: scale(1);
+    transform: translateY(-1px) scale(1);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .relay-dot {
+  .handoff-dot {
     animation-duration: 2.4s;
   }
 }
