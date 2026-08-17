@@ -12,6 +12,9 @@ import { MessageThread } from "./MessageThread";
 import { ContextRail } from "./ContextRail";
 import { AgentTimeline } from "./AgentTimeline";
 import { LessonLadder } from "./LessonLadder";
+import { TeamTimeline } from "./TeamTimeline";
+import { WelcomeScreen } from "./WelcomeScreen";
+import { LeadHandoffIndicator } from "./LeadHandoffIndicator";
 import { Avatar } from "./Avatar";
 
 function dim(region: Spotlight, active: Spotlight): string {
@@ -101,10 +104,61 @@ export function DemoTour() {
     return () => window.removeEventListener("keydown", onKey);
   }, [go]);
 
-  const isProfile = step.view.kind === "profile";
-  const isMemory = step.view.kind === "memory";
+  const kind = step.view.kind;
+  const isProfile = kind === "profile";
+  const isMemory = kind === "memory";
+  const isSplash = kind === "splash";
+  const isTimeline = kind === "timeline";
   const agent = isProfile ? AGENTS[targetId as AgentId] : null;
-  const channel = step.view.kind === "channel" ? getChannel(targetId) : null;
+  const channel = kind === "channel" ? getChannel(targetId) : null;
+
+  // What the chrome says above each surface. The splash is its own full page,
+  // so it gets no header at all.
+  const heading = isMemory
+    ? { title: "Team memory", sub: "What the team learned the hard way, and what it does about it." }
+    : isTimeline
+      ? { title: "Project timeline", sub: "All work across the team — humans and agents — newest first." }
+      : { title: channel?.name ?? "", sub: channel?.description ?? "" };
+
+  const caption = (
+    <CaptionBar
+      index={index}
+      total={DEMO_STEPS.length}
+      title={step.title}
+      body={step.body}
+      playing={playing}
+      isLast={isLast}
+      onPrev={() => {
+        setPlaying(false);
+        go(-1);
+      }}
+      onNext={() => {
+        setPlaying(false);
+        go(1);
+      }}
+      onToggle={() => {
+        if (isLast) {
+          setIndex(0);
+          setPlaying(true);
+        } else {
+          setPlaying((p) => !p);
+        }
+      }}
+    />
+  );
+
+  // The splash is a full page with its own chrome, so it replaces the shell
+  // rather than sitting inside it. The caption bar stays either way.
+  if (isSplash) {
+    return (
+      <div className="relative h-screen w-full overflow-hidden bg-canvas">
+        <div className="h-full overflow-y-auto">
+          <WelcomeScreen />
+        </div>
+        {caption}
+      </div>
+    );
+  }
 
   return (
     <div className="relative flex h-screen w-full overflow-hidden bg-canvas">
@@ -136,17 +190,22 @@ export function DemoTour() {
             </>
           ) : (
             <div className="min-w-0 flex-1">
-              <h1 className="truncate font-semibold text-ink">
-                {isMemory ? "Team memory" : channel?.name}
-              </h1>
-              <p className="truncate text-xs text-ink-3">
-                {isMemory
-                  ? "What the team learned the hard way, and what it does about it."
-                  : channel?.description}
-              </p>
+              <h1 className="truncate font-semibold text-ink">{heading.title}</h1>
+              <p className="truncate text-xs text-ink-3">{heading.sub}</p>
             </div>
           )}
         </header>
+
+        {/* The primitive, always on screen. The tour opens and closes on it, so
+            it cannot only exist on the surfaces that happen to mount AppShell. */}
+        <div
+          className={`hidden shrink-0 border-b border-line px-4 py-2 transition-opacity duration-500 sm:flex sm:justify-center lg:px-5 ${dim(
+            "handoff",
+            step.spotlight
+          )}`}
+        >
+          <LeadHandoffIndicator label="Sending to Lead..." compact />
+        </div>
 
         {isProfile ? (
           <AgentTimeline
@@ -158,6 +217,8 @@ export function DemoTour() {
           />
         ) : isMemory ? (
           <LessonLadder />
+        ) : isTimeline ? (
+          <TeamTimeline />
         ) : (
           <MessageThread messages={messages} loading={loadingMessages} />
         )}
@@ -169,30 +230,7 @@ export function DemoTour() {
         <ContextRail docs={contextDocs} loading={loadingContext} />
       </div>
 
-      <CaptionBar
-        index={index}
-        total={DEMO_STEPS.length}
-        title={step.title}
-        body={step.body}
-        playing={playing}
-        isLast={isLast}
-        onPrev={() => {
-          setPlaying(false);
-          go(-1);
-        }}
-        onNext={() => {
-          setPlaying(false);
-          go(1);
-        }}
-        onToggle={() => {
-          if (isLast) {
-            setIndex(0);
-            setPlaying(true);
-          } else {
-            setPlaying((p) => !p);
-          }
-        }}
-      />
+      {caption}
     </div>
   );
 }
