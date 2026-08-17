@@ -48,7 +48,7 @@ export const DEMO_STEPS: DemoStep[] = [
   {
     title: "The lead is not a chatbot persona",
     body: "Claudia owns routing, and owns making context durable. She hands a decision back rather than guessing at it, then writes what got settled into files the next agent reads on its first turn.",
-    view: { kind: "channel", id: "claudia" },
+    view: { kind: "channel", id: "cohort" },
     spotlight: "main",
     holdMs: 13000,
   },
@@ -76,7 +76,7 @@ export const DEMO_STEPS: DemoStep[] = [
   {
     title: "The handoff is the primitive",
     body: "Everything you just saw is an expression of one thing. Open the chip: From, To, Why, the file it was recorded in, and who reviews it next. Every piece of work should answer those.",
-    view: { kind: "channel", id: "claudia" },
+    view: { kind: "channel", id: "cohort" },
     spotlight: "handoff",
     holdMs: 14000,
   },

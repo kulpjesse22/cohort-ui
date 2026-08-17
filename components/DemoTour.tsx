@@ -184,46 +184,49 @@ export function DemoTour() {
         />
       </div>
 
-      <main
-        className={`flex min-w-0 flex-1 flex-col transition-opacity duration-500 ${dim("main", step.spotlight)}`}
-      >
+      {/* Main is not dimmed as a whole. The chip lives in the header now, the
+          way it does in the product, and opacity inherits — so the title and
+          the body dim independently or the handoff beat could never light it. */}
+      <main className="flex min-w-0 flex-1 flex-col">
         <header className="flex items-center gap-3 border-b border-line px-5 py-3">
-          {agent ? (
-            <>
-              <Avatar agentId={agent.id} />
-              <div className="min-w-0 flex-1">
-                <div className="flex items-baseline gap-2">
-                  <h1 className="truncate font-semibold text-ink">{agent.name}</h1>
-                  <span className="shrink-0 rounded border border-line-strong px-1.5 py-0.5 text-[10px] text-ink-2">
-                    {agent.seniority}
-                  </span>
+          <div
+            className={`flex min-w-0 flex-1 items-center gap-3 transition-opacity duration-500 ${dim("main", step.spotlight)}`}
+          >
+            {agent ? (
+              <>
+                <Avatar agentId={agent.id} />
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-baseline gap-2">
+                    <h1 className="truncate font-semibold text-ink">{agent.name}</h1>
+                    <span className="shrink-0 rounded border border-line-strong px-1.5 py-0.5 text-[10px] text-ink-2">
+                      {agent.seniority}
+                    </span>
+                  </div>
+                  <p className="truncate text-xs text-ink-3">{agent.title}</p>
                 </div>
-                <p className="truncate text-xs text-ink-3">{agent.title}</p>
+              </>
+            ) : (
+              <div className="min-w-0 flex-1">
+                <h1 className="truncate font-semibold text-ink">{heading.title}</h1>
+                <p className="truncate text-xs text-ink-3">{heading.sub}</p>
               </div>
-            </>
-          ) : (
-            <div className="min-w-0 flex-1">
-              <h1 className="truncate font-semibold text-ink">{heading.title}</h1>
-              <p className="truncate text-xs text-ink-3">{heading.sub}</p>
-            </div>
-          )}
+            )}
+          </div>
+
+          <div
+            className={`hidden shrink-0 transition-opacity duration-500 md:flex ${dim("handoff", step.spotlight)}`}
+          >
+            <LeadHandoffIndicator
+              label="Sending to Lead..."
+              details={TOUR_HANDOFF}
+              compact
+            />
+          </div>
         </header>
 
-        {/* The primitive, always on screen. The tour opens and closes on it, so
-            it cannot only exist on the surfaces that happen to mount AppShell. */}
         <div
-          className={`hidden shrink-0 border-b border-line px-4 py-2 transition-opacity duration-500 sm:flex sm:justify-center lg:px-5 ${dim(
-            "handoff",
-            step.spotlight
-          )}`}
+          className={`flex min-h-0 flex-1 flex-col transition-opacity duration-500 ${dim("main", step.spotlight)}`}
         >
-          <LeadHandoffIndicator
-            label="Sending to Lead..."
-            details={TOUR_HANDOFF}
-            compact
-          />
-        </div>
-
         {isProfile ? (
           <AgentTimeline
             entries={getTimeline(targetId as AgentId)}
@@ -239,6 +242,7 @@ export function DemoTour() {
         ) : (
           <MessageThread messages={messages} loading={loadingMessages} />
         )}
+        </div>
       </main>
 
       <div
@@ -293,7 +297,7 @@ function CaptionBar({
           {/* The way out of the tour is into the workspace, not into one
               agent's channel. Cohort is the product; Claudia is a role in it. */}
           <Link
-            href="/cohort"
+            href="/start"
             className="shrink-0 text-[11px] text-ink-3 hover:text-ink"
           >
             Open Cohort
