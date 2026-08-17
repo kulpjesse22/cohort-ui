@@ -15,14 +15,22 @@ export function Sidebar({
   return (
     <aside className="sidebar-scope flex h-full w-64 shrink-0 flex-col border-r border-sidebar-line bg-sidebar text-sm shadow-2xl lg:shadow-none">
       <div className="border-b border-sidebar-line px-4 py-3">
-        <Image
-          src="/cohort-wordmark-transparent.png"
-          alt="Cohort"
-          width={1550}
-          height={440}
-          priority
-          className="h-auto w-24"
-        />
+        {/* The wordmark is the way back out. Only the mark itself is the target —
+            the line under it is a descriptor, not a control. */}
+        <Link
+          href="/"
+          aria-label="Cohort home"
+          className="inline-block rounded transition-opacity hover:opacity-80"
+        >
+          <Image
+            src="/cohort-wordmark-transparent.png"
+            alt="Cohort"
+            width={1550}
+            height={440}
+            priority
+            className="h-auto w-24"
+          />
+        </Link>
         <div className="mt-0.5 text-[11px] text-sidebar-ink-3">
           Where people and agents work under the same rules.
         </div>
