@@ -9,7 +9,6 @@ import {
   useSyncExternalStore,
 } from "react";
 import { AGENTS, type AgentId } from "@/lib/agents";
-import { Avatar } from "./Avatar";
 
 /**
  * A rail of the people and agents on a task, with work visibly moving between
@@ -217,7 +216,7 @@ export function AgentRelay({
   return (
     <div
       ref={railRef}
-      className="relative mx-auto flex w-full max-w-4xl items-center justify-between px-2 py-7"
+      className="relative mx-auto flex w-fit items-center gap-20 px-2 py-6"
       role="status"
       aria-live="polite"
       aria-label={
@@ -235,13 +234,14 @@ export function AgentRelay({
             ref={(el) => {
               slotRefs.current[id] = el;
             }}
-            className={`${HUE_CLASS[id]} relative inline-flex shrink-0`}
+            title={actorName(id)}
+            className={`${HUE_CLASS[id]} relative inline-flex h-9 w-9 shrink-0`}
           >
             {/* The halo blooms on whoever currently holds the work, so the pass
-                is felt on the agent and not only on the pill. */}
+                is felt on the actor and not only on the pill. */}
             <span
               aria-hidden="true"
-              className={`agent-halo pointer-events-none absolute -inset-1.5 rounded-[12px] transition-all duration-500 ${
+              className={`agent-halo pointer-events-none absolute -inset-2 rounded-full transition-all duration-500 ${
                 holding
                   ? "scale-100 opacity-100"
                   : active
@@ -250,12 +250,11 @@ export function AgentRelay({
               }`}
             />
             <span
-              className={`relative transition-opacity duration-500 ${
-                finished ? "opacity-90" : active ? "opacity-100" : "opacity-35"
+              aria-hidden="true"
+              className={`relay-token relative h-9 w-9 rounded-full transition-all duration-500 ${
+                active ? "relay-ring opacity-100" : "opacity-30"
               }`}
-            >
-              <Avatar agentId={id} size="md" badge={id !== "user"} />
-            </span>
+            />
           </span>
         );
       })}
@@ -273,13 +272,23 @@ export function AgentRelay({
             opacity: finished ? 0 : 1,
           }}
         >
-          <span className="agent-chip flex items-center gap-1.5 whitespace-nowrap rounded-full bg-panel px-2.5 py-1 text-[11px] font-medium shadow-sm">
-            <span className="flex items-center gap-[3px]">
-              {[0, 1, 2].map((i) => (
+          {/* Near-white capsule, hue only in the border, dots, and type — so the
+              pill reads as a thing being carried rather than as more agent. */}
+          <span
+            className="flex items-center gap-2 whitespace-nowrap rounded-full bg-panel px-3 py-1.5 text-[12px] font-medium shadow-sm"
+            style={{
+              color: "var(--hue)",
+              boxShadow:
+                "0 1px 2px rgb(0 0 0 / 0.06), inset 0 0 0 1.5px color-mix(in srgb, var(--hue) 28%, transparent)",
+            }}
+          >
+            {/* Graduated rather than uniform: the leading dot is the live one. */}
+            <span className="flex items-center gap-[4px]">
+              {[1, 0.5, 0.28].map((o, i) => (
                 <span
                   key={i}
-                  className="relay-dot h-[5px] w-[5px] rounded-full bg-current"
-                  style={{ animationDelay: `${i * 160}ms` }}
+                  className="relay-dot h-[6px] w-[6px] rounded-full bg-current"
+                  style={{ opacity: o, animationDelay: `${i * 180}ms` }}
                 />
               ))}
             </span>

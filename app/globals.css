@@ -201,6 +201,40 @@
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--hue) 22%, transparent);
 }
 
+/* A relay token is an identity, not a portrait. On this strip the subject is
+   the work moving between people, so the actors are reduced to colour — a
+   glossy bead, lit from the upper left, the way a physical counter would be. */
+.relay-token {
+  background:
+    radial-gradient(
+      circle at 34% 28%,
+      color-mix(in srgb, var(--hue) 45%, white) 0%,
+      var(--hue) 52%,
+      color-mix(in srgb, var(--hue) 86%, black) 100%
+    );
+  box-shadow:
+    inset 0 -1px 2px color-mix(in srgb, var(--hue) 70%, black),
+    inset 0 1px 1px color-mix(in srgb, var(--hue) 40%, white);
+}
+
+/* The specular catch. Small, offset, and soft — enough to read as a sphere. */
+.relay-token::after {
+  content: "";
+  position: absolute;
+  top: 16%;
+  left: 24%;
+  width: 30%;
+  height: 22%;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.75);
+  filter: blur(1px);
+}
+
+/* The ring that says this one is in the exchange. */
+.relay-ring {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--hue) 18%, transparent);
+}
+
 /* Work in flight. The stagger reads as "still going", not "stuck". */
 .relay-dot {
   animation: relay-pulse 1.15s ease-in-out infinite;
