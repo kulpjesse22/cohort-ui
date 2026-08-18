@@ -116,6 +116,15 @@ Per-agent identity hues, used only for avatars and registry names. Same rule —
 `600` in light, `300` in dark: Claudia `violet`, Augustus `sky`, Julius `teal`,
 Athena `amber`, Hephaestus `rose`.
 
+**Brand accent.** `brand` (`#ff1493`) is fixed across both themes — it is not
+a semantic or per-agent hue, so it does not get a light/dark pair. It is
+reserved for a small, deliberate set of brand-only moments where the product
+itself is speaking, not a conversation: the app icon, the primary CTA on the
+landing screen, and the tour's progress indicator. It must not spread into
+conversational UI (composer, verdict badges, agent rings) — those already
+carry meaning, and a fourth unassigned color there would compete with it
+rather than reinforce it.
+
 - **Contrast target:** WCAG AA (4.5:1) for body text, in **both** themes. A
   token that passes in dark and fails in light is a bug, not a tradeoff.
 - Color is never the only signal (see `UX.md`), so hues may soften — but the
