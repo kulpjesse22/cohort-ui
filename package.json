@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/check-tour-motion.mjs && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "check:motion": "node scripts/check-tour-motion.mjs",
+    "contributions": "node scripts/contributions.mjs"
   },
   "dependencies": {
     "next": "16.2.12",
