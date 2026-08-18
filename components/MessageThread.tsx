@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import type { Message } from "@/lib/messages";
 import { AGENTS, type AgentId } from "@/lib/agents";
 import { Avatar } from "./Avatar";
-import { ArtifactLink } from "./ArtifactLink";
+import { CitedDoc } from "./CitedDoc";
 
 function formatTime(iso: string): string {
   return new Date(iso).toLocaleTimeString(undefined, {
@@ -169,9 +169,9 @@ export function MessageThread({
                   /* Cited files open the real thing off disk. The point of
                      citing in chat is that the claim can be checked in the
                      room, not that it sounds authoritative. */
-                  <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5">
+                  <div className="mt-1">
                     {message.cites.map((path) => (
-                      <ArtifactLink key={path} path={path} />
+                      <CitedDoc key={path} path={path} />
                     ))}
                   </div>
                 )}

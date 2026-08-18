@@ -135,13 +135,27 @@ const DOC_SUBJECTS: Array<{ match: RegExp; paths: string[] }> = [
 const SELF_SUFFICIENT = /\b(roadmap|backlog|what'?s next|planning\.md)\b/;
 
 const PULL_VERB = /\b(pull|show|open|share|bring|get|see|look at|display|surface|find)\b/;
-const DOC_NOUN = /\b(docs?|files?|documents?|contracts?|guides?)\b/;
+const DOC_NOUN = /\b(docs?|files?|documents?|contracts?|guides?|assets?|artifacts?|materials?)\b/;
+
+/**
+ * "Show me the assets" names no subject at all. Rather than guess, hand over
+ * the planner's own two: what the work is, and what it must look like.
+ */
+const GENERIC_ASK = /\b(assets?|artifacts?|materials?|docs?|documents?|files?)\b/;
+const DEFAULT_PATHS = ["Agents/planning.md", "Agents/design.md"];
 
 /** Null when this is not a request for documents. */
 function documentPull(text: string): string[] | null {
   const t = text.toLowerCase();
   const hits = DOC_SUBJECTS.filter((d) => d.match.test(t));
-  if (hits.length === 0) return null;
+
+  // A bare "can you pull the assets" is still a document request — it just has
+  // not said which. Answering with the planner's two beats a fallback that
+  // tells someone to go read a file themselves.
+  if (hits.length === 0) {
+    if (GENERIC_ASK.test(t) && (PULL_VERB.test(t) || /\?\s*$/.test(t))) return DEFAULT_PATHS;
+    return null;
+  }
   // A subject alone is enough when paired with a verb or the word "docs" —
   // otherwise "the design is wrong" would start citing files at people.
   if (
@@ -164,8 +178,8 @@ export function replyTo(channelId: string, text: string): GeneratedReply | null 
       agentId,
       text:
         cites.length === 1
-          ? "Here it is — read it off the repo rather than taking my summary for it. If it is out of date, that is a gap to close in the file, not something to correct in this thread."
-          : "Pulling those up. These are the live files, not copies — if what you need is not in them, that is the gap to fix rather than an answer I should improvise here.",
+          ? `Here it is, read live from ${cites[0]} — that file is the truth, not this preview of it. If it is out of date, the fix belongs in the file rather than in this thread.`
+          : `Pulling those up, read live from ${cites.join(" and ")}. Those files are the truth; what you see here is just a window onto them. If what you need is missing, that is a gap to close in the file rather than something I should improvise here.`,
       cites,
     };
   }
