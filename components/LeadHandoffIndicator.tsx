@@ -48,6 +48,12 @@ export function LeadHandoffIndicator({
         compact ? "scale-[0.82]" : ""
       }`}
     >
+      {/* The baton runs on its own track above the row, so the pass is a thing
+          you can watch cross rather than an inference from two beads leaning. */}
+      <span className="handoff-track z-30" aria-hidden="true">
+        <span className="handoff-baton" />
+      </span>
+
       <span key={`send-${beat}`} className="handoff-kiss-send flex -space-x-2">
         {PARTICIPANTS.slice(0, 2).map((id) => (
           <HandoffBead key={id} agentId={id} />

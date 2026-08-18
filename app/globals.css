@@ -807,76 +807,163 @@ body * {
   }
 }
 
-/* --- The handoff kiss ------------------------------------------------------
-   A relay hand-off read as a Newton's cradle: the sending beads swing in,
-   touch, and stop; the momentum travels through the pill without moving it —
-   middle balls in a cradle barely stir — and the lead departs, hangs at the
-   top of its arc, and falls back.
+/* --- The handoff ----------------------------------------------------------
+   A baton pass, not a pendulum. A pendulum's defining move is that it comes
+   back; a relay's is that everything keeps going forward.
 
-   The arc is a raised cosine, sampled every 4% and played linear, so the
-   shape lives in the values rather than in a timing function. That matters:
-   an eased curve between sparse keyframes still hits zero velocity at every
-   stop, and those velocity breaks are what read as jerk. Sampled this way,
-   displacement and velocity are both continuous end to end — nothing starts,
-   arrives, or leaves abruptly, and the touch is a turnaround rather than a
-   hold against a wall. */
+   So each element reaches forward decisively and then returns on a curve slow
+   enough to read as drift rather than a swing. The two overlap across two
+   thirds of the cycle: the lead is already reaching before the sender has
+   finished returning, so at no instant is the group as a whole moving
+   backwards. A brightness lift rides the same envelope, which gives the pass
+   a direction even when the travel itself is only a few pixels.
+
+   Both halves are half-cosines sampled every 3% and played linear, so the
+   shape lives in the values rather than in a timing function. An eased curve
+   between sparse keyframes still hits zero velocity at every stop, and those
+   velocity breaks are what read as jerk. Sampled this way, displacement and
+   velocity are continuous through the start, the peak, and the end. */
+.handoff-kiss-send,
+.handoff-kiss-recv {
+  animation-duration: 2400ms;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
 .handoff-kiss-send {
-  animation: handoff-kiss-send 2400ms linear both;
+  animation-name: handoff-kiss-send;
 }
 
 .handoff-kiss-recv {
-  animation: handoff-kiss-recv 2400ms linear both;
+  animation-name: handoff-kiss-recv;
+}
+
+.handoff-track {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 9999px;
+  pointer-events: none;
+}
+
+.handoff-baton {
+  position: absolute;
+  top: 50%;
+  height: 6px;
+  width: 6px;
+  border-radius: 9999px;
+  background: var(--lead-handoff-hue);
+  box-shadow: 0 0 10px 3px color-mix(in srgb, var(--lead-handoff-hue) 40%, transparent);
+  animation: handoff-baton 2400ms linear infinite;
 }
 
 @keyframes handoff-kiss-send {
-  0% { transform: translateX(0.0px); }
-  4% { transform: translateX(0.15px); }
-  8% { transform: translateX(0.6px); }
-  12% { transform: translateX(1.3px); }
-  16% { transform: translateX(2.17px); }
-  20% { transform: translateX(3.12px); }
-  24% { transform: translateX(4.06px); }
-  28% { transform: translateX(4.9px); }
-  32% { transform: translateX(5.54px); }
-  36% { transform: translateX(5.91px); }
-  40% { transform: translateX(5.99px); }
-  44% { transform: translateX(5.76px); }
-  48% { transform: translateX(5.25px); }
-  52% { transform: translateX(4.5px); }
-  56% { transform: translateX(3.6px); }
-  60% { transform: translateX(2.64px); }
-  64% { transform: translateX(1.71px); }
-  68% { transform: translateX(0.92px); }
-  72% { transform: translateX(0.34px); }
-  76% { transform: translateX(0.04px); }
-  80%,
-  100% { transform: translateX(0); }
+  0% { filter: brightness(1.048); }
+  4% { filter: brightness(1.094); }
+  8% { filter: brightness(1.151); }
+  12% { filter: brightness(1.2); }
+  16% { filter: brightness(1.22); }
+  20% { filter: brightness(1.2); }
+  24% { filter: brightness(1.151); }
+  28% { filter: brightness(1.094); }
+  32% { filter: brightness(1.048); }
+  36% { filter: brightness(1.021); }
+  40% { filter: brightness(1.007); }
+  44% { filter: brightness(1.002); }
+  48% { filter: brightness(1.001); }
+  52% { filter: brightness(1.0); }
+  56% { filter: brightness(1.0); }
+  60% { filter: brightness(1.0); }
+  64% { filter: brightness(1.0); }
+  68% { filter: brightness(1.0); }
+  72% { filter: brightness(1.0); }
+  76% { filter: brightness(1.0); }
+  80% { filter: brightness(1.0); }
+  84% { filter: brightness(1.0); }
+  88% { filter: brightness(1.0); }
+  92% { filter: brightness(1.0); }
+  96% { filter: brightness(1.0); }
+  100% { filter: brightness(1.0); }
 }
 
 @keyframes handoff-kiss-recv {
-  0%,
-  36% { transform: translateX(0); }
-  40% { transform: translateX(0.02px); }
-  44% { transform: translateX(0.45px); }
-  48% { transform: translateX(1.4px); }
-  52% { transform: translateX(2.7px); }
-  56% { transform: translateX(4.13px); }
-  60% { transform: translateX(5.45px); }
-  64% { transform: translateX(6.45px); }
-  68% { transform: translateX(6.96px); }
-  72% { transform: translateX(6.88px); }
-  76% { transform: translateX(6.24px); }
-  80% { transform: translateX(5.14px); }
-  84% { transform: translateX(3.77px); }
-  88% { transform: translateX(2.35px); }
-  92% { transform: translateX(1.12px); }
-  96% { transform: translateX(0.29px); }
-  100% { transform: translateX(0.0px); }
+  0% { filter: brightness(1.0); }
+  4% { filter: brightness(1.0); }
+  8% { filter: brightness(1.0); }
+  12% { filter: brightness(1.0); }
+  16% { filter: brightness(1.0); }
+  20% { filter: brightness(1.0); }
+  24% { filter: brightness(1.0); }
+  28% { filter: brightness(1.0); }
+  32% { filter: brightness(1.0); }
+  36% { filter: brightness(1.0); }
+  40% { filter: brightness(1.0); }
+  44% { filter: brightness(1.0); }
+  48% { filter: brightness(1.0); }
+  52% { filter: brightness(1.001); }
+  56% { filter: brightness(1.003); }
+  60% { filter: brightness(1.009); }
+  64% { filter: brightness(1.024); }
+  68% { filter: brightness(1.057); }
+  72% { filter: brightness(1.111); }
+  76% { filter: brightness(1.178); }
+  80% { filter: brightness(1.237); }
+  84% { filter: brightness(1.26); }
+  88% { filter: brightness(1.237); }
+  92% { filter: brightness(1.178); }
+  96% { filter: brightness(1.111); }
+  100% { filter: brightness(1.057); }
+}
+
+/* The baton. It crosses once and fades out rather than returning, so the
+   travel is forward at every instant of the loop — there is no point in the
+   cycle where anything on the strip is moving right to left. */
+/* The baton. It crosses once and fades where it lands, so the travel is
+   forward at every instant — nothing on the strip ever moves right to
+   left. Position is a smootherstep, which holds zero velocity at both
+   ends: it eases out of the sender's hand and decelerates into the
+   lead's. That deceleration is the kiss; there is no swing back. */
+@keyframes handoff-baton {
+  0% { left: 7.0%; opacity: 0.0; transform: translateY(-50%) scale(0.5); }
+  3% { left: 7.02%; opacity: 0.3; transform: translateY(-50%) scale(0.65); }
+  6% { left: 7.17%; opacity: 0.6; transform: translateY(-50%) scale(0.8); }
+  9% { left: 7.55%; opacity: 0.9; transform: translateY(-50%) scale(0.95); }
+  12% { left: 8.23%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
+  15% { left: 9.29%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
+  18% { left: 10.76%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
+  21% { left: 12.67%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
+  24% { left: 15.02%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
+  27% { left: 17.81%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
+  30% { left: 21.02%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
+  33% { left: 24.63%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
+  36% { left: 28.58%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
+  39% { left: 32.83%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
+  42% { left: 37.32%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
+  45% { left: 41.99%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
+  48% { left: 46.78%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
+  51% { left: 51.61%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
+  54% { left: 56.42%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
+  57% { left: 61.14%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
+  60% { left: 65.7%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
+  63% { left: 70.04%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
+  66% { left: 74.09%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
+  69% { left: 77.82%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
+  72% { left: 81.16%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
+  75% { left: 84.1%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
+  78% { left: 86.6%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
+  81% { left: 88.65%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
+  84% { left: 90.27%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
+  87% { left: 91.46%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
+  90% { left: 92.26%; opacity: 0.83; transform: translateY(-50%) scale(0.92); }
+  93% { left: 92.74%; opacity: 0.58; transform: translateY(-50%) scale(0.79); }
+  96% { left: 92.95%; opacity: 0.33; transform: translateY(-50%) scale(0.67); }
+  99% { left: 93.0%; opacity: 0.08; transform: translateY(-50%) scale(0.54); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .handoff-kiss-send,
-  .handoff-kiss-recv {
+  .handoff-kiss-recv,
+  .handoff-baton {
     animation: none;
   }
 }
