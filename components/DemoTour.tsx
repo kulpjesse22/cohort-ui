@@ -16,6 +16,7 @@ import { TeamTimeline } from "./TeamTimeline";
 import { WelcomeScreen } from "./WelcomeScreen";
 import { LeadHandoffIndicator, type HandoffDetails } from "./LeadHandoffIndicator";
 import { Avatar } from "./Avatar";
+import { AgentTrustChip } from "./AgentTrustChip";
 
 /**
  * The handoff the tour is standing on. The final beat tells the viewer to open
@@ -23,12 +24,22 @@ import { Avatar } from "./Avatar";
  * real file, so the claim can be checked rather than taken.
  */
 const TOUR_HANDOFF: HandoffDetails = {
-  from: "Claudia · Planner",
-  to: "Augustus · Builder",
-  why: "Brand direction settled with Jesse, so the poster work is unblocked and scoped.",
-  source: "Agents/tasks/augustus.md",
-  next: "Athena reviews the first pass before anything ships.",
+  from: "Jesse · Human lead",
+  to: "Claudia · Agent lead",
+  why: "New work needs scope, ownership, and safety gates before a builder touches it.",
+  source: "Agents/planning.md",
+  next: "Claudia routes a scoped task and sends the result to review.",
 };
+
+const TOUR_FLOW = [
+  { label: "Intake", hue: "agent-violet" },
+  { label: "Scope", hue: "agent-teal" },
+  { label: "Handoff", hue: "agent-violet" },
+  { label: "Review", hue: "agent-amber" },
+  { label: "Lesson", hue: "agent-sky" },
+  { label: "Growth", hue: "agent-teal" },
+  { label: "Record", hue: "agent-rose" },
+];
 
 function dim(region: Spotlight, active: Spotlight): string {
   if (active === null) return "opacity-100";
@@ -40,19 +51,49 @@ function dim(region: Spotlight, active: Spotlight): string {
 export function DemoTour() {
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(true);
+  const [direction, setDirection] = useState<"forward" | "back">("forward");
+  const [phase, setPhase] = useState<"idle" | "out" | "in">("idle");
+  const [handoffFrom, setHandoffFrom] = useState<number | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [contextDocs, setContextDocs] = useState<ContextDoc[]>([]);
   const [loadingMessages, setLoadingMessages] = useState(true);
   const [loadingContext, setLoadingContext] = useState(true);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const transitionLocked = useRef(false);
 
   const step = DEMO_STEPS[index];
   const isLast = index === DEMO_STEPS.length - 1;
   const targetId = step.view.id;
 
-  // Functional update: rapid arrow presses must not read a stale index.
+  const moveTo = useCallback((next: number) => {
+    const clamped = Math.min(Math.max(next, 0), DEMO_STEPS.length - 1);
+    if (transitionLocked.current) return;
+    if (phase !== "idle") return;
+    if (clamped === index) return;
+    if (timer.current) clearTimeout(timer.current);
+
+    transitionLocked.current = true;
+    setHandoffFrom(index);
+    setDirection(clamped < index ? "back" : "forward");
+    setPhase("out");
+    window.setTimeout(() => {
+      setIndex(clamped);
+      setPhase("in");
+      window.setTimeout(() => {
+        setPhase("idle");
+        setHandoffFrom(null);
+        transitionLocked.current = false;
+      }, 1040);
+    }, 340);
+  }, [index, phase]);
+
   const go = useCallback((delta: number) => {
-    setIndex((i) => Math.min(Math.max(i + delta, 0), DEMO_STEPS.length - 1));
-  }, []);
+    moveTo(index + delta);
+  }, [index, moveTo]);
+
+  const jumpTo = useCallback((next: number) => {
+    moveTo(next);
+  }, [moveTo]);
 
   // Load whatever the current step is looking at.
   useEffect(() => {
@@ -86,18 +127,17 @@ export function DemoTour() {
   }, [targetId, step.view.kind]);
 
   // Auto-advance, stopping at the end rather than looping.
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => {
     if (!playing) return;
     if (isLast) {
       setPlaying(false);
       return;
     }
-    timer.current = setTimeout(() => setIndex((i) => i + 1), step.holdMs);
+    timer.current = setTimeout(() => moveTo(index + 1), step.holdMs);
     return () => {
       if (timer.current) clearTimeout(timer.current);
     };
-  }, [playing, index, isLast, step.holdMs]);
+  }, [playing, index, isLast, step.holdMs, moveTo]);
 
   // Arrow keys and space, so the tour is drivable while recording.
   useEffect(() => {
@@ -139,6 +179,9 @@ export function DemoTour() {
       total={DEMO_STEPS.length}
       title={step.title}
       body={step.body}
+      phase={phase}
+      direction={direction}
+      handoffFrom={handoffFrom}
       playing={playing}
       isLast={isLast}
       onPrev={() => {
@@ -149,9 +192,13 @@ export function DemoTour() {
         setPlaying(false);
         go(1);
       }}
+      onJump={(next) => {
+        setPlaying(false);
+        jumpTo(next);
+      }}
       onToggle={() => {
         if (isLast) {
-          setIndex(0);
+          moveTo(0);
           setPlaying(true);
         } else {
           setPlaying((p) => !p);
@@ -161,20 +208,22 @@ export function DemoTour() {
   );
 
   // The splash is a full page with its own chrome, so it replaces the shell
-  // rather than sitting inside it. The caption bar stays either way.
+  // rather than sitting inside it. The guided demo chrome starts once the
+  // viewer is inside the product surface.
   if (isSplash) {
     return (
-      <div className="relative h-screen w-full overflow-hidden bg-canvas">
-        <div className="h-full overflow-y-auto">
+      <div className="tour-cruise relative h-screen w-full overflow-hidden bg-canvas">
+        <div
+          className={`tour-surface tour-surface-${direction} tour-phase-${phase} h-full overflow-y-auto`}
+        >
           <WelcomeScreen />
         </div>
-        {caption}
       </div>
     );
   }
 
   return (
-    <div className="relative flex h-screen w-full overflow-hidden bg-canvas">
+    <div className="tour-cruise relative flex h-screen w-full overflow-hidden bg-canvas">
       <div
         className={`hidden transition-opacity duration-500 lg:block ${dim("sidebar", step.spotlight)}`}
       >
@@ -190,6 +239,7 @@ export function DemoTour() {
       <main className="flex min-w-0 flex-1 flex-col">
         <header className="flex items-center gap-3 border-b border-line px-5 py-3">
           <div
+            key={`header-${index}`}
             className={`flex min-w-0 flex-1 items-center gap-3 transition-opacity duration-500 ${dim("main", step.spotlight)}`}
           >
             {agent ? (
@@ -198,9 +248,11 @@ export function DemoTour() {
                 <div className="min-w-0 flex-1">
                   <div className="flex items-baseline gap-2">
                     <h1 className="truncate font-semibold text-ink">{agent.name}</h1>
-                    <span className="shrink-0 rounded border border-line-strong px-1.5 py-0.5 text-[10px] text-ink-2">
-                      {agent.seniority}
-                    </span>
+                    <AgentTrustChip
+                      agentId={agent.id}
+                      compact
+                      forceOpen={step.focusEntryId === "ju-6"}
+                    />
                   </div>
                   <p className="truncate text-xs text-ink-3">{agent.title}</p>
                 </div>
@@ -214,18 +266,20 @@ export function DemoTour() {
           </div>
 
           <div
-            className={`hidden shrink-0 transition-opacity duration-500 md:flex ${dim("handoff", step.spotlight)}`}
+            className={`tour-handoff-dock hidden shrink-0 transition-opacity duration-500 md:flex ${dim("handoff", step.spotlight)}`}
           >
             <LeadHandoffIndicator
-              label="Sending to Lead..."
+              label="Checking scope..."
               details={TOUR_HANDOFF}
+              forceOpen={step.spotlight === "handoff"}
+              cycleKey={index}
               compact
             />
           </div>
         </header>
 
         <div
-          className={`flex min-h-0 flex-1 flex-col transition-opacity duration-500 ${dim("main", step.spotlight)}`}
+          className={`tour-surface tour-surface-${direction} tour-phase-${phase} flex min-h-0 flex-1 flex-col transition-opacity duration-700 ${dim("main", step.spotlight)}`}
         >
         {isProfile ? (
           <AgentTimeline
@@ -261,39 +315,42 @@ function CaptionBar({
   total,
   title,
   body,
+  phase,
+  direction,
+  handoffFrom,
   playing,
   isLast,
   onPrev,
   onNext,
+  onJump,
   onToggle,
 }: {
   index: number;
   total: number;
   title: string;
   body: string;
+  phase: "idle" | "out" | "in";
+  direction: "forward" | "back";
+  handoffFrom: number | null;
   playing: boolean;
   isLast: boolean;
   onPrev: () => void;
   onNext: () => void;
+  onJump: (index: number) => void;
   onToggle: () => void;
 }) {
   return (
-    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-50 p-4 lg:p-6">
+    <div className="tour-caption-layer pointer-events-none absolute inset-x-0 bottom-0 z-50 p-4 lg:p-6">
       <div className="pointer-events-auto mx-auto max-w-3xl rounded-xl border border-line-strong bg-panel/95 p-4 shadow-2xl backdrop-blur lg:p-5">
-        <div className="mb-2 flex items-center gap-2">
-          <span className="font-mono text-[11px] text-ink-3">
-            {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-          </span>
-          <div className="flex flex-1 gap-1">
-            {Array.from({ length: total }).map((_, i) => (
-              <span
-                key={i}
-                className={`h-0.5 flex-1 rounded-full transition-colors duration-300 ${
-                  i <= index ? "bg-brand" : "bg-line"
-                }`}
-              />
-            ))}
-          </div>
+        <div className="mb-3 flex items-center gap-3">
+          <TourFlow
+            index={index}
+            total={total}
+            phase={phase}
+            direction={direction}
+            handoffFrom={handoffFrom}
+            onJump={onJump}
+          />
           {/* The way out of the tour is into the workspace, not into one
               agent's channel. Cohort is the product; Claudia is a role in it. */}
           <Link
@@ -304,8 +361,10 @@ function CaptionBar({
           </Link>
         </div>
 
-        <h2 className="text-base font-semibold text-ink">{title}</h2>
-        <p className="mt-1 text-[13px] leading-relaxed text-ink-2">{body}</p>
+        <div key={index} className={`tour-caption-copy tour-phase-${phase}`}>
+          <h2 className="text-base font-semibold text-ink">{title}</h2>
+          <p className="mt-1 text-[13px] leading-relaxed text-ink-2">{body}</p>
+        </div>
 
         <div className="mt-3 flex items-center gap-2">
           <button
@@ -332,6 +391,85 @@ function CaptionBar({
             ← → to step · space to pause
           </span>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function TourFlow({
+  index,
+  total,
+  phase,
+  direction,
+  handoffFrom,
+  onJump,
+}: {
+  index: number;
+  total: number;
+  phase: "idle" | "out" | "in";
+  direction: "forward" | "back";
+  handoffFrom: number | null;
+  onJump: (index: number) => void;
+}) {
+  return (
+    <div className="tour-step-flow min-w-0 flex-1 overflow-x-auto">
+      <div className="flex min-w-max items-center gap-1.5 pr-1">
+        {Array.from({ length: total }).map((_, i) => {
+          const active = i === index;
+          const exiting = phase !== "idle" && handoffFrom === i && handoffFrom !== index;
+          const expanded = active || exiting;
+          const done = i < index || exiting;
+          const item = TOUR_FLOW[i] ?? TOUR_FLOW[TOUR_FLOW.length - 1];
+
+          return (
+            <button
+              key={item.label}
+              type="button"
+              onClick={() => onJump(i)}
+              className={`${item.hue} tour-step-slot group relative flex h-7 w-9 items-center justify-center outline-none transition-[width] duration-700 ease-out focus-visible:ring-2 focus-visible:ring-line-strong ${
+                expanded ? "tour-step-slot-active sm:w-[7.25rem]" : ""
+              } ${
+                active && phase === "out" ? `tour-step-send-${direction}` : ""
+              } ${
+                active && phase === "in" ? `tour-step-receive-${direction}` : ""
+              } ${
+                exiting && phase === "in" ? `tour-step-exit-${direction}` : ""
+              }`}
+              aria-current={active ? "step" : undefined}
+              aria-label={`Step ${i + 1} of ${total}: ${item.label}`}
+            >
+              <span
+                className={`tour-step-bubble relay-token absolute rounded-full transition-all duration-700 ease-out ${
+                  expanded ? "h-4 w-4 opacity-0" : done ? "h-3.5 w-3.5 opacity-85" : "h-3 w-3 opacity-55"
+                }`}
+                aria-hidden="true"
+              />
+              <span
+                className={`tour-step-chip tour-step-chip-active absolute inline-flex items-center gap-1.5 rounded-full border bg-canvas px-2.5 py-1 text-[10px] font-semibold text-current transition-all duration-700 ease-out ${
+                  expanded
+                    ? "translate-y-0 scale-100 opacity-100"
+                    : "pointer-events-none translate-y-1 scale-95 opacity-0"
+                }`}
+                aria-hidden={!expanded}
+              >
+                <span className="relay-token h-3.5 w-3.5 shrink-0 rounded-full" aria-hidden="true" />
+                <span className="flex w-4 items-center justify-center gap-0.5" aria-hidden="true">
+                  {[0, 1, 2].map((dot) => (
+                    <span
+                      key={dot}
+                      className="handoff-dot h-1 w-1 rounded-full bg-current"
+                      style={{ animationDelay: `${dot * 160}ms` }}
+                    />
+                  ))}
+                </span>
+                <span className="hidden w-[3.25rem] text-left sm:inline">{item.label}</span>
+              </span>
+            </button>
+          );
+        })}
+        <span className="ml-1 shrink-0 font-mono text-[11px] text-ink-3">
+          {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+        </span>
       </div>
     </div>
   );

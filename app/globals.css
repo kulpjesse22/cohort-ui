@@ -237,6 +237,24 @@
   animation: handoff-pulse 1.2s ease-in-out infinite;
 }
 
+.agent-trust {
+  color: var(--hue);
+  z-index: 60;
+}
+
+.agent-trust-pill {
+  border-color: color-mix(in srgb, var(--hue) 20%, var(--line));
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.03),
+    inset 0 0 0 1px color-mix(in srgb, var(--hue) 9%, transparent);
+}
+
+.agent-trust-popover {
+  box-shadow:
+    0 18px 55px rgb(0 0 0 / 0.22),
+    0 0 0 1px color-mix(in srgb, var(--hue) 8%, transparent);
+}
+
 @keyframes handoff-pulse {
   0%,
   100% {
@@ -249,9 +267,487 @@
   }
 }
 
+.tour-cruise::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    linear-gradient(
+      115deg,
+      transparent 0%,
+      color-mix(in srgb, var(--brand) 4%, transparent) 35%,
+      transparent 62%
+    );
+  opacity: 0.7;
+  transform: translateX(-18%);
+  animation: tour-current 18s ease-in-out infinite alternate;
+}
+
+.tour-cruise > :not(.tour-caption-layer) {
+  position: relative;
+  z-index: 1;
+}
+
+.tour-surface {
+  animation: tour-surface-forward 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  transition:
+    opacity 520ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 720ms cubic-bezier(0.16, 1, 0.3, 1),
+    filter 620ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform, filter;
+}
+
+.tour-surface-back {
+  animation-name: tour-surface-back;
+}
+
+.tour-caption-card {
+  animation: tour-caption-arrive 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.tour-caption-copy {
+  animation: tour-caption-copy 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  transition:
+    opacity 420ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 520ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.tour-handoff-dock {
+  animation: tour-dock-float 5.6s ease-in-out infinite;
+}
+
+.tour-progress-track {
+  isolation: isolate;
+}
+
+.tour-progress-bead {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: var(--brand);
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--brand) 14%, transparent),
+    0 0 18px color-mix(in srgb, var(--brand) 24%, transparent);
+  transform: translate(-50%, -50%);
+  transition: left 620ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tour-step-flow {
+  scrollbar-width: none;
+}
+
+.tour-step-flow::-webkit-scrollbar {
+  display: none;
+}
+
+.tour-step-slot {
+  border-radius: 999px;
+}
+
+.tour-step-slot + .tour-step-slot::before {
+  content: "";
+  position: absolute;
+  right: calc(100% - 0.1rem);
+  top: 50%;
+  width: 0.7rem;
+  height: 1px;
+  background: color-mix(in srgb, var(--hue) 18%, var(--line));
+  opacity: 0.55;
+  transform: translateY(-50%);
+}
+
+.tour-step-bubble {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--hue) 18%, transparent),
+    0 0 0 4px color-mix(in srgb, var(--hue) 6%, transparent);
+}
+
+.tour-baton {
+  z-index: 3;
+  opacity: 0;
+  pointer-events: none;
+  border-radius: 999px;
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--hue) 9%, transparent),
+    0 0 10px color-mix(in srgb, var(--hue) 22%, transparent);
+}
+
+.tour-baton-forward {
+  animation: tour-baton-forward 760ms cubic-bezier(0.33, 1, 0.68, 1) both;
+}
+
+.tour-baton-back {
+  animation: tour-baton-back 760ms cubic-bezier(0.33, 1, 0.68, 1) both;
+}
+
+.tour-baton-catch-forward {
+  animation: tour-baton-catch-forward 1040ms cubic-bezier(0.33, 1, 0.68, 1) both;
+}
+
+.tour-baton-catch-back {
+  animation: tour-baton-catch-back 1040ms cubic-bezier(0.33, 1, 0.68, 1) both;
+}
+
+.tour-step-chip {
+  min-width: 6.25rem;
+  border-color: color-mix(in srgb, var(--hue) 16%, var(--line));
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.025),
+    inset 0 0 0 1px color-mix(in srgb, var(--hue) 7%, transparent);
+  transition:
+    background-color 220ms ease-out,
+    border-color 320ms ease-out,
+    box-shadow 420ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 240ms ease-out,
+    opacity 320ms ease-out,
+    transform 520ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tour-step-chip-active {
+  border-color: color-mix(in srgb, var(--hue) 30%, var(--line));
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--hue) 9%, transparent),
+    0 8px 22px rgb(0 0 0 / 0.08),
+    inset 0 0 0 1px color-mix(in srgb, var(--hue) 10%, transparent);
+  transform: translateY(-1px);
+}
+
+.tour-step-send-forward .tour-step-chip {
+  animation: tour-chip-send-forward 460ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.tour-step-send-back .tour-step-chip {
+  animation: tour-chip-send-back 460ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.tour-step-receive-forward .tour-step-chip {
+  animation: tour-chip-receive-forward 1040ms cubic-bezier(0.33, 1, 0.68, 1) both;
+  transform-origin: right center;
+}
+
+.tour-step-receive-back .tour-step-chip {
+  animation: tour-chip-receive-back 1040ms cubic-bezier(0.33, 1, 0.68, 1) both;
+  transform-origin: left center;
+}
+
+.tour-step-exit-forward .tour-step-chip {
+  animation: tour-chip-exit-forward 1040ms cubic-bezier(0.33, 1, 0.68, 1) both;
+  transform-origin: left center;
+  z-index: 2;
+}
+
+.tour-step-exit-back .tour-step-chip {
+  animation: tour-chip-exit-back 1040ms cubic-bezier(0.33, 1, 0.68, 1) both;
+  transform-origin: right center;
+  z-index: 2;
+}
+
+.tour-step-receive-forward .tour-step-chip,
+.tour-step-receive-back .tour-step-chip {
+  z-index: 4;
+}
+
+.tour-phase-out {
+  opacity: 0.28;
+  filter: blur(3px);
+  transform: translateY(7px) scale(0.997);
+}
+
+.tour-surface-back.tour-phase-out {
+  transform: translateY(7px) translateX(8px) scale(0.997);
+}
+
+.tour-surface-forward.tour-phase-out {
+  transform: translateY(7px) translateX(-8px) scale(0.997);
+}
+
+.tour-phase-in {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0) translateX(0) scale(1);
+}
+
+@keyframes tour-current {
+  from {
+    transform: translateX(-18%);
+  }
+  to {
+    transform: translateX(18%);
+  }
+}
+
+@keyframes tour-surface-forward {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateX(10px) translateY(6px) scale(0.996);
+  }
+  55% {
+    opacity: 1;
+    filter: blur(0);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateX(0) translateY(0) scale(1);
+  }
+}
+
+@keyframes tour-surface-back {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateX(-10px) translateY(6px) scale(0.996);
+  }
+  55% {
+    opacity: 1;
+    filter: blur(0);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateX(0) translateY(0) scale(1);
+  }
+}
+
+@keyframes tour-chip-send-forward {
+  0% {
+    transform: translateX(0) translateY(-1px) scale(1);
+  }
+  54% {
+    transform: translateX(1.5px) translateY(-1px) scale(1);
+  }
+  100% {
+    transform: translateX(2.5px) translateY(-1px) scale(0.999);
+  }
+}
+
+@keyframes tour-chip-send-back {
+  0% {
+    transform: translateX(0) translateY(-1px) scale(1);
+  }
+  54% {
+    transform: translateX(-1.5px) translateY(-1px) scale(1);
+  }
+  100% {
+    transform: translateX(-2.5px) translateY(-1px) scale(0.999);
+  }
+}
+
+@keyframes tour-baton-forward {
+  0% {
+    opacity: 0;
+    transform: translateX(3.02rem) translateY(0) scale(0.82);
+  }
+  34% {
+    opacity: 0.8;
+    transform: translateX(3.12rem) translateY(0) scale(0.94);
+  }
+  74% {
+    opacity: 0.95;
+    transform: translateX(3.24rem) translateY(0) scale(0.98);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(3.26rem) translateY(0) scale(0.84);
+  }
+}
+
+@keyframes tour-baton-back {
+  0% {
+    opacity: 0;
+    transform: translateX(-3.02rem) translateY(0) scale(0.82);
+  }
+  34% {
+    opacity: 0.8;
+    transform: translateX(-3.12rem) translateY(0) scale(0.94);
+  }
+  74% {
+    opacity: 0.95;
+    transform: translateX(-3.24rem) translateY(0) scale(0.98);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-3.26rem) translateY(0) scale(0.84);
+  }
+}
+
+@keyframes tour-baton-catch-forward {
+  0% {
+    opacity: 0;
+    transform: translateX(-3.16rem) translateY(0) scaleX(0.9) scaleY(1.02);
+  }
+  24% {
+    opacity: 0.85;
+    transform: translateX(-3.11rem) translateY(0) scaleX(0.94) scaleY(1.01);
+  }
+  62% {
+    opacity: 0.72;
+    transform: translateX(-3.04rem) translateY(0) scale(0.9);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-3rem) translateY(0) scale(0.74);
+  }
+}
+
+@keyframes tour-baton-catch-back {
+  0% {
+    opacity: 0;
+    transform: translateX(3.16rem) translateY(0) scaleX(0.9) scaleY(1.02);
+  }
+  24% {
+    opacity: 0.85;
+    transform: translateX(3.11rem) translateY(0) scaleX(0.94) scaleY(1.01);
+  }
+  62% {
+    opacity: 0.72;
+    transform: translateX(3.04rem) translateY(0) scale(0.9);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(3rem) translateY(0) scale(0.74);
+  }
+}
+
+@keyframes tour-chip-receive-forward {
+  0% {
+    opacity: 0.96;
+    transform: translateX(-5px) translateY(-1px) scaleX(0.978) scaleY(1.004);
+  }
+  38% {
+    opacity: 1;
+    transform: translateX(-3px) translateY(-1px) scaleX(0.986) scaleY(1.002);
+  }
+  72% {
+    opacity: 1;
+    transform: translateX(-1px) translateY(-1px) scaleX(0.996) scaleY(1.001);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) translateY(-1px) scale(1);
+  }
+}
+
+@keyframes tour-chip-receive-back {
+  0% {
+    opacity: 0.96;
+    transform: translateX(5px) translateY(-1px) scaleX(0.978) scaleY(1.004);
+  }
+  38% {
+    opacity: 1;
+    transform: translateX(3px) translateY(-1px) scaleX(0.986) scaleY(1.002);
+  }
+  72% {
+    opacity: 1;
+    transform: translateX(1px) translateY(-1px) scaleX(0.996) scaleY(1.001);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) translateY(-1px) scale(1);
+  }
+}
+
+@keyframes tour-chip-exit-forward {
+  0% {
+    opacity: 0.95;
+    transform: translateX(5px) translateY(-1px) scale(0.999);
+  }
+  34% {
+    opacity: 0.76;
+    transform: translateX(6px) translateY(-1px) scale(0.997);
+  }
+  72% {
+    opacity: 0.26;
+    transform: translateX(3px) translateY(-1px) scale(0.992);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(0) translateY(-1px) scale(0.986);
+  }
+}
+
+@keyframes tour-chip-exit-back {
+  0% {
+    opacity: 0.95;
+    transform: translateX(-5px) translateY(-1px) scale(0.999);
+  }
+  34% {
+    opacity: 0.76;
+    transform: translateX(-6px) translateY(-1px) scale(0.997);
+  }
+  72% {
+    opacity: 0.26;
+    transform: translateX(-3px) translateY(-1px) scale(0.992);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(0) translateY(-1px) scale(0.986);
+  }
+}
+
+@keyframes tour-caption-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes tour-caption-copy {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes tour-dock-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .handoff-dot {
     animation-duration: 2.4s;
+  }
+
+  .tour-cruise::before,
+  .tour-surface,
+  .tour-caption-card,
+  .tour-caption-copy,
+  .tour-handoff-dock,
+  .tour-baton,
+  .tour-baton-catch-forward,
+  .tour-baton-catch-back,
+  .tour-step-send-forward .tour-step-chip,
+  .tour-step-send-back .tour-step-chip,
+  .tour-step-receive-forward .tour-step-chip,
+  .tour-step-receive-back .tour-step-chip,
+  .tour-step-exit-forward .tour-step-chip,
+  .tour-step-exit-back .tour-step-chip {
+    animation: none;
+  }
+
+  .tour-progress-bead {
+    transition: none;
   }
 }
 
@@ -308,5 +804,58 @@ body * {
   body,
   body * {
     transition: none;
+  }
+}
+
+/* --- The handoff kiss ------------------------------------------------------
+   A relay hand-off read as a Newton's cradle: the sending beads swing in,
+   touch, and stop; the momentum travels through the pill without moving it —
+   middle balls in a cradle barely stir — and the lead departs, hangs at the
+   top of its arc, and falls back.
+
+   The curve is a sine ease-in-out, which is what a pendulum actually does:
+   fastest at the bottom of the swing, still at the extremes. Linear or a
+   standard ease reads as a slide; this reads as weight. */
+.handoff-kiss-send {
+  animation: handoff-kiss-send 2200ms cubic-bezier(0.37, 0, 0.63, 1) both;
+}
+
+.handoff-kiss-recv {
+  animation: handoff-kiss-recv 2200ms cubic-bezier(0.37, 0, 0.63, 1) both;
+}
+
+@keyframes handoff-kiss-send {
+  0%,
+  6% {
+    transform: translateX(0);
+  }
+  /* Contact, and a beat of rest on it — the pause is the "kiss". */
+  42%,
+  50% {
+    transform: translateX(6px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes handoff-kiss-recv {
+  /* Nothing until the impact has arrived. */
+  0%,
+  46% {
+    transform: translateX(0);
+  }
+  76% {
+    transform: translateX(6px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .handoff-kiss-send,
+  .handoff-kiss-recv {
+    animation: none;
   }
 }
