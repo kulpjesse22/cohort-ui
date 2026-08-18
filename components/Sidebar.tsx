@@ -18,8 +18,8 @@ export function Sidebar({
         {/* The wordmark is the way back out. Only the mark itself is the target —
             the line under it is a descriptor, not a control. */}
         <Link
-          href="/"
-          aria-label="Cohort home"
+          href="/cohort"
+          aria-label="Open Cohort"
           className="inline-block rounded transition-opacity hover:opacity-80"
         >
           <Image

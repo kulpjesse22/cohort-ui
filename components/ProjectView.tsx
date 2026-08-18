@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import type { ContextDoc } from "@/lib/harness";
 import { AppShell } from "./AppShell";
 import { TeamTimeline } from "./TeamTimeline";
-import { Facepile } from "./Facepile";
-import { getActiveActorIds } from "@/lib/timeline";
 
 export function ProjectView() {
   const [contextDocs, setContextDocs] = useState<ContextDoc[]>([]);
@@ -39,9 +37,6 @@ export function ProjectView() {
         <p className="truncate text-[11px] text-ink-3">
           All work across the team — humans and agents — newest first.
         </p>
-      </div>
-      <div className="hidden shrink-0 sm:block">
-        <Facepile memberIds={getActiveActorIds()} label="Contributors" />
       </div>
     </div>
   );

@@ -24,6 +24,8 @@ const mono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Cohort — HAI-Harness",
   description: "A Slack-style workspace for the HAI-Harness agent roster.",
+  applicationName: "Cohort",
+  manifest: "/manifest.webmanifest",
   appleWebApp: { capable: true, statusBarStyle: "default", title: "Cohort" },
 };
 

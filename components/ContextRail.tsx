@@ -28,7 +28,7 @@ export function ContextRail({ docs, loading }: { docs: ContextDoc[]; loading: bo
         <span className="text-[10px] font-medium uppercase tracking-[0.06em] text-ink-3">
           Pinned repo context
         </span>
-        <span className="text-xs text-ink-3">{open ? "hide" : "show"}</span>
+        <span className="text-xs text-ink-3">{open ? "✕" : "+"}</span>
       </button>
 
       {open &&

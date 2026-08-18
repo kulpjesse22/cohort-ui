@@ -8,9 +8,24 @@ import type { ContextDoc } from "@/lib/harness";
 import { AppShell } from "./AppShell";
 import { MessageThread } from "./MessageThread";
 import { Composer } from "./Composer";
-import { Facepile } from "./Facepile";
 
-export function Workspace({ channelId }: { channelId: string }) {
+const TOUR_HANDOFF: Message = {
+  id: "tour-cohort-welcome",
+  channelId: "cohort",
+  authorId: "claudia",
+  authorName: "Claudia",
+  text: "You’ve seen how the team works. What would you like to do next? I can help turn a goal into a clear, durable plan.",
+  ts: "2026-08-02T00:00:00.000Z",
+};
+
+export function Workspace({
+  channelId,
+  fresh = false,
+}: {
+  channelId: string;
+  /** The tour hands off to a clean workspace, not the seeded demo log. */
+  fresh?: boolean;
+}) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [contextDocs, setContextDocs] = useState<ContextDoc[]>([]);
   const [loadingMessages, setLoadingMessages] = useState(true);
@@ -24,9 +39,21 @@ export function Workspace({ channelId }: { channelId: string }) {
     setLoadingMessages(true);
     setLoadingContext(true);
 
+    const contextPromise = fetch(`/api/context/${id}`);
+
+    if (fresh) {
+      const contextRes = await contextPromise;
+      const contextJson = await contextRes.json();
+      setContextDocs(contextJson.docs ?? []);
+      setLoadingContext(false);
+      setMessages([{ ...TOUR_HANDOFF, channelId: id }]);
+      setLoadingMessages(false);
+      return;
+    }
+
     const [messagesRes, contextRes] = await Promise.all([
       fetch(`/api/messages/${id}`),
-      fetch(`/api/context/${id}`),
+      contextPromise,
     ]);
 
     const messagesJson = await messagesRes.json();
@@ -36,7 +63,7 @@ export function Workspace({ channelId }: { channelId: string }) {
     const contextJson = await contextRes.json();
     setContextDocs(contextJson.docs ?? []);
     setLoadingContext(false);
-  }, []);
+  }, [fresh]);
 
   useEffect(() => {
     loadChannel(channelId);
@@ -73,8 +100,7 @@ export function Workspace({ channelId }: { channelId: string }) {
         <h1 className="truncate font-semibold text-ink">{channel.name}</h1>
         <p className="truncate text-xs text-ink-3">{channel.description}</p>
       </div>
-            <div className="hidden shrink-0 items-center gap-1.5 sm:flex">
-        <Facepile memberIds={[...channel.memberIds, "jesse"]} />
+      <div className="hidden shrink-0 items-center gap-1.5 sm:flex">
         {isAgentChannel && (
           <Link
             href={`/agent/${channelId}`}

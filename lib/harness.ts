@@ -34,6 +34,10 @@ async function readDoc(label: string, relPath: string): Promise<ContextDoc> {
 }
 
 const CHANNEL_DOCS: Record<string, [label: string, relPath: string][]> = {
+  cohort: [
+    ["Project context", "Agents/project_context.md"],
+    ["Active queue (planning.md)", "Agents/planning.md"],
+  ],
   claudia: [
     ["Project context", "Agents/project_context.md"],
     ["Active queue (planning.md)", "Agents/planning.md"],

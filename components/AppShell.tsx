@@ -6,7 +6,50 @@ import type { ContextDoc } from "@/lib/harness";
 import { Sidebar } from "./Sidebar";
 import { ContextRail } from "./ContextRail";
 import { CommandPalette } from "./CommandPalette";
-import { AgentRelay, SCENARIOS } from "./AgentRelay";
+import { LeadHandoffIndicator, type HandoffDetails } from "./LeadHandoffIndicator";
+
+const ACTIVITY_STATES: Array<{ label: string; details: HandoffDetails }> = [
+  {
+    label: "Checking scope...",
+    details: {
+      from: "Jesse",
+      to: "Claudia",
+      why: "A new request needs scope, routing, and dependency checks before workers touch it.",
+      source: "Agents/planning.md",
+      next: "Claudia turns intent into an executable task contract.",
+    },
+  },
+  {
+    label: "Assigning builder...",
+    details: {
+      from: "Claudia",
+      to: "Augustus",
+      why: "The lead has approved the path and is handing execution to a scoped builder.",
+      source: "Agents/tasks/augustus.md",
+      next: "Builder ships work back with notes, constraints, and changed files.",
+    },
+  },
+  {
+    label: "Reviewing fixes...",
+    details: {
+      from: "Augustus",
+      to: "Athena",
+      why: "Execution is separate from judgment, so review happens before work is called done.",
+      source: "Agents/handoffs/",
+      next: "Reviewer either approves, requests fixes, or writes a lesson.",
+    },
+  },
+  {
+    label: "Writing to record...",
+    details: {
+      from: "Athena",
+      to: "Cohort memory",
+      why: "The outcome needs to become durable context, not disappear into chat history.",
+      source: "Agents/lessons/INDEX.md",
+      next: "Future agents read the updated record before acting.",
+    },
+  },
+];
 
 export function AppShell({
   activeChannelId,
@@ -26,6 +69,8 @@ export function AppShell({
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [railOpen, setRailOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [activityIndex, setActivityIndex] = useState(0);
+  const activity = ACTIVITY_STATES[activityIndex];
 
   // Cmd/Ctrl-K opens search from anywhere, the way Slack and Notion do.
   useEffect(() => {
@@ -44,6 +89,13 @@ export function AppShell({
     setSidebarOpen(false);
     setRailOpen(false);
   }, [activeChannelId]);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActivityIndex((i) => (i + 1) % ACTIVITY_STATES.length);
+    }, 2600);
+    return () => window.clearInterval(timer);
+  }, []);
 
   const overlayOpen = sidebarOpen || railOpen;
 
@@ -86,6 +138,10 @@ export function AppShell({
 
           <div className="min-w-0 flex-1">{header}</div>
 
+          <div className="hidden shrink-0 md:flex">
+            <LeadHandoffIndicator label={activity.label} details={activity.details} compact />
+          </div>
+
           <button
             onClick={() => setSearchOpen(true)}
             aria-label="Search"
@@ -109,13 +165,6 @@ export function AppShell({
             <InfoIcon />
           </button>
         </header>
-
-        {/* Coordination, above the record of it. The thread below says what was
-            decided; this says who is holding the work right now. Hidden on
-            narrow screens, where six actors and a travelling pill do not fit. */}
-        <div className="hidden shrink-0 border-b border-line px-4 sm:block lg:px-5">
-          <AgentRelay scenario={SCENARIOS[0]} loop />
-        </div>
 
         {children}
       </main>

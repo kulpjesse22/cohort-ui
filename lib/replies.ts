@@ -34,6 +34,7 @@ export function responder(channelId: string, text: string): AgentId | null {
     new RegExp(`@${id}\\b`, "i").test(text)
   );
   if (mentioned) return mentioned;
+  if (channelId === "cohort") return "claudia";
   if (AGENTS[channelId as AgentId]) return channelId as AgentId;
   // #design-crit has no single owner; the design director takes point.
   if (channelId === "design-crit") return "hephaestus";

@@ -64,12 +64,20 @@ export const AGENT_ORDER: AgentId[] = ["claudia", "augustus", "julius", "athena"
 export interface Channel {
   id: string;
   name: string;
-  kind: "agent" | "crit";
+  kind: "workspace" | "agent" | "crit";
   memberIds: AgentId[];
   description: string;
 }
 
 export const CHANNELS: Channel[] = [
+  {
+    id: "cohort",
+    name: "#cohort",
+    kind: "workspace" as const,
+    memberIds: AGENT_ORDER,
+    description:
+      "The default workspace for directing the agent team, routing handoffs, and keeping the durable record visible.",
+  },
   ...AGENT_ORDER.map((id) => ({
     id,
     name: `#${id}`,

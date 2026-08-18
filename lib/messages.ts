@@ -18,6 +18,44 @@ const DATA_DIR = path.join(process.cwd(), "data", "messages");
 // Seed conversation dogfoods the harness on the exact work of building this UI —
 // it isn't generic filler, it's what actually happened in this session.
 const SEED_MESSAGES: Record<string, Omit<Message, "channelId">[]> = {
+  cohort: [
+    {
+      id: "seed-cohort-1",
+      authorId: "user",
+      authorName: "Jesse",
+      text: "Recreate the Cohort UI from the hackathon post and let's keep building on the real harness.",
+      ts: "2026-07-30T13:52:00Z",
+    },
+    {
+      id: "seed-cohort-clarify",
+      authorId: "claudia",
+      authorName: "Claudia",
+      text: "Before I assign anything: \"on the real harness\" has two readings, and they build different products. Either the panels read Agents/ off disk on every request — then the UI can never drift from what an agent actually reads, but a static export is off the table — or we snapshot the current contents as fixtures, which demos fine and starts lying the first time a file changes. That's a product call, not a scope detail, and it isn't mine to make. Which one?",
+      ts: "2026-07-30T13:54:00Z",
+    },
+    {
+      id: "seed-cohort-answer",
+      authorId: "user",
+      authorName: "Jesse",
+      text: "Read them live. If it can drift from what the agents read, it isn't worth building.",
+      ts: "2026-07-30T13:59:00Z",
+    },
+    {
+      id: "seed-cohort-2",
+      authorId: "claudia",
+      authorName: "Claudia",
+      text: "Live reads it is — that settles the architecture, so scope is clear enough to assign. Splitting into: Augustus takes the data layer (agent roster config, harness reader, seed store, API routes). Julius takes the UI shell (sidebar, channel thread, composer, context rail). Dependency: Julius's components consume the shapes Augustus defines, so this is sequenced, not parallel — Parallel Split Gate fails on producer/consumer.",
+      ts: "2026-07-30T14:01:00Z",
+      pinned: true,
+    },
+    {
+      id: "seed-cohort-3",
+      authorId: "claudia",
+      authorName: "Claudia",
+      text: "Recording in planning.md: current product truth is \"Cohort UI, v1 shell over real HAI-Harness roles, mock conversation layer.\" Logging the live-reads call to Human/decisions.md so it outlives this thread. Non-negotiable constraint: no Figma/export/agent-wiring in this pass — that's roadmap.",
+      ts: "2026-07-30T14:02:00Z",
+    },
+  ],
   claudia: [
     {
       id: "seed-claudia-1",
