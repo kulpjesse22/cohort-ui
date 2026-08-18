@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { ContextDoc } from "@/lib/harness";
+import { DocPreview } from "./DocPreview";
 
 function RailSkeleton() {
   return (
@@ -78,40 +79,25 @@ export function ContextRail({
             {/* What the agent just put up, ahead of the channel's standing
                 pins — this is the live subject of the conversation, and it is
                 where the human names one authoritative. */}
-            {citedDocs.map((doc) => {
-              const isCanon = canon === doc.path;
-              return (
-                <div key={`cited-${doc.path}`}>
-                  <div className="mb-1 flex items-center justify-between gap-2">
-                    <span className="flex min-w-0 items-center gap-1.5">
-                      <span className="truncate text-xs font-medium text-ink-2">
-                        {doc.label}
-                      </span>
-                      {isCanon && (
-                        <span className="shrink-0 text-[10px] font-medium text-approved">
-                          source of truth
-                        </span>
-                      )}
-                    </span>
-                    <span className="truncate font-mono text-[10px] text-ink-4">
-                      {doc.path}
-                    </span>
-                  </div>
-                  <pre className="max-h-56 overflow-y-auto whitespace-pre-wrap rounded border border-line bg-raised px-2 py-2 text-[11px] leading-relaxed text-ink-2">
-                    {doc.content ?? "Not in the repository yet."}
-                  </pre>
-                  {!isCanon && doc.content && (
+            {citedDocs.map((doc) => (
+              <DocPreview
+                key={`cited-${doc.path}`}
+                path={doc.path}
+                content={doc.content}
+                isCanon={canon === doc.path}
+                action={
+                  canon === doc.path ? null : doc.content ? (
                     <button
                       onClick={() => pin(doc.path)}
                       disabled={pinning === doc.path}
-                      className="mt-1.5 text-[11px] text-ink-3 underline decoration-dotted underline-offset-2 transition-colors hover:text-ink disabled:opacity-50"
+                      className="text-[11px] text-ink-3 underline decoration-dotted underline-offset-2 transition-colors hover:text-ink disabled:opacity-50"
                     >
                       {pinning === doc.path ? "Noting…" : "Set as source of truth"}
                     </button>
-                  )}
-                </div>
-              );
-            })}
+                  ) : null
+                }
+              />
+            ))}
 
             {citedDocs.length > 0 && docs.length > 0 && (
               <div className="border-t border-line pt-3 text-[10px] font-medium uppercase tracking-[0.06em] text-ink-4">

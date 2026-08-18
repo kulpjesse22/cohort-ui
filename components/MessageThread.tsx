@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import type { Message } from "@/lib/messages";
 import { AGENTS, type AgentId } from "@/lib/agents";
 import { Avatar } from "./Avatar";
-import { CitedDoc } from "./CitedDoc";
+
 
 function formatTime(iso: string): string {
   return new Date(iso).toLocaleTimeString(undefined, {
@@ -169,19 +169,18 @@ export function MessageThread({
                   {message.text}
                 </p>
                 {message.cites && message.cites.length > 0 && (
-                  /* Cited files open the real thing off disk. The point of
-                     citing in chat is that the claim can be checked in the
-                     room, not that it sounds authoritative. */
-                  <div className="mt-1">
-                    {message.cites.map((path) => (
-                      <CitedDoc
-                        key={path}
-                        path={path}
-                        channelId={message.channelId}
-                        onPinned={onPinned as ((r: unknown) => void) | undefined}
-                      />
+                  /* A pointer, not the document. The thread stays a
+                     conversation; the panel is where things get read. */
+                  <p className="mt-1.5 flex flex-wrap items-center gap-x-1.5 text-[11px] text-ink-4">
+                    <span aria-hidden="true">→</span>
+                    <span>Opened in the panel:</span>
+                    {message.cites.map((path, i) => (
+                      <span key={path} className="font-mono text-ink-3">
+                        {path.split("/").pop()}
+                        {i < message.cites!.length - 1 ? "," : ""}
+                      </span>
                     ))}
-                  </div>
+                  </p>
                 )}
               </div>
             </div>
