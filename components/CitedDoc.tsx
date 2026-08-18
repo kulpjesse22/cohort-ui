@@ -29,10 +29,50 @@ function excerpt(content: string): { text: string; truncated: boolean } {
   };
 }
 
-export function CitedDoc({ path }: { path: string }) {
+export function CitedDoc({
+  path,
+  channelId,
+  onPinned,
+}: {
+  path: string;
+  channelId?: string;
+  /** Lets the thread show the planner's acknowledgement immediately. */
+  onPinned?: (reply: unknown) => void;
+}) {
   const [state, setState] = useState<{ text: string; truncated: boolean; exists: boolean } | null>(
     null
   );
+  const [canon, setCanon] = useState<string | null>(null);
+  const [pinning, setPinning] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    fetch("/api/canon")
+      .then((r) => r.json())
+      .then((d) => active && setCanon(d.path ?? null))
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  async function pin() {
+    setPinning(true);
+    try {
+      const res = await fetch("/api/canon", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path, channelId }),
+      });
+      const data = await res.json();
+      setCanon(data.canon ?? path);
+      if (data.reply) onPinned?.(data.reply);
+    } finally {
+      setPinning(false);
+    }
+  }
+
+  const isCanon = canon === path;
 
   useEffect(() => {
     let active = true;
@@ -55,8 +95,26 @@ export function CitedDoc({ path }: { path: string }) {
   return (
     <div className="mt-2 overflow-hidden rounded-md border border-line bg-panel">
       <div className="flex items-center justify-between gap-3 border-b border-line px-3 py-1.5">
-        <span className="truncate font-mono text-[11px] text-ink-3">{path}</span>
-        <ArtifactLink path={path} />
+        <span className="flex min-w-0 items-center gap-2">
+          <span className="truncate font-mono text-[11px] text-ink-3">{path}</span>
+          {isCanon && (
+            <span className="shrink-0 text-[10px] font-medium text-approved">
+              source of truth
+            </span>
+          )}
+        </span>
+        <span className="flex shrink-0 items-center gap-2.5">
+          {state?.exists && !isCanon && (
+            <button
+              onClick={pin}
+              disabled={pinning}
+              className="text-[11px] text-ink-3 underline decoration-dotted underline-offset-2 transition-colors hover:text-ink disabled:opacity-50"
+            >
+              {pinning ? "Noting…" : "Set as source of truth"}
+            </button>
+          )}
+          <ArtifactLink path={path} />
+        </span>
       </div>
 
       {state === null ? (

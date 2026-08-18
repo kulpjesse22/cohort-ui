@@ -120,7 +120,12 @@ export function Workspace({
       contextDocs={contextDocs}
       loadingContext={loadingContext}
     >
-      <MessageThread messages={messages} loading={loadingMessages} typing={typing} />
+      <MessageThread
+        messages={messages}
+        loading={loadingMessages}
+        typing={typing}
+        onPinned={(reply) => setMessages((prev) => [...prev, reply as Message])}
+      />
       <Composer channelName={channel.name} onSend={handleSend} />
     </AppShell>
   );

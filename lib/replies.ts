@@ -168,16 +168,36 @@ function documentPull(text: string): string[] | null {
   return [...new Set(hits.flatMap((h) => h.paths))];
 }
 
-export function replyTo(channelId: string, text: string): GeneratedReply | null {
+/**
+ * `canon` is the document the human has named authoritative. It is threaded in
+ * rather than read here so this module stays synchronous and testable.
+ */
+export function replyTo(
+  channelId: string,
+  text: string,
+  canon?: string | null
+): GeneratedReply | null {
   const agentId = responder(channelId, text);
   if (!agentId) return null;
 
-  const cites = documentPull(text);
+  let cites = documentPull(text);
+
+  // The whole point of naming a source of truth is that it changes later
+  // answers. It leads the citation list, and the reply says why — otherwise
+  // the choice was a courtesy rather than a commitment.
+  if (cites && canon) {
+    cites = [canon, ...cites.filter((c) => c !== canon)];
+  }
+
   if (cites) {
     return {
       agentId,
       text:
-        cites.length === 1
+        canon && cites[0] === canon
+          ? `Leading with ${canon}, since you named it the source of truth — I'm not making you say that again. ${
+              cites.length > 1 ? `Also pulling ${cites.slice(1).join(" and ")}. ` : ""
+            }These are read live; the files are the truth, not this preview of them.`
+          : cites.length === 1
           ? `Here it is, read live from ${cites[0]} — that file is the truth, not this preview of it. If it is out of date, the fix belongs in the file rather than in this thread.`
           : `Pulling those up, read live from ${cites.join(" and ")}. Those files are the truth; what you see here is just a window onto them. If what you need is missing, that is a gap to close in the file rather than something I should improvise here.`,
       cites,

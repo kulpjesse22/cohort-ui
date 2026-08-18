@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getMessages, appendMessage, appendAgentReply } from "@/lib/messages";
 import { replyTo } from "@/lib/replies";
+import { getCanon } from "@/lib/canon";
 import { getChannel } from "@/lib/agents";
 
 export async function GET(
@@ -37,7 +38,7 @@ export async function POST(
 
   // The agent answers in character. Deterministic, not generated — see
   // lib/replies.ts for why that trade is deliberate.
-  const generated = replyTo(channelId, text);
+  const generated = replyTo(channelId, text, await getCanon());
   const reply = generated
     ? await appendAgentReply(channelId, generated.agentId, generated.text, message.ts, generated.cites)
     : null;
