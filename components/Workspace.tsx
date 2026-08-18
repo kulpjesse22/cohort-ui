@@ -107,7 +107,10 @@ export function Workspace({
     const res = await fetch(`/api/messages/${channelId}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text }),
+      // The deploy target is read-only, so the server has no memory of this
+      // thread. The browser does — send what is on the table so a follow-up
+      // like "show them in preview" can resolve.
+      body: JSON.stringify({ text, recentCites: citedPaths }),
     });
     if (!res.ok) {
       const body = await res.json().catch(() => null);
