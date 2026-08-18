@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-18T03:35:29.105Z",
-  "head": "ac0e078",
+  "generatedAt": "2026-08-18T03:41:25.612Z",
+  "head": "1838730",
   "identities": [
     {
       "id": "claude",
@@ -21,13 +21,23 @@
   "contributors": [
     {
       "id": "claude",
-      "commits": 41,
+      "commits": 43,
       "shared": 1,
-      "added": 18054,
-      "removed": 1791,
-      "files": 102,
+      "added": 19177,
+      "removed": 1846,
+      "files": 106,
       "first": "2026-07-30T10:16:10-07:00",
-      "last": "2026-08-17T20:34:46-07:00"
+      "last": "2026-08-17T20:40:55-07:00"
+    },
+    {
+      "id": "codex",
+      "commits": 2,
+      "shared": 1,
+      "added": 318,
+      "removed": 32,
+      "files": 16,
+      "first": "2026-08-17T20:34:46-07:00",
+      "last": "2026-08-17T20:41:20-07:00"
     },
     {
       "id": "human",
@@ -38,19 +48,61 @@
       "files": 13,
       "first": "2026-08-17T20:08:45-07:00",
       "last": "2026-08-17T20:34:46-07:00"
-    },
-    {
-      "id": "codex",
-      "commits": 1,
-      "shared": 1,
-      "added": 161,
-      "removed": 32,
-      "files": 14,
-      "first": "2026-08-17T20:34:46-07:00",
-      "last": "2026-08-17T20:34:46-07:00"
     }
   ],
   "commits": [
+    {
+      "sha": "1838730",
+      "author": "Jesse Kulp",
+      "date": "2026-08-17T20:41:20-07:00",
+      "subject": "Render contribution record on timeline",
+      "contributors": [
+        "codex"
+      ],
+      "shared": false,
+      "added": 157,
+      "removed": 0,
+      "files": [
+        "components/ContributionRecord.tsx",
+        "components/TeamTimeline.tsx",
+        "lib/contributions.ts"
+      ]
+    },
+    {
+      "sha": "ad5b6ca",
+      "author": "Jesse Kulp",
+      "date": "2026-08-17T20:40:55-07:00",
+      "subject": "Mechanize the tour-motion rule so nobody has to remember it",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 80,
+      "removed": 3,
+      "files": [
+        "Agents/lessons/INDEX.md",
+        "Agents/lessons/tour-motion-reversal.md",
+        "package.json",
+        "scripts/check-tour-motion.mjs"
+      ]
+    },
+    {
+      "sha": "147ceb7",
+      "author": "Jesse Kulp",
+      "date": "2026-08-17T20:37:15-07:00",
+      "subject": "Stop the guided tour sliding on every step",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 1043,
+      "removed": 52,
+      "files": [
+        "app/globals.css",
+        "data/contributions.json",
+        "scripts/contributions.mjs"
+      ]
+    },
     {
       "sha": "ac0e078",
       "author": "Jesse Kulp",
