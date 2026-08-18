@@ -90,6 +90,16 @@ export function AgentTrustChip({
             </dd>
             <dt className="text-ink-3">Boundary</dt>
             <dd className="text-ink-2">{agent.blurb}</dd>
+            {/* Named explicitly because the chip puts a seniority label beside
+                real evidence counts, which invites the reading that one was
+                derived from the other. It was not, and no agent here holds
+                approval rights. Saying so is cheaper than being asked. */}
+            <dt className="text-ink-3">Authority</dt>
+            <dd className="text-ink-2">
+              None. Work at this level is approved by a human or a peer
+              reviewer — seniority is a label, not yet earned from the evidence
+              above.
+            </dd>
             <dt className="text-ink-3">Next</dt>
             <dd className="text-ink-2">
               More autonomy only after clean reviews and captured lessons.

@@ -249,6 +249,36 @@ worked example, not just a template.
 
 ---
 
+## Who approves what
+
+Three tiers, and it matters which of them are actually enforced today.
+
+**Key decisions need a human.** Not a convention — the planner names the exact
+triggers and stops on them: a material unresolved product choice, unclear scope
+or acceptance criteria, insufficient confidence, a write-scope collision,
+missing high-cost approval, or any outward act. `planning.md` carries the state
+as live fields (*user check-in*, *high-cost execution approved*, *outward acts
+approved*), and the harness CLI refuses to merge without an explicit
+`worktree approve`.
+
+**Smaller decisions are peer-reviewed.** The agent that builds is never the
+agent that approves. Reviewers return a typed verdict — Approved, Approved with
+fixes, or Revise — and hand the specific fixes back to whoever produced the
+work rather than fixing it themselves.
+
+**An agent holding approval authority is not built.** This is the interesting
+tier and it does not exist yet. `seniority` is a static label; nothing derives
+it, and no agent can approve anything. The intended shape is a grant rather
+than a rank — *may approve design review at low risk* — recorded in the repo,
+justified by verdict history, and revocable with the revocation recorded too.
+
+That third tier is the most concrete form of this project's central claim.
+"Scope is earned, not configured" is abstract; *"Athena may now approve design
+review without a human, because her last twelve verdicts held"* is not. Until
+it exists, every approval here is a human's or a peer's.
+
+---
+
 ## What's real and what's mocked
 
 Being explicit, because a demo that overclaims is worse than no demo.

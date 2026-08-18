@@ -40,6 +40,10 @@ Mocked or absent:
 - Conversation content is seeded. Nothing is wired to a running agent.
 - Timeline history is seeded, not derived from `handoffs/` or `lessons/`.
 - Seniority labels are static placeholders, flagged as such in the UI.
+- No agent holds approval authority. Human approval and peer review are both
+  enforced; an agent being granted approval rights by a human is the intended
+  third tier and is not built. Nothing in the product may imply an agent can
+  approve its own or another's work.
 
 ## 4. Architectural stance
 
