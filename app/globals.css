@@ -273,16 +273,19 @@
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  background:
+  background-image:
     linear-gradient(
       115deg,
       transparent 0%,
-      color-mix(in srgb, var(--brand) 4%, transparent) 35%,
-      transparent 62%
+      color-mix(in srgb, var(--brand) 4%, transparent) 25%,
+      transparent 50%
     );
+  background-size: 200% 100%;
+  background-repeat: repeat;
   opacity: 0.7;
-  transform: translateX(-18%);
-  animation: tour-current 18s ease-in-out infinite alternate;
+  /* One way, forever. The gradient tiles at 200%, so scrolling it exactly one
+     tile returns to the identical frame — the loop point is unobservable. */
+  animation: tour-current 32s linear infinite;
 }
 
 .tour-cruise > :not(.tour-caption-layer) {
@@ -475,10 +478,10 @@
 
 @keyframes tour-current {
   from {
-    transform: translateX(-18%);
+    background-position: 0% 0%;
   }
   to {
-    transform: translateX(18%);
+    background-position: 200% 0%;
   }
 }
 
@@ -814,10 +817,10 @@ body * {
    over a fifth of its journey, so it arrives and leaves as a change in
    density rather than an appearance.
 
-   The beads breathe on a pure sine, which matches value and slope at 0% and
-   100% — the loop is seamless by construction rather than by tuning. Their
-   period is 9s against the baton's 11s, so the two never lock into a visible
-   beat; the strip drifts instead of pulsing.
+   The beads answer the touch. Three marbles on an 11s loop means a contact
+   every 3.667s, so the beads run on exactly that period: the sender lifts as
+   one departs, the lead lifts as one lands. Both are pure sines, matching
+   value and slope at 0% and 100%, so each loop is seamless by construction.
 
    Nothing is triggered. There is deliberately no per-step retrigger, because
    restarting an animation is a jump no easing can disguise.
@@ -828,7 +831,7 @@ body * {
    are what read as jerk. */
 .handoff-kiss-send,
 .handoff-kiss-recv {
-  animation-duration: 9s;
+  animation-duration: 3.667s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
 }
@@ -873,115 +876,169 @@ body * {
 }
 
 @keyframes handoff-kiss-send {
-  0% { filter: brightness(1.0); }
-  4% { filter: brightness(1.002); }
-  8% { filter: brightness(1.008); }
-  12% { filter: brightness(1.018); }
-  16% { filter: brightness(1.03); }
-  20% { filter: brightness(1.045); }
-  24% { filter: brightness(1.061); }
-  28% { filter: brightness(1.077); }
-  32% { filter: brightness(1.093); }
-  36% { filter: brightness(1.106); }
-  40% { filter: brightness(1.118); }
-  44% { filter: brightness(1.125); }
-  48% { filter: brightness(1.129); }
-  52% { filter: brightness(1.129); }
-  56% { filter: brightness(1.125); }
-  60% { filter: brightness(1.118); }
-  64% { filter: brightness(1.106); }
-  68% { filter: brightness(1.093); }
-  72% { filter: brightness(1.077); }
-  76% { filter: brightness(1.061); }
-  80% { filter: brightness(1.045); }
-  84% { filter: brightness(1.03); }
-  88% { filter: brightness(1.018); }
-  92% { filter: brightness(1.008); }
-  96% { filter: brightness(1.002); }
-  100% { filter: brightness(1.0); }
+  0% { filter: brightness(1.041); }
+  2% { filter: brightness(1.049); }
+  4% { filter: brightness(1.056); }
+  6% { filter: brightness(1.064); }
+  8% { filter: brightness(1.071); }
+  10% { filter: brightness(1.079); }
+  12% { filter: brightness(1.086); }
+  14% { filter: brightness(1.092); }
+  16% { filter: brightness(1.098); }
+  18% { filter: brightness(1.104); }
+  20% { filter: brightness(1.109); }
+  22% { filter: brightness(1.113); }
+  24% { filter: brightness(1.116); }
+  26% { filter: brightness(1.118); }
+  28% { filter: brightness(1.12); }
+  30% { filter: brightness(1.12); }
+  32% { filter: brightness(1.12); }
+  34% { filter: brightness(1.118); }
+  36% { filter: brightness(1.116); }
+  38% { filter: brightness(1.113); }
+  40% { filter: brightness(1.109); }
+  42% { filter: brightness(1.104); }
+  44% { filter: brightness(1.098); }
+  46% { filter: brightness(1.092); }
+  48% { filter: brightness(1.086); }
+  50% { filter: brightness(1.079); }
+  52% { filter: brightness(1.071); }
+  54% { filter: brightness(1.064); }
+  56% { filter: brightness(1.056); }
+  58% { filter: brightness(1.049); }
+  60% { filter: brightness(1.041); }
+  62% { filter: brightness(1.034); }
+  64% { filter: brightness(1.028); }
+  66% { filter: brightness(1.022); }
+  68% { filter: brightness(1.016); }
+  70% { filter: brightness(1.011); }
+  72% { filter: brightness(1.007); }
+  74% { filter: brightness(1.004); }
+  76% { filter: brightness(1.002); }
+  78% { filter: brightness(1.0); }
+  80% { filter: brightness(1.0); }
+  82% { filter: brightness(1.0); }
+  84% { filter: brightness(1.002); }
+  86% { filter: brightness(1.004); }
+  88% { filter: brightness(1.007); }
+  90% { filter: brightness(1.011); }
+  92% { filter: brightness(1.016); }
+  94% { filter: brightness(1.022); }
+  96% { filter: brightness(1.028); }
+  98% { filter: brightness(1.034); }
+  100% { filter: brightness(1.041); }
 }
 
 @keyframes handoff-kiss-recv {
-  0% { filter: brightness(1.098); }
-  4% { filter: brightness(1.115); }
-  8% { filter: brightness(1.13); }
-  12% { filter: brightness(1.141); }
-  16% { filter: brightness(1.148); }
-  20% { filter: brightness(1.15); }
-  24% { filter: brightness(1.148); }
-  28% { filter: brightness(1.141); }
-  32% { filter: brightness(1.13); }
-  36% { filter: brightness(1.115); }
-  40% { filter: brightness(1.098); }
+  0% { filter: brightness(1.059); }
+  2% { filter: brightness(1.049); }
+  4% { filter: brightness(1.039); }
+  6% { filter: brightness(1.031); }
+  8% { filter: brightness(1.023); }
+  10% { filter: brightness(1.016); }
+  12% { filter: brightness(1.011); }
+  14% { filter: brightness(1.006); }
+  16% { filter: brightness(1.003); }
+  18% { filter: brightness(1.001); }
+  20% { filter: brightness(1.0); }
+  22% { filter: brightness(1.001); }
+  24% { filter: brightness(1.003); }
+  26% { filter: brightness(1.006); }
+  28% { filter: brightness(1.011); }
+  30% { filter: brightness(1.016); }
+  32% { filter: brightness(1.023); }
+  34% { filter: brightness(1.031); }
+  36% { filter: brightness(1.039); }
+  38% { filter: brightness(1.049); }
+  40% { filter: brightness(1.059); }
+  42% { filter: brightness(1.069); }
   44% { filter: brightness(1.08); }
-  48% { filter: brightness(1.061); }
-  52% { filter: brightness(1.043); }
-  56% { filter: brightness(1.027); }
-  60% { filter: brightness(1.014); }
-  64% { filter: brightness(1.005); }
-  68% { filter: brightness(1.001); }
-  72% { filter: brightness(1.001); }
-  76% { filter: brightness(1.005); }
-  80% { filter: brightness(1.014); }
-  84% { filter: brightness(1.027); }
-  88% { filter: brightness(1.043); }
-  92% { filter: brightness(1.061); }
+  46% { filter: brightness(1.09); }
+  48% { filter: brightness(1.101); }
+  50% { filter: brightness(1.111); }
+  52% { filter: brightness(1.121); }
+  54% { filter: brightness(1.131); }
+  56% { filter: brightness(1.139); }
+  58% { filter: brightness(1.147); }
+  60% { filter: brightness(1.154); }
+  62% { filter: brightness(1.159); }
+  64% { filter: brightness(1.164); }
+  66% { filter: brightness(1.167); }
+  68% { filter: brightness(1.169); }
+  70% { filter: brightness(1.17); }
+  72% { filter: brightness(1.169); }
+  74% { filter: brightness(1.167); }
+  76% { filter: brightness(1.164); }
+  78% { filter: brightness(1.159); }
+  80% { filter: brightness(1.154); }
+  82% { filter: brightness(1.147); }
+  84% { filter: brightness(1.139); }
+  86% { filter: brightness(1.131); }
+  88% { filter: brightness(1.121); }
+  90% { filter: brightness(1.111); }
+  92% { filter: brightness(1.101); }
+  94% { filter: brightness(1.09); }
   96% { filter: brightness(1.08); }
-  100% { filter: brightness(1.098); }
+  98% { filter: brightness(1.069); }
+  100% { filter: brightness(1.059); }
 }
 
+/* The marble. It rolls, decelerates to a stop against the lead — arriving
+   at zero velocity, so the touch is a settle rather than a knock — rests
+   there while the lead brightens, then fades where it landed. It never
+   travels back; the next one is already rolling in behind it. */
 @keyframes handoff-baton {
   0% { left: 6.0%; opacity: 0.0; }
-  2% { left: 6.01%; opacity: 0.02; }
-  4% { left: 6.05%; opacity: 0.079; }
-  6% { left: 6.17%; opacity: 0.173; }
-  8% { left: 6.4%; opacity: 0.292; }
-  10% { left: 6.75%; opacity: 0.429; }
-  12% { left: 7.26%; opacity: 0.571; }
-  14% { left: 7.94%; opacity: 0.708; }
-  16% { left: 8.79%; opacity: 0.827; }
-  18% { left: 9.85%; opacity: 0.921; }
-  20% { left: 11.1%; opacity: 0.98; }
-  22% { left: 12.55%; opacity: 1.0; }
-  24% { left: 14.21%; opacity: 1.0; }
-  26% { left: 16.06%; opacity: 1.0; }
-  28% { left: 18.11%; opacity: 1.0; }
-  30% { left: 20.35%; opacity: 1.0; }
-  32% { left: 22.77%; opacity: 1.0; }
-  34% { left: 25.35%; opacity: 1.0; }
-  36% { left: 28.08%; opacity: 1.0; }
-  38% { left: 30.95%; opacity: 1.0; }
-  40% { left: 33.93%; opacity: 1.0; }
-  42% { left: 37.02%; opacity: 1.0; }
-  44% { left: 40.19%; opacity: 1.0; }
-  46% { left: 43.43%; opacity: 1.0; }
-  48% { left: 46.7%; opacity: 1.0; }
-  50% { left: 50.0%; opacity: 1.0; }
-  52% { left: 53.3%; opacity: 1.0; }
-  54% { left: 56.57%; opacity: 1.0; }
-  56% { left: 59.81%; opacity: 1.0; }
-  58% { left: 62.98%; opacity: 1.0; }
-  60% { left: 66.07%; opacity: 1.0; }
-  62% { left: 69.05%; opacity: 1.0; }
-  64% { left: 71.92%; opacity: 1.0; }
-  66% { left: 74.65%; opacity: 1.0; }
-  68% { left: 77.23%; opacity: 1.0; }
-  70% { left: 79.65%; opacity: 1.0; }
-  72% { left: 81.89%; opacity: 1.0; }
-  74% { left: 83.94%; opacity: 1.0; }
-  76% { left: 85.79%; opacity: 1.0; }
-  78% { left: 87.45%; opacity: 1.0; }
-  80% { left: 88.9%; opacity: 0.98; }
-  82% { left: 90.15%; opacity: 0.921; }
-  84% { left: 91.21%; opacity: 0.827; }
-  86% { left: 92.06%; opacity: 0.708; }
-  88% { left: 92.74%; opacity: 0.571; }
-  90% { left: 93.25%; opacity: 0.429; }
-  92% { left: 93.6%; opacity: 0.292; }
-  94% { left: 93.83%; opacity: 0.173; }
-  96% { left: 93.95%; opacity: 0.079; }
-  98% { left: 93.99%; opacity: 0.02; }
-  100% { left: 94.0%; opacity: 0.0; }
+  2% { left: 6.01%; opacity: 0.024; }
+  4% { left: 6.09%; opacity: 0.095; }
+  6% { left: 6.28%; opacity: 0.206; }
+  8% { left: 6.65%; opacity: 0.345; }
+  10% { left: 7.22%; opacity: 0.5; }
+  12% { left: 8.02%; opacity: 0.655; }
+  14% { left: 9.09%; opacity: 0.794; }
+  16% { left: 10.43%; opacity: 0.905; }
+  18% { left: 12.04%; opacity: 0.976; }
+  20% { left: 13.95%; opacity: 1.0; }
+  22% { left: 16.13%; opacity: 1.0; }
+  24% { left: 18.59%; opacity: 1.0; }
+  26% { left: 21.3%; opacity: 1.0; }
+  28% { left: 24.26%; opacity: 1.0; }
+  30% { left: 27.43%; opacity: 1.0; }
+  32% { left: 30.8%; opacity: 1.0; }
+  34% { left: 34.34%; opacity: 1.0; }
+  36% { left: 38.01%; opacity: 1.0; }
+  38% { left: 41.78%; opacity: 1.0; }
+  40% { left: 45.62%; opacity: 1.0; }
+  42% { left: 49.5%; opacity: 1.0; }
+  44% { left: 53.38%; opacity: 1.0; }
+  46% { left: 57.22%; opacity: 1.0; }
+  48% { left: 60.99%; opacity: 1.0; }
+  50% { left: 64.66%; opacity: 1.0; }
+  52% { left: 68.2%; opacity: 1.0; }
+  54% { left: 71.57%; opacity: 1.0; }
+  56% { left: 74.74%; opacity: 1.0; }
+  58% { left: 77.7%; opacity: 1.0; }
+  60% { left: 80.41%; opacity: 1.0; }
+  62% { left: 82.87%; opacity: 1.0; }
+  64% { left: 85.05%; opacity: 1.0; }
+  66% { left: 86.96%; opacity: 1.0; }
+  68% { left: 88.57%; opacity: 1.0; }
+  70% { left: 89.91%; opacity: 1.0; }
+  72% { left: 90.98%; opacity: 1.0; }
+  74% { left: 91.78%; opacity: 1.0; }
+  76% { left: 92.35%; opacity: 1.0; }
+  78% { left: 92.72%; opacity: 1.0; }
+  80% { left: 92.91%; opacity: 1.0; }
+  82% { left: 92.99%; opacity: 1.0; }
+  84% { left: 93.0%; opacity: 1.0; }
+  86% { left: 93%; opacity: 1.0; }
+  88% { left: 93%; opacity: 0.95; }
+  90% { left: 93%; opacity: 0.812; }
+  92% { left: 93%; opacity: 0.611; }
+  94% { left: 93%; opacity: 0.389; }
+  96% { left: 93%; opacity: 0.188; }
+  98% { left: 93%; opacity: 0.05; }
+  100% { left: 93%; opacity: 0.0; }
 }
 
 @media (prefers-reduced-motion: reduce) {

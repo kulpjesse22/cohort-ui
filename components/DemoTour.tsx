@@ -13,7 +13,6 @@ import { ContextRail } from "./ContextRail";
 import { AgentTimeline } from "./AgentTimeline";
 import { LessonLadder } from "./LessonLadder";
 import { TeamTimeline } from "./TeamTimeline";
-import { WelcomeScreen } from "./WelcomeScreen";
 import { LeadHandoffIndicator, type HandoffDetails } from "./LeadHandoffIndicator";
 import { Avatar } from "./Avatar";
 import { AgentTrustChip } from "./AgentTrustChip";
@@ -160,7 +159,6 @@ export function DemoTour() {
   const kind = step.view.kind;
   const isProfile = kind === "profile";
   const isMemory = kind === "memory";
-  const isSplash = kind === "splash";
   const isTimeline = kind === "timeline";
   const agent = isProfile ? AGENTS[targetId as AgentId] : null;
   const channel = kind === "channel" ? getChannel(targetId) : null;
@@ -206,21 +204,6 @@ export function DemoTour() {
       }}
     />
   );
-
-  // The splash is a full page with its own chrome, so it replaces the shell
-  // rather than sitting inside it. The guided demo chrome starts once the
-  // viewer is inside the product surface.
-  if (isSplash) {
-    return (
-      <div className="tour-cruise relative h-screen w-full overflow-hidden bg-canvas">
-        <div
-          className={`tour-surface tour-surface-${direction} tour-phase-${phase} h-full overflow-y-auto`}
-        >
-          <WelcomeScreen />
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="tour-cruise relative flex h-screen w-full overflow-hidden bg-canvas">

@@ -12,7 +12,6 @@ export interface DemoStep {
    * record, so they pin hers.
    */
   view:
-    | { kind: "splash"; id: "claudia" }
     | { kind: "channel"; id: string }
     | { kind: "timeline"; id: "claudia" }
     | { kind: "profile"; id: AgentId }
@@ -25,59 +24,69 @@ export interface DemoStep {
 }
 
 /**
- * Six beats, one claim: this is a workspace for directing and developing a
- * team, not for launching jobs.
+ * Seven beats, one claim: trust is the interface layer agent teams need before
+ * they can safely earn more responsibility.
  *
- * The arc opens and closes on the handoff chip deliberately. It is the
- * primitive everything else is an expression of — the profile is a handoff
- * history, team memory is what handoffs deposited, the timeline is handoffs in
- * order. Naming it at the start and returning to it at the end is what stops
- * the middle beats reading as a feature tour.
- *
- * Beat four is the differentiator and it is also the thinnest. Frame it as
- * direction rather than overclaiming what is derived today.
+ * This is deliberately not a feature tour. It walks the viewer through a trust
+ * ladder: written scope, accountable handoff, separated review, lesson capture,
+ * and visible growth. The product is the cohort becoming safer and more useful
+ * over time, not a dashboard of jobs in flight.
  */
 export const DEMO_STEPS: DemoStep[] = [
   {
-    title: "Cohort is where an AI team develops",
-    body: "Not a place to launch agents — a place to grow them. That chip is the difference: work moving between accountable roles, each pass leaving a record of who owned it and what came back.",
-    view: { kind: "splash", id: "claudia" },
+    title: "Cohort helps teams grow agents they can trust",
+    body: "Most agent tools focus on getting agents to do more work. Cohort asks a different question: how do agents join an existing team, learn its standards, and earn more responsibility over time?",
+    // Opens inside the product, not on the splash: someone clicking "Guided
+    // tour" from the sidebar has already arrived, and bouncing them back to the
+    // landing page reads as a navigation mistake. Nothing is spotlit — this
+    // beat states the thesis, so the whole workspace should be visible behind
+    // it, and dimming to the chip here would also force its popover open.
+    view: { kind: "channel", id: "cohort" },
     spotlight: null,
     holdMs: 11000,
   },
   {
-    title: "The lead is not a chatbot persona",
-    body: "Claudia owns routing, and owns making context durable. She hands a decision back rather than guessing at it, then writes what got settled into files the next agent reads on its first turn.",
+    title: "Trust starts with written scope",
+    body: "The harness assumes both humans and agents have unreliable memory. So chat is not the source of truth — the repo is. Project context, plans, tasks, handoffs, lessons, and decisions are the durable record the next actor reads.",
     view: { kind: "channel", id: "cohort" },
-    spotlight: "main",
+    spotlight: "rail",
     holdMs: 13000,
   },
   {
-    title: "The team's record, not an execution log",
-    body: "An execution log tells you what ran. This tells you who owned each piece of work, what came back in review, which lessons were logged, and who was promoted on the evidence.",
-    view: { kind: "timeline", id: "claudia" },
-    spotlight: "main",
+    title: "A handoff makes accountability explicit",
+    body: "The chip is the primitive. It should always answer: from whom, to whom, why, based on what source, and what review happens next. That is the difference between activity and accountable work.",
+    view: { kind: "channel", id: "cohort" },
+    spotlight: "handoff",
     holdMs: 13000,
   },
   {
-    title: "Every agent has a career surface",
-    body: "Seniority, reviews with the specific fixes returned, lessons logged, promotions and the evidence behind them. Some of it is still illustration — but making an agent's development visible is what the whole product is built around.",
+    title: "Safety means judgment is separated from execution",
+    body: "Builders should not grade their own work. Reviews return specific fixes to the producing agent, and the finding becomes part of the record. That is how an agent gets corrected without everyone relying on memory.",
     view: { kind: "profile", id: "julius" },
     spotlight: "main",
+    focusEntryId: "ju-2",
     holdMs: 14000,
   },
   {
-    title: "Memory that outlives the chat",
-    body: "Nothing here depends on anyone remembering. Decisions and lessons are written back to the repo, capped, and pushed toward automation until they stop being memory at all. This page is read off disk right now.",
+    title: "Lessons become future behavior",
+    body: "A correction only matters if the next pass inherits it. Team memory turns failures into standing guidance: what to do, what never to do again, and which gates should eventually block unsafe work automatically.",
     view: { kind: "memory", id: "claudia" },
     spotlight: "main",
     holdMs: 14000,
   },
   {
-    title: "The handoff is the primitive",
-    body: "Everything you just saw is an expression of one thing. Open the chip: From, To, Why, the file it was recorded in, and who reviews it next. Every piece of work should answer those.",
-    view: { kind: "channel", id: "cohort" },
-    spotlight: "handoff",
+    title: "Responsibility is earned, not assigned once",
+    body: "The agent profile is a career surface: reviews, lessons, promotion evidence, and the kinds of work the agent can now take on with less supervision. Growth is visible because trust has to be auditable.",
+    view: { kind: "profile", id: "julius" },
+    spotlight: "main",
+    focusEntryId: "ju-6",
     holdMs: 14000,
+  },
+  {
+    title: "The record is what lets the human stay in control",
+    body: "The goal is not to remove the human. It is to give the human a trustworthy cohort: agents with roles, boundaries, review loops, and a shared memory they can use with their human counterparts.",
+    view: { kind: "timeline", id: "claudia" },
+    spotlight: "main",
+    holdMs: 13000,
   },
 ];
