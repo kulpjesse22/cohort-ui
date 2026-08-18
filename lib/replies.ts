@@ -107,10 +107,68 @@ const REPLIES: Record<AgentId, Record<Intent, string>> = {
 export interface GeneratedReply {
   agentId: AgentId;
   text: string;
+  /** Repo-relative paths, rendered as links that open the real file. */
+  cites?: string[];
+}
+
+/**
+ * Asking an agent to put documents on the table.
+ *
+ * Deliberately generous about phrasing: this gets used live, in a room, by
+ * someone who will not say the words they rehearsed. It matches on the subject
+ * ("roadmap", "design", "plan") with or without a verb, so "roadmap?" works as
+ * well as "can you pull up the design docs".
+ */
+const DOC_SUBJECTS: Array<{ match: RegExp; paths: string[] }> = [
+  { match: /\b(roadmap|plan|planning|queue|backlog|what's next|whats next)\b/, paths: ["Agents/planning.md"] },
+  { match: /\b(design|visual|tokens?|styling|brand)\b/, paths: ["Agents/design.md"] },
+  { match: /\b(ux|interaction|research|glossary|copy)\b/, paths: ["Agents/UX.md"] },
+  { match: /\b(context|architecture|constraints?|stack)\b/, paths: ["Agents/project_context.md"] },
+  { match: /\b(lessons?|learn(ed|ing)?|memory|mistakes?)\b/, paths: ["Agents/lessons/INDEX.md"] },
+];
+
+/**
+ * Subjects that are already a document request on their own. "Roadmap?" needs
+ * no verb; "the design is wrong" is a complaint and must not start citing
+ * files at someone.
+ */
+const SELF_SUFFICIENT = /\b(roadmap|backlog|what'?s next|planning\.md)\b/;
+
+const PULL_VERB = /\b(pull|show|open|share|bring|get|see|look at|display|surface|find)\b/;
+const DOC_NOUN = /\b(docs?|files?|documents?|contracts?|guides?)\b/;
+
+/** Null when this is not a request for documents. */
+function documentPull(text: string): string[] | null {
+  const t = text.toLowerCase();
+  const hits = DOC_SUBJECTS.filter((d) => d.match.test(t));
+  if (hits.length === 0) return null;
+  // A subject alone is enough when paired with a verb or the word "docs" —
+  // otherwise "the design is wrong" would start citing files at people.
+  if (
+    !SELF_SUFFICIENT.test(t) &&
+    !PULL_VERB.test(t) &&
+    !DOC_NOUN.test(t) &&
+    !/\?\s*$/.test(t)
+  )
+    return null;
+  return [...new Set(hits.flatMap((h) => h.paths))];
 }
 
 export function replyTo(channelId: string, text: string): GeneratedReply | null {
   const agentId = responder(channelId, text);
   if (!agentId) return null;
+
+  const cites = documentPull(text);
+  if (cites) {
+    return {
+      agentId,
+      text:
+        cites.length === 1
+          ? "Here it is — read it off the repo rather than taking my summary for it. If it is out of date, that is a gap to close in the file, not something to correct in this thread."
+          : "Pulling those up. These are the live files, not copies — if what you need is not in them, that is the gap to fix rather than an answer I should improvise here.",
+      cites,
+    };
+  }
+
   return { agentId, text: REPLIES[agentId][classify(text)] };
 }

@@ -39,7 +39,7 @@ export async function POST(
   // lib/replies.ts for why that trade is deliberate.
   const generated = replyTo(channelId, text);
   const reply = generated
-    ? await appendAgentReply(channelId, generated.agentId, generated.text, message.ts)
+    ? await appendAgentReply(channelId, generated.agentId, generated.text, message.ts, generated.cites)
     : null;
 
   return NextResponse.json({ message, reply }, { status: 201 });
