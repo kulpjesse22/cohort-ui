@@ -408,8 +408,12 @@ function TourFlow({
               key={item.label}
               type="button"
               onClick={() => onJump(i)}
-              className={`${item.hue} tour-step-slot group relative flex h-7 w-9 items-center justify-center outline-none transition-[width] duration-700 ease-out focus-visible:ring-2 focus-visible:ring-line-strong ${
-                expanded ? "tour-step-slot-active sm:w-[7.25rem]" : ""
+              // Fixed width, always. Expanding the active slot pushed every slot
+              // after it 80px sideways and pulled them back on the next step — a
+              // reflow, not a transform, which is why it survived every fix aimed
+              // at animations. The label overlays instead of taking up space.
+              className={`${item.hue} tour-step-slot group relative flex h-7 w-9 items-center justify-center outline-none focus-visible:ring-2 focus-visible:ring-line-strong ${
+                expanded ? "tour-step-slot-active" : ""
               } ${
                 active && phase === "out" ? `tour-step-send-${direction}` : ""
               } ${
@@ -427,10 +431,8 @@ function TourFlow({
                 aria-hidden="true"
               />
               <span
-                className={`tour-step-chip tour-step-chip-active absolute inline-flex items-center gap-1.5 rounded-full border bg-canvas px-2.5 py-1 text-[10px] font-semibold text-current transition-all duration-700 ease-out ${
-                  expanded
-                    ? "translate-y-0 scale-100 opacity-100"
-                    : "pointer-events-none translate-y-1 scale-95 opacity-0"
+                className={`tour-step-chip tour-step-chip-active absolute left-1/2 z-10 -translate-x-1/2 inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border bg-canvas px-2.5 py-1 text-[10px] font-semibold text-current transition-[opacity,scale] duration-700 ease-out ${
+                  expanded ? "scale-100 opacity-100" : "pointer-events-none scale-95 opacity-0"
                 }`}
                 aria-hidden={!expanded}
               >

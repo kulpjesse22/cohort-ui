@@ -39,9 +39,28 @@ while (i < css.length) {
   i = end + 1;
 }
 
+// Second class of the same bug, and the one that survived four rounds: motion
+// produced by layout rather than transform. A slot that grows pushes every
+// sibling after it sideways and pulls them back on the next step. No transform
+// is involved, so the scan above cannot see it.
+//
+// Deliberately blunt. The classNames here are template literals with nested
+// interpolation, so parsing them precisely is fragile; a flat scan for the
+// dangerous patterns is harder to fool and easier to trust.
+const tsx = readFileSync(new URL("../components/DemoTour.tsx", import.meta.url), "utf8");
+
+if (/transition-\[width\]/.test(tsx)) {
+  offenders.push("DemoTour: transition-[width] — animating width reflows every sibling after it");
+}
+for (const m of tsx.matchAll(/tour-step-slot-active[^}]{0,80}/g)) {
+  if (/\bw-\[|\bsm:w-|\bmin-w-\[/.test(m[0])) {
+    offenders.push(`DemoTour: the active step slot changes width -> ${m[0].slice(0, 60)}`);
+  }
+}
+
 if (offenders.length) {
   console.error("Guided-tour rules must not translate:\n  " + offenders.join("\n  "));
-  console.error("\nUse opacity, blur, or colour. Anything the surface does on the way out\nhas to be reversed on the way in, and that reversal is the swing.");
+  console.error("\nUse opacity, blur, or colour — and never animate width on a row of\nsiblings. Anything that changes geometry on the way out has to be undone\non the way in, and that undoing is the swing.");
   process.exit(1);
 }
 console.log("tour motion: clean (no translate in any tour- rule)");
