@@ -1,0 +1,893 @@
+{
+  "generatedAt": "2026-08-18T03:35:29.105Z",
+  "head": "ac0e078",
+  "identities": [
+    {
+      "id": "claude",
+      "name": "Claude",
+      "kind": "agent"
+    },
+    {
+      "id": "codex",
+      "name": "Codex",
+      "kind": "agent"
+    },
+    {
+      "id": "human",
+      "name": "Jesse",
+      "kind": "human"
+    }
+  ],
+  "contributors": [
+    {
+      "id": "claude",
+      "commits": 41,
+      "shared": 1,
+      "added": 18054,
+      "removed": 1791,
+      "files": 102,
+      "first": "2026-07-30T10:16:10-07:00",
+      "last": "2026-08-17T20:34:46-07:00"
+    },
+    {
+      "id": "human",
+      "commits": 2,
+      "shared": 0,
+      "added": 565,
+      "removed": 1,
+      "files": 13,
+      "first": "2026-08-17T20:08:45-07:00",
+      "last": "2026-08-17T20:34:46-07:00"
+    },
+    {
+      "id": "codex",
+      "commits": 1,
+      "shared": 1,
+      "added": 161,
+      "removed": 32,
+      "files": 14,
+      "first": "2026-08-17T20:34:46-07:00",
+      "last": "2026-08-17T20:34:46-07:00"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "ac0e078",
+      "author": "Jesse Kulp",
+      "date": "2026-08-17T20:34:46-07:00",
+      "subject": "Record Codex's work on the product surface",
+      "contributors": [
+        "claude",
+        "codex"
+      ],
+      "shared": true,
+      "added": 161,
+      "removed": 32,
+      "files": [
+        "app/layout.tsx",
+        "app/page.tsx",
+        "components/AgentProfile.tsx",
+        "components/AppShell.tsx",
+        "components/Composer.tsx",
+        "components/ContextRail.tsx",
+        "components/ProjectView.tsx",
+        "components/Sidebar.tsx",
+        "components/TeamTimeline.tsx",
+        "components/Workspace.tsx",
+        "lib/agents.ts",
+        "lib/harness.ts",
+        "lib/messages.ts",
+        "lib/replies.ts"
+      ]
+    },
+    {
+      "sha": "1d69ed8",
+      "author": "Jesse Kulp",
+      "date": "2026-08-17T20:34:46-07:00",
+      "subject": "Add the wordmark, design guide edits, and file tracing config",
+      "contributors": [
+        "human"
+      ],
+      "shared": false,
+      "added": 13,
+      "removed": 1,
+      "files": [
+        "Agents/design.md",
+        "next.config.ts"
+      ]
+    },
+    {
+      "sha": "c88470b",
+      "author": "Jesse Kulp",
+      "date": "2026-08-17T20:30:33-07:00",
+      "subject": "Stop the step chips swinging back",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 14,
+      "removed": 28,
+      "files": [
+        "app/globals.css"
+      ]
+    },
+    {
+      "sha": "d2a1d3f",
+      "author": "Jesse Kulp",
+      "date": "2026-08-17T20:27:11-07:00",
+      "subject": "Roll a marble; stop the tour bouncing off the splash",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 207,
+      "removed": 158,
+      "files": [
+        "app/globals.css",
+        "components/DemoTour.tsx",
+        "lib/demo.ts"
+      ]
+    },
+    {
+      "sha": "ec3122e",
+      "author": "Jesse Kulp",
+      "date": "2026-08-17T20:20:46-07:00",
+      "subject": "Make the handoff a current, not an event",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 145,
+      "removed": 129,
+      "files": [
+        "app/globals.css",
+        "components/DemoTour.tsx",
+        "components/LeadHandoffIndicator.tsx"
+      ]
+    },
+    {
+      "sha": "80e7903",
+      "author": "Jesse Kulp",
+      "date": "2026-08-17T20:17:29-07:00",
+      "subject": "Make the handoff a baton pass, not a swing",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 149,
+      "removed": 56,
+      "files": [
+        "app/globals.css",
+        "components/LeadHandoffIndicator.tsx"
+      ]
+    },
+    {
+      "sha": "eefeb3d",
+      "author": "Jesse Kulp",
+      "date": "2026-08-17T20:11:11-07:00",
+      "subject": "Smooth the kiss: sample the arc instead of easing it",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 48,
+      "removed": 27,
+      "files": [
+        "app/globals.css"
+      ]
+    },
+    {
+      "sha": "56a8950",
+      "author": "Jesse Kulp",
+      "date": "2026-08-17T20:08:45-07:00",
+      "subject": "Add missing Cohort UI artifacts",
+      "contributors": [
+        "human"
+      ],
+      "shared": false,
+      "added": 552,
+      "removed": 0,
+      "files": [
+        "app/apple-icon.tsx",
+        "app/cohort/page.tsx",
+        "app/icon.tsx",
+        "app/manifest.ts",
+        "app/start/page.tsx",
+        "app/timeline/page.tsx",
+        "components/AgentTrustChip.tsx",
+        "components/LeadHandoffIndicator.tsx",
+        "components/WelcomeScreen.tsx",
+        "public/cohort-wordmark-transparent.png",
+        "public/cohort-wordmark.png"
+      ]
+    },
+    {
+      "sha": "5b4f188",
+      "author": "Jesse Kulp",
+      "date": "2026-08-17T20:06:37-07:00",
+      "subject": "Give the handoff chip a Newton's cradle",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 727,
+      "removed": 40,
+      "files": [
+        "app/globals.css",
+        "components/DemoTour.tsx"
+      ]
+    },
+    {
+      "sha": "8fe1ace",
+      "author": "Jesse Kulp",
+      "date": "2026-08-16T20:20:16-07:00",
+      "subject": "Delete the relay, keep its bead",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 25,
+      "removed": 399,
+      "files": [
+        "app/globals.css",
+        "app/relay/page.tsx",
+        "components/AgentRelay.tsx",
+        "components/RelayStage.tsx"
+      ]
+    },
+    {
+      "sha": "ce691fb",
+      "author": "Jesse Kulp",
+      "date": "2026-08-16T20:12:18-07:00",
+      "subject": "Match the tour to the product it demos",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 40,
+      "removed": 36,
+      "files": [
+        "components/DemoTour.tsx",
+        "lib/demo.ts"
+      ]
+    },
+    {
+      "sha": "f40dbb1",
+      "author": "Jesse Kulp",
+      "date": "2026-08-16T19:40:13-07:00",
+      "subject": "Speak the product's vocabulary in the demo",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 30,
+      "removed": 11,
+      "files": [
+        "components/DemoTour.tsx",
+        "lib/demo.ts"
+      ]
+    },
+    {
+      "sha": "b3d5ffa",
+      "author": "Jesse Kulp",
+      "date": "2026-08-16T19:35:00-07:00",
+      "subject": "Rebuild the tour around the handoff primitive",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 115,
+      "removed": 63,
+      "files": [
+        "components/DemoTour.tsx",
+        "lib/demo.ts"
+      ]
+    },
+    {
+      "sha": "675afba",
+      "author": "Jesse Kulp",
+      "date": "2026-08-16T19:12:16-07:00",
+      "subject": "Take the boxes off the ladder",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 98,
+      "removed": 26,
+      "files": [
+        "Agents/handoffs/2026-08-16-visual-density-pass.md",
+        "components/LessonLadder.tsx"
+      ]
+    },
+    {
+      "sha": "11b737a",
+      "author": "Jesse Kulp",
+      "date": "2026-08-16T19:04:38-07:00",
+      "subject": "Restyle the relay to match the sketch",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 58,
+      "removed": 15,
+      "files": [
+        "app/globals.css",
+        "components/AgentRelay.tsx"
+      ]
+    },
+    {
+      "sha": "c876eed",
+      "author": "Jesse Kulp",
+      "date": "2026-08-16T19:00:27-07:00",
+      "subject": "Make the wordmark the way home",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 16,
+      "removed": 8,
+      "files": [
+        "components/Sidebar.tsx"
+      ]
+    },
+    {
+      "sha": "0a70757",
+      "author": "Jesse Kulp",
+      "date": "2026-08-16T11:57:51-07:00",
+      "subject": "Mount the relay at the top of the workspace",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 22,
+      "removed": 0,
+      "files": [
+        "components/AgentRelay.tsx",
+        "components/AppShell.tsx"
+      ]
+    },
+    {
+      "sha": "05c672d",
+      "author": "Jesse Kulp",
+      "date": "2026-08-16T11:47:19-07:00",
+      "subject": "Add the agent relay: coordination as motion",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 396,
+      "removed": 0,
+      "files": [
+        "app/globals.css",
+        "app/relay/page.tsx",
+        "components/AgentRelay.tsx",
+        "components/RelayStage.tsx"
+      ]
+    },
+    {
+      "sha": "e05998e",
+      "author": "Jesse Kulp",
+      "date": "2026-08-13T12:33:37-07:00",
+      "subject": "Cut the tour from twelve beats to four",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 34,
+      "removed": 93,
+      "files": [
+        "README.md",
+        "lib/demo.ts"
+      ]
+    },
+    {
+      "sha": "7534f45",
+      "author": "Jesse Kulp",
+      "date": "2026-08-13T12:26:57-07:00",
+      "subject": "Point the sidebar descriptor at the claim",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 1,
+      "removed": 1,
+      "files": [
+        "components/Sidebar.tsx"
+      ]
+    },
+    {
+      "sha": "2fbba9b",
+      "author": "Jesse Kulp",
+      "date": "2026-08-13T12:23:57-07:00",
+      "subject": "Let the headline set the genre instead of a disclaimer",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 7,
+      "removed": 7,
+      "files": [
+        "README.md"
+      ]
+    },
+    {
+      "sha": "d218511",
+      "author": "Jesse Kulp",
+      "date": "2026-08-13T11:41:59-07:00",
+      "subject": "Narrow the README onto the two claims worth defending",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 70,
+      "removed": 24,
+      "files": [
+        "README.md"
+      ]
+    },
+    {
+      "sha": "1cb735c",
+      "author": "Jesse Kulp",
+      "date": "2026-08-13T11:40:33-07:00",
+      "subject": "Close the tour by naming the seam",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 36,
+      "removed": 8,
+      "files": [
+        "components/DemoTour.tsx",
+        "lib/demo.ts"
+      ]
+    },
+    {
+      "sha": "c557604",
+      "author": "Jesse Kulp",
+      "date": "2026-08-13T11:38:01-07:00",
+      "subject": "Cite Loops instead of working around it",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 27,
+      "removed": 0,
+      "files": [
+        "README.md"
+      ]
+    },
+    {
+      "sha": "ece2837",
+      "author": "Jesse Kulp",
+      "date": "2026-08-13T11:30:34-07:00",
+      "subject": "Lead on refusal, not visibility",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 13,
+      "removed": 5,
+      "files": [
+        "README.md"
+      ]
+    },
+    {
+      "sha": "024265d",
+      "author": "Jesse Kulp",
+      "date": "2026-08-13T08:36:33-07:00",
+      "subject": "Show Claudia stop and ask before assigning",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 30,
+      "removed": 3,
+      "files": [
+        "lib/demo.ts",
+        "lib/messages.ts"
+      ]
+    },
+    {
+      "sha": "55ba906",
+      "author": "Jesse Kulp",
+      "date": "2026-08-13T08:28:49-07:00",
+      "subject": "Make the tour's opening absences redeemable",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 14,
+      "removed": 7,
+      "files": [
+        "lib/demo.ts"
+      ]
+    },
+    {
+      "sha": "5e8ab94",
+      "author": "Jesse Kulp",
+      "date": "2026-08-13T08:25:55-07:00",
+      "subject": "Open the tour on the problem, not the answer",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 14,
+      "removed": 2,
+      "files": [
+        "README.md",
+        "lib/demo.ts"
+      ]
+    },
+    {
+      "sha": "58522d5",
+      "author": "Jesse Kulp",
+      "date": "2026-08-13T08:20:22-07:00",
+      "subject": "Surface the team's lesson memory",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 710,
+      "removed": 42,
+      "files": [
+        "Agents/lessons/INDEX.md",
+        "Agents/lessons/README.md",
+        "Agents/lessons/TEMPLATE.md",
+        "Agents/lessons/elevenlabs-api-preconditions.md",
+        "Agents/lessons/harness-field-instance-drift.md",
+        "Agents/project_context.md",
+        "Agents/skills/lesson-logger/SKILL.md",
+        "README.md",
+        "app/api/lessons/route.ts",
+        "app/memory/page.tsx",
+        "components/LessonLadder.tsx",
+        "components/MemoryView.tsx",
+        "components/Sidebar.tsx",
+        "lib/harness.ts",
+        "lib/lessons.ts"
+      ]
+    },
+    {
+      "sha": "9287c0f",
+      "author": "Jesse Kulp",
+      "date": "2026-08-02T15:28:34-07:00",
+      "subject": "Make mobile a first-class surface",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 54,
+      "removed": 10,
+      "files": [
+        "app/globals.css",
+        "app/layout.tsx",
+        "components/AgentProfile.tsx",
+        "components/AppShell.tsx",
+        "components/Composer.tsx"
+      ]
+    },
+    {
+      "sha": "3a183d0",
+      "author": "Jesse Kulp",
+      "date": "2026-08-02T15:21:03-07:00",
+      "subject": "Show the guided tour by default for first-time visitors",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 87,
+      "removed": 0,
+      "files": [
+        "components/FirstRunCard.tsx",
+        "components/TeamTimeline.tsx"
+      ]
+    },
+    {
+      "sha": "61b8a2e",
+      "author": "Jesse Kulp",
+      "date": "2026-08-02T15:05:26-07:00",
+      "subject": "Make agents reply, and cited artifacts openable",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 390,
+      "removed": 10,
+      "files": [
+        "app/api/doc/route.ts",
+        "app/api/messages/[channelId]/route.ts",
+        "components/AgentTimeline.tsx",
+        "components/ArtifactLink.tsx",
+        "components/MessageThread.tsx",
+        "components/TeamTimeline.tsx",
+        "components/Workspace.tsx",
+        "lib/messages.ts",
+        "lib/replies.ts"
+      ]
+    },
+    {
+      "sha": "2aa8f7b",
+      "author": "Jesse Kulp",
+      "date": "2026-07-31T16:29:17-07:00",
+      "subject": "Switch to Lato, the face Slack ships",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 44,
+      "removed": 22,
+      "files": [
+        "Agents/design.md",
+        "app/globals.css",
+        "app/layout.tsx",
+        "components/AgentTimeline.tsx",
+        "components/Composer.tsx",
+        "components/MessageThread.tsx",
+        "components/TeamTimeline.tsx"
+      ]
+    },
+    {
+      "sha": "8f956ee",
+      "author": "Jesse Kulp",
+      "date": "2026-07-31T16:06:50-07:00",
+      "subject": "Add member facepiles to channel and project headers",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 165,
+      "removed": 13,
+      "files": [
+        "components/Facepile.tsx",
+        "components/ProjectView.tsx",
+        "components/Workspace.tsx"
+      ]
+    },
+    {
+      "sha": "dcf0880",
+      "author": "Jesse Kulp",
+      "date": "2026-07-31T13:05:45-07:00",
+      "subject": "Add search, conversational answers, and a real composer",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 752,
+      "removed": 36,
+      "files": [
+        "app/api/search/route.ts",
+        "components/AppShell.tsx",
+        "components/CommandPalette.tsx",
+        "components/Composer.tsx",
+        "lib/search.ts"
+      ]
+    },
+    {
+      "sha": "d6b9c5a",
+      "author": "Jesse Kulp",
+      "date": "2026-07-31T10:17:21-07:00",
+      "subject": "Replace icons with portraits; warm the palette toward Slack/Notion",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 338,
+      "removed": 224,
+      "files": [
+        "app/globals.css",
+        "components/AgentEditor.tsx",
+        "components/AgentMark.tsx",
+        "components/AgentProfile.tsx",
+        "components/Avatar.tsx",
+        "components/MessageThread.tsx",
+        "components/Portrait.tsx",
+        "components/Sidebar.tsx"
+      ]
+    },
+    {
+      "sha": "2c620b7",
+      "author": "Jesse Kulp",
+      "date": "2026-07-31T08:08:05-07:00",
+      "subject": "Add customizable agent identity with voice preview",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 691,
+      "removed": 18,
+      "files": [
+        ".gitignore",
+        "Agents/planning.md",
+        "app/api/roster/[agentId]/route.ts",
+        "app/api/voice-preview/route.ts",
+        "components/AgentEditor.tsx",
+        "components/AgentProfile.tsx",
+        "lib/roster-store.ts",
+        "lib/roster.ts"
+      ]
+    },
+    {
+      "sha": "4255a72",
+      "author": "Jesse Kulp",
+      "date": "2026-07-31T07:58:56-07:00",
+      "subject": "Raise craft within the restrained visual stance",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 221,
+      "removed": 48,
+      "files": [
+        "Agents/design.md",
+        "components/AgentMark.tsx",
+        "components/AgentTimeline.tsx",
+        "components/Avatar.tsx",
+        "components/ContextRail.tsx",
+        "components/Sidebar.tsx",
+        "components/TeamTimeline.tsx"
+      ]
+    },
+    {
+      "sha": "afa9e78",
+      "author": "Jesse Kulp",
+      "date": "2026-07-31T07:53:24-07:00",
+      "subject": "Queue consumer-grade visual polish; mark light mode done",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 50,
+      "removed": 2,
+      "files": [
+        "Agents/planning.md"
+      ]
+    },
+    {
+      "sha": "f856add",
+      "author": "Jesse Kulp",
+      "date": "2026-07-30T12:51:47-07:00",
+      "subject": "Ignore local demo renders",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 3,
+      "removed": 0,
+      "files": [
+        ".gitignore"
+      ]
+    },
+    {
+      "sha": "869dfae",
+      "author": "Jesse Kulp",
+      "date": "2026-07-30T10:33:48-07:00",
+      "subject": "Add light mode with a semantic token layer",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 523,
+      "removed": 188,
+      "files": [
+        "Agents/design.md",
+        "app/globals.css",
+        "app/layout.tsx",
+        "app/not-found.tsx",
+        "components/AgentProfile.tsx",
+        "components/AgentTimeline.tsx",
+        "components/AppShell.tsx",
+        "components/Avatar.tsx",
+        "components/Composer.tsx",
+        "components/ContextRail.tsx",
+        "components/DemoTour.tsx",
+        "components/MessageThread.tsx",
+        "components/ProjectView.tsx",
+        "components/Sidebar.tsx",
+        "components/TeamTimeline.tsx",
+        "components/ThemeToggle.tsx",
+        "components/Workspace.tsx"
+      ]
+    },
+    {
+      "sha": "4d2d2b6",
+      "author": "Jesse Kulp",
+      "date": "2026-07-30T10:17:49-07:00",
+      "subject": "Queue light mode as the next task",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 31,
+      "removed": 0,
+      "files": [
+        "Agents/planning.md"
+      ]
+    },
+    {
+      "sha": "ca71ea7",
+      "author": "Jesse Kulp",
+      "date": "2026-07-30T10:16:10-07:00",
+      "subject": "Cohort: a workspace UI for HAI-Harness",
+      "contributors": [
+        "claude"
+      ],
+      "shared": false,
+      "added": 11498,
+      "removed": 0,
+      "files": [
+        ".gitignore",
+        "AGENTS.md",
+        "Agents/UX.md",
+        "Agents/_archive/README.md",
+        "Agents/_archive/handoffs/README.md",
+        "Agents/_archive/tasks/README.md",
+        "Agents/athena.md",
+        "Agents/augustus.md",
+        "Agents/claudia.md",
+        "Agents/design.md",
+        "Agents/designs/README.md",
+        "Agents/graveyard.md",
+        "Agents/handoffs/README.md",
+        "Agents/handoffs/TEMPLATE.md",
+        "Agents/hephaestus.md",
+        "Agents/julius.md",
+        "Agents/lessons/README.md",
+        "Agents/lessons/TEMPLATE.md",
+        "Agents/onboarding.md",
+        "Agents/patterns.md",
+        "Agents/planning.md",
+        "Agents/project_context.md",
+        "Agents/skills/decision-logger/SKILL.md",
+        "Agents/skills/guardian/SKILL.md",
+        "Agents/skills/handoff/SKILL.md",
+        "Agents/skills/retrospective/SKILL.md",
+        "Agents/tasks/augustus.md",
+        "Agents/tasks/julius.md",
+        "Human/brief.md",
+        "Human/decisions.md",
+        "Human/onboarding.md",
+        "Human/open_questions.md",
+        "Human/reflections.md",
+        "README.md",
+        "app/agent/[agentId]/page.tsx",
+        "app/api/context/[channelId]/route.ts",
+        "app/api/messages/[channelId]/route.ts",
+        "app/c/[channelId]/page.tsx",
+        "app/demo/page.tsx",
+        "app/favicon.ico",
+        "app/globals.css",
+        "app/layout.tsx",
+        "app/not-found.tsx",
+        "app/page.tsx",
+        "components/AgentProfile.tsx",
+        "components/AgentTimeline.tsx",
+        "components/AppShell.tsx",
+        "components/Avatar.tsx",
+        "components/Composer.tsx",
+        "components/ContextRail.tsx",
+        "components/DemoTour.tsx",
+        "components/MessageThread.tsx",
+        "components/ProjectView.tsx",
+        "components/Sidebar.tsx",
+        "components/TeamTimeline.tsx",
+        "components/Workspace.tsx",
+        "eslint.config.mjs",
+        "lib/agents.ts",
+        "lib/demo.ts",
+        "lib/harness.ts",
+        "lib/messages.ts",
+        "lib/timeline.ts",
+        "next.config.ts",
+        "package-lock.json",
+        "package.json",
+        "postcss.config.mjs",
+        "public/file.svg",
+        "public/globe.svg",
+        "public/next.svg",
+        "public/vercel.svg",
+        "public/window.svg",
+        "tsconfig.json"
+      ]
+    }
+  ]
+}
