@@ -272,7 +272,6 @@ export function DemoTour() {
               label="Checking scope..."
               details={TOUR_HANDOFF}
               forceOpen={step.spotlight === "handoff"}
-              cycleKey={index}
               compact
             />
           </div>

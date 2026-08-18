@@ -18,25 +18,15 @@ export function LeadHandoffIndicator({
   compact = false,
   details,
   forceOpen = false,
-  cycleKey,
 }: {
   label?: string;
   compact?: boolean;
   details?: HandoffDetails;
   forceOpen?: boolean;
-  /**
-   * Changes when the handoff moves on, retriggering the swing. Defaults to the
-   * label, which is enough wherever the label itself changes per step; the tour
-   * holds one label across beats, so it passes its step index instead.
-   */
-  cycleKey?: string | number;
 }) {
   const [open, setOpen] = useState(false);
   const interactive = Boolean(details);
   const visible = Boolean(details) && (open || forceOpen);
-  // Keyed rather than held in state: a new beat remounts these two spans, which
-  // is what restarts the animation. No effect, no timer, nothing to clean up.
-  const beat = cycleKey ?? label;
 
   useEffect(() => {
     setOpen(false);
@@ -48,13 +38,16 @@ export function LeadHandoffIndicator({
         compact ? "scale-[0.82]" : ""
       }`}
     >
-      {/* The baton runs on its own track above the row, so the pass is a thing
-          you can watch cross rather than an inference from two beads leaning. */}
+      {/* The current. Three batons, phase-offset in CSS, running independently
+          of whatever step the app is on — nothing about this restarts when the
+          label changes, because a restart is a jump. */}
       <span className="handoff-track z-30" aria-hidden="true">
+        <span className="handoff-baton" />
+        <span className="handoff-baton" />
         <span className="handoff-baton" />
       </span>
 
-      <span key={`send-${beat}`} className="handoff-kiss-send flex -space-x-2">
+      <span className="handoff-kiss-send flex -space-x-2">
         {PARTICIPANTS.slice(0, 2).map((id) => (
           <HandoffBead key={id} agentId={id} />
         ))}
@@ -84,7 +77,7 @@ export function LeadHandoffIndicator({
         <span>{label}</span>
       </button>
 
-      <span key={`recv-${beat}`} className="handoff-kiss-recv flex">
+      <span className="handoff-kiss-recv flex">
         <HandoffBead agentId="claudia" lead />
       </span>
 

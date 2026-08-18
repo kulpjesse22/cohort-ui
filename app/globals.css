@@ -808,24 +808,27 @@ body * {
 }
 
 /* --- The handoff ----------------------------------------------------------
-   A baton pass, not a pendulum. A pendulum's defining move is that it comes
-   back; a relay's is that everything keeps going forward.
+   A slow current, not an event. Nothing here starts or stops: three batons
+   cross the strip on an 11s loop, phase-offset by a third each, so one is
+   always mid-crossing and the loop seam never surfaces. Each fades in and out
+   over a fifth of its journey, so it arrives and leaves as a change in
+   density rather than an appearance.
 
-   So each element reaches forward decisively and then returns on a curve slow
-   enough to read as drift rather than a swing. The two overlap across two
-   thirds of the cycle: the lead is already reaching before the sender has
-   finished returning, so at no instant is the group as a whole moving
-   backwards. A brightness lift rides the same envelope, which gives the pass
-   a direction even when the travel itself is only a few pixels.
+   The beads breathe on a pure sine, which matches value and slope at 0% and
+   100% — the loop is seamless by construction rather than by tuning. Their
+   period is 9s against the baton's 11s, so the two never lock into a visible
+   beat; the strip drifts instead of pulsing.
 
-   Both halves are half-cosines sampled every 3% and played linear, so the
-   shape lives in the values rather than in a timing function. An eased curve
-   between sparse keyframes still hits zero velocity at every stop, and those
-   velocity breaks are what read as jerk. Sampled this way, displacement and
-   velocity are continuous through the start, the peak, and the end. */
+   Nothing is triggered. There is deliberately no per-step retrigger, because
+   restarting an animation is a jump no easing can disguise.
+
+   Everything is sampled densely and played linear, so the shape lives in the
+   values rather than in a timing function. An eased curve between sparse
+   keyframes still hits zero velocity at every stop, and those velocity breaks
+   are what read as jerk. */
 .handoff-kiss-send,
 .handoff-kiss-recv {
-  animation-duration: 2400ms;
+  animation-duration: 9s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
 }
@@ -852,112 +855,133 @@ body * {
   height: 6px;
   width: 6px;
   border-radius: 9999px;
-  background: var(--lead-handoff-hue);
-  box-shadow: 0 0 10px 3px color-mix(in srgb, var(--lead-handoff-hue) 40%, transparent);
-  animation: handoff-baton 2400ms linear infinite;
+  background: color-mix(in srgb, var(--lead-handoff-hue) 70%, transparent);
+  box-shadow: 0 0 14px 6px color-mix(in srgb, var(--lead-handoff-hue) 28%, transparent);
+  filter: blur(1.5px);
+  animation: handoff-baton 11s linear infinite;
+}
+
+/* Three, evenly phased. One is always mid-crossing, so the loop has no seam to
+   see — the strip reads as a slow continuous current rather than a thing that
+   starts, finishes, and starts again. */
+.handoff-baton:nth-child(2) {
+  animation-delay: -3.667s;
+}
+
+.handoff-baton:nth-child(3) {
+  animation-delay: -7.333s;
 }
 
 @keyframes handoff-kiss-send {
-  0% { filter: brightness(1.048); }
-  4% { filter: brightness(1.094); }
-  8% { filter: brightness(1.151); }
-  12% { filter: brightness(1.2); }
-  16% { filter: brightness(1.22); }
-  20% { filter: brightness(1.2); }
-  24% { filter: brightness(1.151); }
-  28% { filter: brightness(1.094); }
-  32% { filter: brightness(1.048); }
-  36% { filter: brightness(1.021); }
-  40% { filter: brightness(1.007); }
-  44% { filter: brightness(1.002); }
-  48% { filter: brightness(1.001); }
-  52% { filter: brightness(1.0); }
-  56% { filter: brightness(1.0); }
-  60% { filter: brightness(1.0); }
-  64% { filter: brightness(1.0); }
-  68% { filter: brightness(1.0); }
-  72% { filter: brightness(1.0); }
-  76% { filter: brightness(1.0); }
-  80% { filter: brightness(1.0); }
-  84% { filter: brightness(1.0); }
-  88% { filter: brightness(1.0); }
-  92% { filter: brightness(1.0); }
-  96% { filter: brightness(1.0); }
+  0% { filter: brightness(1.0); }
+  4% { filter: brightness(1.002); }
+  8% { filter: brightness(1.008); }
+  12% { filter: brightness(1.018); }
+  16% { filter: brightness(1.03); }
+  20% { filter: brightness(1.045); }
+  24% { filter: brightness(1.061); }
+  28% { filter: brightness(1.077); }
+  32% { filter: brightness(1.093); }
+  36% { filter: brightness(1.106); }
+  40% { filter: brightness(1.118); }
+  44% { filter: brightness(1.125); }
+  48% { filter: brightness(1.129); }
+  52% { filter: brightness(1.129); }
+  56% { filter: brightness(1.125); }
+  60% { filter: brightness(1.118); }
+  64% { filter: brightness(1.106); }
+  68% { filter: brightness(1.093); }
+  72% { filter: brightness(1.077); }
+  76% { filter: brightness(1.061); }
+  80% { filter: brightness(1.045); }
+  84% { filter: brightness(1.03); }
+  88% { filter: brightness(1.018); }
+  92% { filter: brightness(1.008); }
+  96% { filter: brightness(1.002); }
   100% { filter: brightness(1.0); }
 }
 
 @keyframes handoff-kiss-recv {
-  0% { filter: brightness(1.0); }
-  4% { filter: brightness(1.0); }
-  8% { filter: brightness(1.0); }
-  12% { filter: brightness(1.0); }
-  16% { filter: brightness(1.0); }
-  20% { filter: brightness(1.0); }
-  24% { filter: brightness(1.0); }
-  28% { filter: brightness(1.0); }
-  32% { filter: brightness(1.0); }
-  36% { filter: brightness(1.0); }
-  40% { filter: brightness(1.0); }
-  44% { filter: brightness(1.0); }
-  48% { filter: brightness(1.0); }
-  52% { filter: brightness(1.001); }
-  56% { filter: brightness(1.003); }
-  60% { filter: brightness(1.009); }
-  64% { filter: brightness(1.024); }
-  68% { filter: brightness(1.057); }
-  72% { filter: brightness(1.111); }
-  76% { filter: brightness(1.178); }
-  80% { filter: brightness(1.237); }
-  84% { filter: brightness(1.26); }
-  88% { filter: brightness(1.237); }
-  92% { filter: brightness(1.178); }
-  96% { filter: brightness(1.111); }
-  100% { filter: brightness(1.057); }
+  0% { filter: brightness(1.098); }
+  4% { filter: brightness(1.115); }
+  8% { filter: brightness(1.13); }
+  12% { filter: brightness(1.141); }
+  16% { filter: brightness(1.148); }
+  20% { filter: brightness(1.15); }
+  24% { filter: brightness(1.148); }
+  28% { filter: brightness(1.141); }
+  32% { filter: brightness(1.13); }
+  36% { filter: brightness(1.115); }
+  40% { filter: brightness(1.098); }
+  44% { filter: brightness(1.08); }
+  48% { filter: brightness(1.061); }
+  52% { filter: brightness(1.043); }
+  56% { filter: brightness(1.027); }
+  60% { filter: brightness(1.014); }
+  64% { filter: brightness(1.005); }
+  68% { filter: brightness(1.001); }
+  72% { filter: brightness(1.001); }
+  76% { filter: brightness(1.005); }
+  80% { filter: brightness(1.014); }
+  84% { filter: brightness(1.027); }
+  88% { filter: brightness(1.043); }
+  92% { filter: brightness(1.061); }
+  96% { filter: brightness(1.08); }
+  100% { filter: brightness(1.098); }
 }
 
-/* The baton. It crosses once and fades out rather than returning, so the
-   travel is forward at every instant of the loop — there is no point in the
-   cycle where anything on the strip is moving right to left. */
-/* The baton. It crosses once and fades where it lands, so the travel is
-   forward at every instant — nothing on the strip ever moves right to
-   left. Position is a smootherstep, which holds zero velocity at both
-   ends: it eases out of the sender's hand and decelerates into the
-   lead's. That deceleration is the kiss; there is no swing back. */
 @keyframes handoff-baton {
-  0% { left: 7.0%; opacity: 0.0; transform: translateY(-50%) scale(0.5); }
-  3% { left: 7.02%; opacity: 0.3; transform: translateY(-50%) scale(0.65); }
-  6% { left: 7.17%; opacity: 0.6; transform: translateY(-50%) scale(0.8); }
-  9% { left: 7.55%; opacity: 0.9; transform: translateY(-50%) scale(0.95); }
-  12% { left: 8.23%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
-  15% { left: 9.29%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
-  18% { left: 10.76%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
-  21% { left: 12.67%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
-  24% { left: 15.02%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
-  27% { left: 17.81%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
-  30% { left: 21.02%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
-  33% { left: 24.63%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
-  36% { left: 28.58%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
-  39% { left: 32.83%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
-  42% { left: 37.32%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
-  45% { left: 41.99%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
-  48% { left: 46.78%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
-  51% { left: 51.61%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
-  54% { left: 56.42%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
-  57% { left: 61.14%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
-  60% { left: 65.7%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
-  63% { left: 70.04%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
-  66% { left: 74.09%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
-  69% { left: 77.82%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
-  72% { left: 81.16%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
-  75% { left: 84.1%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
-  78% { left: 86.6%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
-  81% { left: 88.65%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
-  84% { left: 90.27%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
-  87% { left: 91.46%; opacity: 1.0; transform: translateY(-50%) scale(1.0); }
-  90% { left: 92.26%; opacity: 0.83; transform: translateY(-50%) scale(0.92); }
-  93% { left: 92.74%; opacity: 0.58; transform: translateY(-50%) scale(0.79); }
-  96% { left: 92.95%; opacity: 0.33; transform: translateY(-50%) scale(0.67); }
-  99% { left: 93.0%; opacity: 0.08; transform: translateY(-50%) scale(0.54); }
+  0% { left: 6.0%; opacity: 0.0; }
+  2% { left: 6.01%; opacity: 0.02; }
+  4% { left: 6.05%; opacity: 0.079; }
+  6% { left: 6.17%; opacity: 0.173; }
+  8% { left: 6.4%; opacity: 0.292; }
+  10% { left: 6.75%; opacity: 0.429; }
+  12% { left: 7.26%; opacity: 0.571; }
+  14% { left: 7.94%; opacity: 0.708; }
+  16% { left: 8.79%; opacity: 0.827; }
+  18% { left: 9.85%; opacity: 0.921; }
+  20% { left: 11.1%; opacity: 0.98; }
+  22% { left: 12.55%; opacity: 1.0; }
+  24% { left: 14.21%; opacity: 1.0; }
+  26% { left: 16.06%; opacity: 1.0; }
+  28% { left: 18.11%; opacity: 1.0; }
+  30% { left: 20.35%; opacity: 1.0; }
+  32% { left: 22.77%; opacity: 1.0; }
+  34% { left: 25.35%; opacity: 1.0; }
+  36% { left: 28.08%; opacity: 1.0; }
+  38% { left: 30.95%; opacity: 1.0; }
+  40% { left: 33.93%; opacity: 1.0; }
+  42% { left: 37.02%; opacity: 1.0; }
+  44% { left: 40.19%; opacity: 1.0; }
+  46% { left: 43.43%; opacity: 1.0; }
+  48% { left: 46.7%; opacity: 1.0; }
+  50% { left: 50.0%; opacity: 1.0; }
+  52% { left: 53.3%; opacity: 1.0; }
+  54% { left: 56.57%; opacity: 1.0; }
+  56% { left: 59.81%; opacity: 1.0; }
+  58% { left: 62.98%; opacity: 1.0; }
+  60% { left: 66.07%; opacity: 1.0; }
+  62% { left: 69.05%; opacity: 1.0; }
+  64% { left: 71.92%; opacity: 1.0; }
+  66% { left: 74.65%; opacity: 1.0; }
+  68% { left: 77.23%; opacity: 1.0; }
+  70% { left: 79.65%; opacity: 1.0; }
+  72% { left: 81.89%; opacity: 1.0; }
+  74% { left: 83.94%; opacity: 1.0; }
+  76% { left: 85.79%; opacity: 1.0; }
+  78% { left: 87.45%; opacity: 1.0; }
+  80% { left: 88.9%; opacity: 0.98; }
+  82% { left: 90.15%; opacity: 0.921; }
+  84% { left: 91.21%; opacity: 0.827; }
+  86% { left: 92.06%; opacity: 0.708; }
+  88% { left: 92.74%; opacity: 0.571; }
+  90% { left: 93.25%; opacity: 0.429; }
+  92% { left: 93.6%; opacity: 0.292; }
+  94% { left: 93.83%; opacity: 0.173; }
+  96% { left: 93.95%; opacity: 0.079; }
+  98% { left: 93.99%; opacity: 0.02; }
+  100% { left: 94.0%; opacity: 0.0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
