@@ -120,7 +120,7 @@ export interface GeneratedReply {
  * well as "can you pull up the design docs".
  */
 const DOC_SUBJECTS: Array<{ match: RegExp; paths: string[] }> = [
-  { match: /\b(roadmap|plan|planning|queue|backlog|what's next|whats next)\b/, paths: ["Agents/planning.md"] },
+  { match: /\b(road\s?map|plan|planning|queue|backlog|what'?s next|priorities)\b/, paths: ["Agents/planning.md"] },
   { match: /\b(design|visual|tokens?|styling|brand)\b/, paths: ["Agents/design.md"] },
   { match: /\b(ux|interaction|research|glossary|copy)\b/, paths: ["Agents/UX.md"] },
   { match: /\b(context|architecture|constraints?|stack)\b/, paths: ["Agents/project_context.md"] },
@@ -132,7 +132,7 @@ const DOC_SUBJECTS: Array<{ match: RegExp; paths: string[] }> = [
  * no verb; "the design is wrong" is a complaint and must not start citing
  * files at someone.
  */
-const SELF_SUFFICIENT = /\b(roadmap|backlog|what'?s next|planning\.md)\b/;
+const SELF_SUFFICIENT = /\b(road\s?map|backlog|what'?s next|planning\.md)\b/;
 
 const PULL_VERB = /\b(pull|show|open|share|bring|get|see|look at|display|surface|find)\b/;
 const DOC_NOUN = /\b(docs?|files?|documents?|contracts?|guides?|assets?|artifacts?|materials?)\b/;
@@ -193,11 +193,11 @@ export function replyTo(
   let cites = documentPull(text);
 
   // Nothing named, but referring back to what is already on the table.
-  if (!cites && recentCites?.length) {
+  if (!cites) {
     const t = text.toLowerCase();
-    if ((FOLLOW_UP.test(t) || SURFACE.test(t)) && (PULL_VERB.test(t) || SURFACE.test(t))) {
-      cites = recentCites;
-    }
+    const isFollowUp =
+      (FOLLOW_UP.test(t) || SURFACE.test(t)) && (PULL_VERB.test(t) || SURFACE.test(t));
+    if (isFollowUp) cites = recentCites?.length ? recentCites : DEFAULT_PATHS;
   }
 
   // The whole point of naming a source of truth is that it changes later
