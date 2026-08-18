@@ -208,16 +208,28 @@ export function replyTo(
   }
 
   if (cites) {
+    // She raises it; the human decides. Silently choosing what is
+    // authoritative would undercut the whole point, and making the human ask
+    // every time just moves the bookkeeping. So: notice the repeat, offer once,
+    // and only when nothing has been chosen yet.
+    const repeated = recentCites?.length
+      ? cites.find((c) => recentCites.includes(c))
+      : undefined;
+    const offer =
+      !canon && repeated
+        ? ` That's twice ${repeated.split("/").pop()} has come up — want me to treat it as the source of truth so I lead with it from here? There's a control on it in the panel.`
+        : "";
+
     return {
       agentId,
       text:
-        canon && cites[0] === canon
+        (canon && cites[0] === canon
           ? `Leading with ${canon}, since you named it the source of truth — I'm not making you say that again. ${
               cites.length > 1 ? `Also pulling ${cites.slice(1).join(" and ")}. ` : ""
             }These are read live; the files are the truth, not this preview of them.`
           : cites.length === 1
           ? `Here it is, read live from ${cites[0]} — that file is the truth, not this preview of it. If it is out of date, the fix belongs in the file rather than in this thread.`
-          : `Pulling those up, read live from ${cites.join(" and ")}. Those files are the truth; what you see here is just a window onto them. If what you need is missing, that is a gap to close in the file rather than something I should improvise here.`,
+          : `Pulling those up, read live from ${cites.join(" and ")}. Those files are the truth; what you see here is just a window onto them. If what you need is missing, that is a gap to close in the file rather than something I should improvise here.`) + offer,
       cites,
     };
   }

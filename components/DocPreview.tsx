@@ -47,17 +47,27 @@ function inline(text: string): ReactNode {
   });
 }
 
+/**
+ * "considered" is not the absence of a badge — it is a state of its own. Once a
+ * choice has been made, the documents that were not chosen have to look
+ * decided-against rather than merely unlabelled, or the room cannot tell that a
+ * decision happened at all.
+ */
+export type DocState = "canon" | "considered" | "neutral";
+
 export function DocPreview({
   path,
   content,
-  isCanon = false,
+  state = "neutral",
   action,
 }: {
   path: string;
   content: string | null;
-  isCanon?: boolean;
+  state?: DocState;
   action?: ReactNode;
 }) {
+  const isCanon = state === "canon";
+  const isConsidered = state === "considered";
   const kind = classify(path);
   const name = path.split("/").pop() ?? path;
   const colors = content ? swatches(content) : [];
@@ -68,24 +78,42 @@ export function DocPreview({
     .slice(0, 14);
 
   return (
-    <div className={`${kind.hue} overflow-hidden rounded-lg border border-line bg-canvas`}>
-      {/* A coloured spine so the type is legible before anything is read. */}
-      <div className="h-1 w-full" style={{ background: "var(--hue)" }} />
+    <div
+      className={`${kind.hue} overflow-hidden rounded-lg border bg-canvas transition-opacity duration-500 ${
+        isCanon ? "border-approved-line" : "border-line"
+      } ${isConsidered ? "opacity-60" : "opacity-100"}`}
+    >
+      {/* A coloured spine so the type is legible before anything is read. The
+          chosen document keeps its colour; the ones passed over lose it. */}
+      <div
+        className="h-1 w-full transition-colors duration-500"
+        style={{ background: isConsidered ? "var(--color-line-strong)" : "var(--hue)" }}
+      />
 
       <div className="flex items-center justify-between gap-2 px-3 pb-1.5 pt-2">
         <span className="flex min-w-0 items-center gap-2">
           <span
-            className="shrink-0 rounded px-1.5 py-0.5 text-[10px] font-medium"
-            style={{
-              color: "var(--hue)",
-              background: "color-mix(in srgb, var(--hue) 14%, transparent)",
-            }}
+            className="shrink-0 rounded px-1.5 py-0.5 text-[10px] font-medium transition-colors duration-500"
+            style={
+              isConsidered
+                ? { color: "var(--color-ink-4)", background: "var(--color-raised)" }
+                : { color: "var(--hue)", background: "color-mix(in srgb, var(--hue) 14%, transparent)" }
+            }
           >
             {kind.label}
           </span>
-          <span className="truncate text-[12px] font-semibold text-ink">{name}</span>
+          <span
+            className={`truncate text-[12px] font-semibold ${isConsidered ? "text-ink-3" : "text-ink"}`}
+          >
+            {name}
+          </span>
           {isCanon && (
-            <span className="shrink-0 text-[10px] font-medium text-approved">source of truth</span>
+            <span className="shrink-0 rounded border border-approved-line bg-approved-bg px-1.5 py-0.5 text-[10px] font-medium text-approved">
+              source of truth
+            </span>
+          )}
+          {isConsidered && (
+            <span className="shrink-0 text-[10px] text-ink-4">considered</span>
           )}
         </span>
       </div>
@@ -96,7 +124,9 @@ export function DocPreview({
             <span
               key={c}
               title={c}
-              className="h-4 w-4 rounded-[3px] ring-1 ring-inset ring-black/10"
+              className={`h-4 w-4 rounded-[3px] ring-1 ring-inset ring-black/10 transition-all duration-500 ${
+                isConsidered ? "saturate-0" : ""
+              }`}
               style={{ background: c }}
             />
           ))}

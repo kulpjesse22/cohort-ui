@@ -84,9 +84,13 @@ export function ContextRail({
                 key={`cited-${doc.path}`}
                 path={doc.path}
                 content={doc.content}
-                isCanon={canon === doc.path}
+                state={
+                  canon === doc.path ? "canon" : canon ? "considered" : "neutral"
+                }
                 action={
-                  canon === doc.path ? null : doc.content ? (
+                  canon === doc.path ? (
+                    <span className="text-[10px] text-ink-4">chosen</span>
+                  ) : doc.content ? (
                     <button
                       onClick={() => pin(doc.path)}
                       disabled={pinning === doc.path}
