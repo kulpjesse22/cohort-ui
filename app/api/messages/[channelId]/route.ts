@@ -38,7 +38,11 @@ export async function POST(
 
   // The agent answers in character. Deterministic, not generated — see
   // lib/replies.ts for why that trade is deliberate.
-  const generated = replyTo(channelId, text, await getCanon());
+  // What is already on the table, so "show them in preview" resolves.
+  const priorCites = [...(await getMessages(channelId))]
+    .reverse()
+    .find((m) => m.cites?.length)?.cites;
+  const generated = replyTo(channelId, text, await getCanon(), priorCites);
   const reply = generated
     ? await appendAgentReply(channelId, generated.agentId, generated.text, message.ts, generated.cites)
     : null;

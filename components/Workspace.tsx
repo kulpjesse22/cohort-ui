@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { getChannel } from "@/lib/agents";
 import type { Message } from "@/lib/messages";
@@ -31,6 +31,40 @@ export function Workspace({
   const [loadingMessages, setLoadingMessages] = useState(true);
   const [loadingContext, setLoadingContext] = useState(true);
   const [typing, setTyping] = useState<string | null>(null);
+  const [citedDocs, setCitedDocs] = useState<ContextDoc[]>([]);
+
+  // Whatever the agent has put on the table, newest first, loaded for the rail
+  // so "show them in preview" has somewhere to land.
+  const citedPaths = useMemo(() => {
+    const seen: string[] = [];
+    for (const m of [...messages].reverse()) {
+      for (const p of m.cites ?? []) if (!seen.includes(p)) seen.push(p);
+    }
+    return seen.slice(0, 3);
+  }, [messages]);
+
+  useEffect(() => {
+    if (citedPaths.length === 0) {
+      setCitedDocs([]);
+      return;
+    }
+    let active = true;
+    Promise.all(
+      citedPaths.map((p) =>
+        fetch(`/api/doc?path=${encodeURIComponent(p)}`)
+          .then((r) => r.json())
+          .then((d) => ({
+            label: p.split("/").pop() ?? p,
+            path: p,
+            content: d.exists ? (d.content as string).replace(/<!--[\s\S]*?-->/g, "").trim() : null,
+          }))
+          .catch(() => ({ label: p, path: p, content: null }))
+      )
+    ).then((docs) => active && setCitedDocs(docs));
+    return () => {
+      active = false;
+    };
+  }, [citedPaths]);
 
   const channel = getChannel(channelId)!;
   const isAgentChannel = channel.kind === "agent";
@@ -118,6 +152,7 @@ export function Workspace({
       activeChannelId={channelId}
       header={header}
       contextDocs={contextDocs}
+      citedDocs={citedDocs}
       loadingContext={loadingContext}
     >
       <MessageThread

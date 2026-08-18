@@ -142,6 +142,15 @@ const DOC_NOUN = /\b(docs?|files?|documents?|contracts?|guides?|assets?|artifact
  * the planner's own two: what the work is, and what it must look like.
  */
 const GENERIC_ASK = /\b(assets?|artifacts?|materials?|docs?|documents?|files?)\b/;
+
+/**
+ * Follow-ups. "Can you show them in preview" names no subject at all — it
+ * refers back to what was just cited. Someone in a room will do this
+ * constantly, and answering it with a lecture about planning.md is the worst
+ * possible response to "show me".
+ */
+const FOLLOW_UP = /\b(them|these|those|it|that one|the same)\b/;
+const SURFACE = /\b(preview|panel|rail|side|sidebar|window|here|inline|open)\b/;
 const DEFAULT_PATHS = ["Agents/planning.md", "Agents/design.md"];
 
 /** Null when this is not a request for documents. */
@@ -175,12 +184,21 @@ function documentPull(text: string): string[] | null {
 export function replyTo(
   channelId: string,
   text: string,
-  canon?: string | null
+  canon?: string | null,
+  recentCites?: string[]
 ): GeneratedReply | null {
   const agentId = responder(channelId, text);
   if (!agentId) return null;
 
   let cites = documentPull(text);
+
+  // Nothing named, but referring back to what is already on the table.
+  if (!cites && recentCites?.length) {
+    const t = text.toLowerCase();
+    if ((FOLLOW_UP.test(t) || SURFACE.test(t)) && (PULL_VERB.test(t) || SURFACE.test(t))) {
+      cites = recentCites;
+    }
+  }
 
   // The whole point of naming a source of truth is that it changes later
   // answers. It leads the citation list, and the reply says why — otherwise

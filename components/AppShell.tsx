@@ -55,6 +55,7 @@ export function AppShell({
   activeChannelId,
   header,
   contextDocs,
+  citedDocs,
   loadingContext,
   children,
 }: {
@@ -62,6 +63,8 @@ export function AppShell({
   activeChannelId: string | null;
   header: ReactNode;
   contextDocs: ContextDoc[];
+  /** Documents the agent surfaced in conversation, shown above channel pins. */
+  citedDocs?: ContextDoc[];
   loadingContext: boolean;
   children: ReactNode;
 }) {
@@ -174,7 +177,12 @@ export function AppShell({
           railOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <ContextRail docs={contextDocs} loading={loadingContext} />
+        <ContextRail
+          docs={contextDocs}
+          citedDocs={citedDocs}
+          channelId={activeChannelId ?? undefined}
+          loading={loadingContext}
+        />
       </div>
 
       <CommandPalette open={searchOpen} onClose={() => setSearchOpen(false)} />
