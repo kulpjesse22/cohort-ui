@@ -7,7 +7,7 @@ import { Sidebar } from "./Sidebar";
 import { ContextRail } from "./ContextRail";
 import { CommandPalette } from "./CommandPalette";
 import { LeadHandoffIndicator, type HandoffDetails } from "./LeadHandoffIndicator";
-import { AGENTS } from "@/lib/agents";
+import { AgentActivityBar } from "./AgentActivityBar";
 import type { AgentStatus } from "@/lib/realtime/status";
 
 const ACTIVITY_STATES: Array<{ label: string; details: HandoffDetails }> = [
@@ -85,23 +85,11 @@ export function AppShell({
   const [searchOpen, setSearchOpen] = useState(false);
   const [activityIndex, setActivityIndex] = useState(0);
 
-  // A live status always wins. The rotation is what fills a silent header, not
-  // a thing that competes with a real event.
-  const live = liveStatuses?.[0];
-  const activity = live
-    ? {
-        label: live.label,
-        details: {
-          from: AGENTS[live.agentId]?.name ?? live.agentId,
-          to: "Cohort",
-          why: live.detail ?? "Reported by the harness as it happened.",
-          source: `Agents/tasks/${live.agentId}.md`,
-          next: liveStatuses && liveStatuses.length > 1
-            ? `${liveStatuses.length - 1} other agent${liveStatuses.length > 2 ? "s" : ""} also active.`
-            : "Waiting on the next event from this agent.",
-        } satisfies HandoffDetails,
-      }
-    : ACTIVITY_STATES[activityIndex];
+  // Two different things, so two different components. One agent's handoff is
+  // a sentence; a roster of them working at once is a board, and squeezing the
+  // second into the shape of the first is what limited the header before.
+  const live = (liveStatuses?.length ?? 0) > 0;
+  const activity = ACTIVITY_STATES[activityIndex];
 
   // Cmd/Ctrl-K opens search from anywhere, the way Slack and Notion do.
   useEffect(() => {
@@ -176,12 +164,11 @@ export function AppShell({
           {presence && <div className="hidden shrink-0 lg:flex">{presence}</div>}
 
           <div className="hidden shrink-0 md:flex">
-            <LeadHandoffIndicator
-              label={activity.label}
-              details={activity.details}
-              compact
-              scripted={!live}
-            />
+            {live ? (
+              <AgentActivityBar statuses={liveStatuses ?? []} />
+            ) : (
+              <LeadHandoffIndicator label={activity.label} details={activity.details} compact />
+            )}
           </div>
 
           <button

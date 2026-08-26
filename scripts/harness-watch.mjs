@@ -37,12 +37,29 @@ const SECRET = process.env.COHORT_EVENTS_SECRET;
 /** Server drops a status at 90s. Re-post well inside that, not at the edge. */
 const REFRESH_MS = 45_000;
 const DEBOUNCE_MS = 400;
+/**
+ * A request that never returns is worse here than one that fails.
+ *
+ * Without this the first hung connection stalls a sweep forever, later sweeps
+ * queue up behind it, and the feed goes quiet with nothing in the log to say
+ * so — the statuses simply expire and the header falls back to the rotation.
+ * Found exactly that way: a watcher alive for ninety minutes, reporting
+ * nothing, with no error to show for it.
+ */
+const REQUEST_TIMEOUT_MS = 5_000;
 const ONCE = process.argv.includes("--once");
 
 /** The team room, plus the agent's own channel. Both get every status. */
 const TEAM_CHANNEL = "cohort";
 
-const rejected = new Set();
+const warned = new Set();
+
+/** Same complaint, once. A sweep every 45s must not become a log every 45s. */
+function warnOnce(tag, message) {
+  if (warned.has(tag)) return;
+  warned.add(tag);
+  console.warn(message);
+}
 
 function clip(s, n) {
   const t = String(s).replace(/\s+/g, " ").trim();
@@ -157,11 +174,22 @@ async function handoffEvent(file, knownIds) {
 }
 
 async function post({ agentId, label, detail }, channelId) {
-  const res = await fetch(`${BASE}/api/events`, {
-    method: "POST",
-    headers: { "content-type": "application/json", "x-cohort-secret": SECRET },
-    body: JSON.stringify({ channelId, agentId, label, detail }),
-  });
+  let res;
+  try {
+    res = await fetch(`${BASE}/api/events`, {
+      method: "POST",
+      headers: { "content-type": "application/json", "x-cohort-secret": SECRET },
+      body: JSON.stringify({ channelId, agentId, label, detail }),
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    });
+  } catch (err) {
+    // Cohort is down, restarting, or slow. Keep sweeping — the next one
+    // reconnects, and a watcher that exits because the app blinked is a worse
+    // tool than one that waits.
+    // One tag for the whole app, not one per channel: it is the same outage.
+    warnOnce("unreachable", `Cannot reach ${BASE}: ${err instanceof Error ? err.message : err}`);
+    return false;
+  }
 
   if (res.status === 202) return true;
   if (res.status === 503) {
@@ -174,11 +202,10 @@ async function post({ agentId, label, detail }, channelId) {
   }
   // A 400 means Cohort does not know this agent or channel. Say so once and
   // keep going — one unmapped worker should not stop the rest reporting.
-  const tag = `${agentId}:${channelId}:${res.status}`;
-  if (!rejected.has(tag)) {
-    rejected.add(tag);
-    console.warn(`Skipping ${agentId} in #${channelId}: ${res.status} ${clip(await res.text(), 120)}`);
-  }
+  warnOnce(
+    `${agentId}:${channelId}:${res.status}`,
+    `Skipping ${agentId} in #${channelId}: ${res.status} ${clip(await res.text(), 120)}`
+  );
   return false;
 }
 
@@ -190,9 +217,22 @@ async function publish(status) {
   return sent;
 }
 
-let lastReport = "";
+let lastReport = null;
+let sweeping = false;
 
 async function sweep(events = []) {
+  // Sweeps must not stack. A slow one already delays the feed; overlapping ones
+  // post the same statuses several times over and hide which is current.
+  if (sweeping) return;
+  sweeping = true;
+  try {
+    await runSweep(events);
+  } finally {
+    sweeping = false;
+  }
+}
+
+async function runSweep(events) {
   const states = await readWorkerStates();
   for (const state of states) await publish(state);
   for (const event of events) await publish(event);
@@ -203,6 +243,9 @@ async function sweep(events = []) {
   if (report !== lastReport) {
     lastReport = report;
     console.log(`[${new Date().toLocaleTimeString()}] ${report}`);
+    // A report that recovers should be able to complain again if it breaks
+    // twice, so the once-only warnings reset when the picture actually changes.
+    warned.clear();
   }
 }
 

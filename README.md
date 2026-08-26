@@ -285,6 +285,10 @@ Being explicit, because a demo that overclaims is worse than no demo.
 
 **Real:**
 - The context rail reads actual files from this repository at runtime.
+- **The header shows the whole roster working.** When agents are reporting, the
+  status bar carries one live state per agent at once, in roster order, each
+  with what it is doing and when it last said so. When none are, it falls back
+  to an illustrative rotation and says which one you are looking at.
 - **The channel is live.** Each open channel holds a Server-Sent Events
   connection. A message posted by anyone appears in every viewer's thread
   without a reload, and the presence bar in the header is backed by real

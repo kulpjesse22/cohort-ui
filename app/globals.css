@@ -706,6 +706,12 @@
     animation-duration: 2.4s;
   }
 
+  /* Liveness is the message, so it stays legible without the motion. */
+  .agent-live-dot {
+    animation: none;
+    opacity: 1;
+  }
+
   .tour-cruise::before,
   .tour-surface,
   .tour-caption-card,
@@ -730,6 +736,22 @@
 
 .agent-fg {
   color: var(--hue);
+}
+
+/* A working agent's pulse. Opacity only, inside a fixed slot — the dot sits on
+   an avatar corner, and anything that changed its size would nudge the row. */
+.agent-live-dot {
+  background: var(--hue);
+  animation: agent-live 2s ease-in-out infinite;
+}
+@keyframes agent-live {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 .agent-chip {
   color: var(--hue);
