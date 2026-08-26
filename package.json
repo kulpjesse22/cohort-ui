@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "check:motion": "node scripts/check-tour-motion.mjs",
-    "contributions": "node scripts/contributions.mjs"
+    "contributions": "node scripts/contributions.mjs",
+    "harness:watch": "node scripts/harness-watch.mjs"
   },
   "dependencies": {
     "next": "16.2.12",

@@ -81,7 +81,10 @@ export function LeadHandoffIndicator({
             />
           ))}
         </span>
-        <span>{label}</span>
+        {/* A live label comes from a harness file and can be a whole sentence.
+            The pill is a fixed fixture in the header, so it clamps rather than
+            growing — the full text is in the details panel. */}
+        <span className="max-w-[11rem] truncate sm:max-w-[13rem]">{label}</span>
       </button>
 
       <span className="handoff-kiss-recv flex">

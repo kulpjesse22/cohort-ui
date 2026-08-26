@@ -300,10 +300,11 @@ Being explicit, because a demo that overclaims is worse than no demo.
   `project_context.md`, and `planning.md`.
 
 **Mocked or absent:**
-- **The header status line is illustrative until a harness is wired to it.**
+- **The header status line is illustrative until something is reporting to it.**
   It cycles through the shapes a handoff takes; no agent is running behind it.
-  `POST /api/events` is the ingest that replaces it with real agent activity,
-  and the indicator states which of the two you are looking at when you open it.
+  `npm run harness:watch` reports real activity off the harness files, and the
+  indicator states which of the two you are looking at when you open it. On the
+  public deploy it is the illustrative one — nothing is running there to report.
 - **Conversation is seeded.** No live model. The composer persists what you type
   to Redis when configured and to a local JSON file otherwise, and the replies
   are deterministic rather than generated. The exchanges are written to show
@@ -331,8 +332,22 @@ fan-out has to be live. The server tails the log once a second and pushes what
 it finds; a write on the same instance skips the wait. That is worth stating
 plainly: the client gets a stream, the server does the polling.
 
-To feed the status line real agent activity, set `COHORT_EVENTS_SECRET` and have
-the harness post as work happens:
+To feed the status line real agent activity, set `COHORT_EVENTS_SECRET` and run
+the watcher beside the app:
+
+```bash
+COHORT_URL=http://localhost:3000 npm run harness:watch
+```
+
+It reads the harness rather than a hardcoded roster. Workers are whoever has an
+`Agents/tasks/<agent>.md`, and their Assigned Queue block already carries the
+fields a status line needs — `Status`, `Active now`, `Task / outcome`. A queue
+that reads complete produces nothing, which is why a freshly cloned repo shows
+no agent activity: none is happening. Rewriting `planning.md` reports the
+planner; filing a handoff reports whoever the `From:` line names, when that
+maps to a known agent and not at all when it does not.
+
+Anything else that knows what an agent is doing can post directly instead:
 
 ```bash
 curl -X POST http://localhost:3000/api/events \
