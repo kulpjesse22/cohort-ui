@@ -7,6 +7,8 @@ import { Sidebar } from "./Sidebar";
 import { ContextRail } from "./ContextRail";
 import { CommandPalette } from "./CommandPalette";
 import { LeadHandoffIndicator, type HandoffDetails } from "./LeadHandoffIndicator";
+import { AGENTS } from "@/lib/agents";
+import type { AgentStatus } from "@/lib/realtime/status";
 
 const ACTIVITY_STATES: Array<{ label: string; details: HandoffDetails }> = [
   {
@@ -57,6 +59,8 @@ export function AppShell({
   contextDocs,
   citedDocs,
   loadingContext,
+  liveStatuses,
+  presence,
   children,
 }: {
   /** null on profile pages, so no channel row falsely reads as active. */
@@ -66,6 +70,13 @@ export function AppShell({
   /** Documents the agent surfaced in conversation, shown above channel pins. */
   citedDocs?: ContextDoc[];
   loadingContext: boolean;
+  /**
+   * What the harness says agents are doing right now. When this is empty the
+   * header falls back to the illustrative rotation, and says so when opened.
+   */
+  liveStatuses?: AgentStatus[];
+  /** Who else is looking at this channel. Rendered beside the status line. */
+  presence?: ReactNode;
   children: ReactNode;
 }) {
   const router = useRouter();
@@ -73,7 +84,24 @@ export function AppShell({
   const [railOpen, setRailOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [activityIndex, setActivityIndex] = useState(0);
-  const activity = ACTIVITY_STATES[activityIndex];
+
+  // A live status always wins. The rotation is what fills a silent header, not
+  // a thing that competes with a real event.
+  const live = liveStatuses?.[0];
+  const activity = live
+    ? {
+        label: live.label,
+        details: {
+          from: AGENTS[live.agentId]?.name ?? live.agentId,
+          to: "Cohort",
+          why: live.detail ?? "Reported by the harness as it happened.",
+          source: `Agents/tasks/${live.agentId}.md`,
+          next: liveStatuses && liveStatuses.length > 1
+            ? `${liveStatuses.length - 1} other agent${liveStatuses.length > 2 ? "s" : ""} also active.`
+            : "Waiting on the next event from this agent.",
+        } satisfies HandoffDetails,
+      }
+    : ACTIVITY_STATES[activityIndex];
 
   // Cmd/Ctrl-K opens search from anywhere, the way Slack and Notion do.
   useEffect(() => {
@@ -93,12 +121,14 @@ export function AppShell({
     setRailOpen(false);
   }, [activeChannelId]);
 
+  // Only runs while there is nothing real to show.
   useEffect(() => {
+    if (live) return;
     const timer = window.setInterval(() => {
       setActivityIndex((i) => (i + 1) % ACTIVITY_STATES.length);
     }, 2600);
     return () => window.clearInterval(timer);
-  }, []);
+  }, [live]);
 
   const overlayOpen = sidebarOpen || railOpen;
 
@@ -141,8 +171,17 @@ export function AppShell({
 
           <div className="min-w-0 flex-1">{header}</div>
 
+          {/* Last thing to earn space: the channel name has to stay readable
+              before the room does. */}
+          {presence && <div className="hidden shrink-0 lg:flex">{presence}</div>}
+
           <div className="hidden shrink-0 md:flex">
-            <LeadHandoffIndicator label={activity.label} details={activity.details} compact />
+            <LeadHandoffIndicator
+              label={activity.label}
+              details={activity.details}
+              compact
+              scripted={!live}
+            />
           </div>
 
           <button

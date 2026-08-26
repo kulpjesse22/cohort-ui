@@ -9,13 +9,13 @@ import { Avatar } from "./Avatar";
 /**
  * Membership, not presence.
  *
- * Figma and Google Docs show who is live in the document right now. Cohort has
- * no presence system — no sessions, no sockets, nobody is "online" — so a
- * live-looking facepile would be inventing a layer that does not exist.
+ * Figma and Google Docs show who is live in the document right now. Cohort does
+ * that too, in the header — see PresenceBar, which is backed by heartbeats and
+ * shows only people actually watching. This is the other question: who belongs
+ * here, and when were they last active, taken straight from the timeline.
  *
- * Instead this shows who belongs here and when they were last active, taken
- * straight from the timeline. Same visual texture, every claim backed by an
- * entry.
+ * Keeping them apart matters. A facepile that blends "is a member" with "is
+ * here" cannot be read as either.
  */
 
 function lastActive(id: ActorId): { label: string; title: string } | null {

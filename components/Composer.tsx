@@ -17,9 +17,12 @@ function wrapSelection(el: HTMLTextAreaElement, token: string, placeholder: stri
 export function Composer({
   channelName,
   onSend,
+  onTyping,
 }: {
   channelName: string;
   onSend: (text: string) => Promise<void>;
+  /** Tells the room someone is composing. Fires on transitions, not keystrokes. */
+  onTyping?: (typing: boolean) => void;
 }) {
   const [text, setText] = useState("");
   const [sending, setSending] = useState(false);
@@ -48,6 +51,7 @@ export function Composer({
 
   function update(value: string, caret?: number) {
     setText(value);
+    onTyping?.(value.trim().length > 0);
     requestAnimationFrame(() => {
       const el = ref.current;
       if (!el) return;
@@ -78,6 +82,7 @@ export function Composer({
     if (!trimmed || sending) return;
     setSending(true);
     setError(null);
+    onTyping?.(false);
     try {
       await Promise.all([
         onSend(trimmed),

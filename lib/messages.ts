@@ -1,7 +1,6 @@
-import fs from "node:fs/promises";
-import path from "node:path";
 import { randomUUID } from "node:crypto";
 import { AGENTS, type AgentId } from "./agents";
+import { appendLog, readLog } from "./realtime/log";
 
 export interface Message {
   id: string;
@@ -14,8 +13,6 @@ export interface Message {
   /** Repo-relative paths this message points at, rendered as openable links. */
   cites?: string[];
 }
-
-const DATA_DIR = path.join(process.cwd(), "data", "messages");
 
 // Seed conversation dogfoods the harness on the exact work of building this UI —
 // it isn't generic filler, it's what actually happened in this session.
@@ -178,48 +175,9 @@ const SEED_MESSAGES: Record<string, Omit<Message, "channelId">[]> = {
   ],
 };
 
-/**
- * Best-effort write.
- *
- * Vercel serves from a read-only filesystem, so persisting a message throws
- * there. The thread still has to work — a composer that 500s in front of a room
- * is worse than one that forgets. On a writable disk this behaves exactly as
- * before; on Vercel the conversation lives for the session and resets on
- * reload, which for a demo is arguably the better default.
- */
-async function persist(channelId: string, messages: Message[]): Promise<void> {
-  try {
-    await fs.writeFile(filePathFor(channelId), JSON.stringify(messages, null, 2));
-  } catch {
-    // Read-only deploy target. The reply is already being returned to the
-    // caller; losing the write costs persistence, not the interaction.
-  }
-}
-
-async function ensureDir(): Promise<void> {
-  try {
-    await fs.mkdir(DATA_DIR, { recursive: true });
-  } catch {
-    // Same reason as persist(): a read-only target is not a failure state.
-  }
-}
-
-function filePathFor(channelId: string): string {
-  return path.join(DATA_DIR, `${channelId}.json`);
-}
-
-async function readPersisted(channelId: string): Promise<Message[]> {
-  try {
-    const raw = await fs.readFile(filePathFor(channelId), "utf8");
-    return JSON.parse(raw) as Message[];
-  } catch {
-    return [];
-  }
-}
-
 export async function getMessages(channelId: string): Promise<Message[]> {
   const seed = (SEED_MESSAGES[channelId] ?? []).map((m) => ({ ...m, channelId }));
-  const persisted = await readPersisted(channelId);
+  const persisted = await readLog(channelId);
   return [...seed, ...persisted].sort((a, b) => a.ts.localeCompare(b.ts));
 }
 
@@ -227,8 +185,6 @@ export async function appendMessage(
   channelId: string,
   text: string
 ): Promise<Message> {
-  await ensureDir();
-  const persisted = await readPersisted(channelId);
   const message: Message = {
     id: randomUUID(),
     channelId,
@@ -237,8 +193,7 @@ export async function appendMessage(
     text,
     ts: new Date().toISOString(),
   };
-  persisted.push(message);
-  await persist(channelId, persisted);
+  await appendLog(channelId, message);
   return message;
 }
 
@@ -253,8 +208,6 @@ export async function appendAgentReply(
   afterTs: string,
   cites?: string[]
 ): Promise<Message> {
-  await ensureDir();
-  const persisted = await readPersisted(channelId);
   const message: Message = {
     id: randomUUID(),
     channelId,
@@ -264,7 +217,6 @@ export async function appendAgentReply(
     ts: new Date(new Date(afterTs).getTime() + 1000).toISOString(),
     ...(cites?.length ? { cites } : {}),
   };
-  persisted.push(message);
-  await persist(channelId, persisted);
+  await appendLog(channelId, message);
   return message;
 }

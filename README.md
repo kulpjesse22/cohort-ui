@@ -285,6 +285,12 @@ Being explicit, because a demo that overclaims is worse than no demo.
 
 **Real:**
 - The context rail reads actual files from this repository at runtime.
+- **The channel is live.** Each open channel holds a Server-Sent Events
+  connection. A message posted by anyone appears in every viewer's thread
+  without a reload, and the presence bar in the header is backed by real
+  heartbeats — nobody shows up there who is not currently watching. With
+  Upstash configured this works across machines; without it, across tabs on one
+  instance. See [Running it multiplayer](#running-it-multiplayer).
 - **Team memory is real.** `/memory` parses `Agents/lessons/INDEX.md` and the
   standing-gates block of `project_context.md` off disk. The rules there are
   ones this project actually learned; the lesson files open from the repo.
@@ -294,8 +300,13 @@ Being explicit, because a demo that overclaims is worse than no demo.
   `project_context.md`, and `planning.md`.
 
 **Mocked or absent:**
+- **The header status line is illustrative until a harness is wired to it.**
+  It cycles through the shapes a handoff takes; no agent is running behind it.
+  `POST /api/events` is the ingest that replaces it with real agent activity,
+  and the indicator states which of the two you are looking at when you open it.
 - **Conversation is seeded.** No live model. The composer persists what you type
-  to a local JSON file, and nothing replies. The exchanges are written to show
+  to Redis when configured and to a local JSON file otherwise, and the replies
+  are deterministic rather than generated. The exchanges are written to show
   the shape of the thing, including Claudia stopping to ask before she assigns —
   a real pattern, staged here rather than captured.
 - **Timeline history is seeded.** Not yet derived from `handoffs/` and
@@ -303,6 +314,36 @@ Being explicit, because a demo that overclaims is worse than no demo.
   illustration, not a log. The guided tour says so out loud at the end.
 - **Seniority is a static label.** It is not computed from the timeline sitting
   directly above it. The UI says so wherever it appears.
+
+---
+
+## Running it multiplayer
+
+Nothing is required. With no configuration the app is single-instance: messages
+go to `data/messages/`, presence covers the tabs on that one process. Copy
+`.env.example` to `.env.local` and fill in an Upstash Redis database to make the
+log and the presence set shared, which is what makes two people on two machines
+the same room.
+
+The transport is Server-Sent Events, not a WebSocket, because nothing needs to
+travel up that pipe — messages and heartbeats are ordinary POSTs, only the
+fan-out has to be live. The server tails the log once a second and pushes what
+it finds; a write on the same instance skips the wait. That is worth stating
+plainly: the client gets a stream, the server does the polling.
+
+To feed the status line real agent activity, set `COHORT_EVENTS_SECRET` and have
+the harness post as work happens:
+
+```bash
+curl -X POST http://localhost:3000/api/events \
+  -H "content-type: application/json" \
+  -H "x-cohort-secret: $COHORT_EVENTS_SECRET" \
+  -d '{"channelId":"cohort","agentId":"augustus","label":"Running the type check...","detail":"Before handing back to review."}'
+```
+
+A status goes stale after ninety seconds rather than persisting. An agent that
+dies mid-task never sends a "done", and a header that reads "Building..."
+forever is a lie with a timestamp on it.
 
 ---
 

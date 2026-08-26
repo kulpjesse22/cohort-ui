@@ -18,11 +18,18 @@ export function LeadHandoffIndicator({
   compact = false,
   details,
   forceOpen = false,
+  scripted = false,
 }: {
   label?: string;
   compact?: boolean;
   details?: HandoffDetails;
   forceOpen?: boolean;
+  /**
+   * True when this is the illustrative rotation rather than a live agent.
+   * The indicator looks identical either way, which is exactly why the
+   * difference has to be stated somewhere a reader can reach.
+   */
+  scripted?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const interactive = Boolean(details);
@@ -116,6 +123,12 @@ export function LeadHandoffIndicator({
             <dt className="text-ink-3">Next</dt>
             <dd className="text-ink-2">{details.next}</dd>
           </dl>
+
+          <p className="mt-3 border-t border-line pt-2 text-[11px] leading-4 text-ink-3">
+            {scripted
+              ? "Illustrative. No agent is running — this cycles through the shapes a handoff takes. Connect a harness event feed and it reports what is actually happening."
+              : "Live. Reported by the harness over the channel's event feed."}
+          </p>
         </div>
       )}
     </div>

@@ -5,9 +5,11 @@ import Link from "next/link";
 import { getChannel } from "@/lib/agents";
 import type { Message } from "@/lib/messages";
 import type { ContextDoc } from "@/lib/harness";
+import { useChannelStream } from "@/lib/useChannelStream";
 import { AppShell } from "./AppShell";
 import { MessageThread } from "./MessageThread";
 import { Composer } from "./Composer";
+import { PresenceBar } from "./PresenceBar";
 
 const TOUR_HANDOFF: Message = {
   id: "tour-cohort-welcome",
@@ -27,21 +29,54 @@ export function Workspace({
   fresh?: boolean;
 }) {
   const [messages, setMessages] = useState<Message[]>([]);
+  const { streamed, viewers, statuses, connected, setTyping } = useChannelStream(channelId);
+
+  /**
+   * Replies the client is deliberately sitting on.
+   *
+   * An agent reply is held behind a short typing state so it does not land in
+   * the same frame as the message it answers. The stream does not know that
+   * and would deliver it immediately, undoing the pause — so anything being
+   * held is filtered out of the merge until its timer releases it.
+   */
+  const [heldIds, setHeldIds] = useState<string[]>([]);
   const [contextDocs, setContextDocs] = useState<ContextDoc[]>([]);
   const [loadingMessages, setLoadingMessages] = useState(true);
   const [loadingContext, setLoadingContext] = useState(true);
-  const [typing, setTyping] = useState<string | null>(null);
+  const [agentTyping, setAgentTyping] = useState<string | null>(null);
   const [citedDocs, setCitedDocs] = useState<ContextDoc[]>([]);
 
   // Whatever the agent has put on the table, newest first, loaded for the rail
   // so "show them in preview" has somewhere to land.
+  /**
+   * Local state and the stream, reconciled.
+   *
+   * Both carry the same message when you are the one who sent it — the POST
+   * response optimistically, the stream a beat later. Id wins; ties break on
+   * timestamp so a message from another viewer lands in the right place in the
+   * thread rather than at the bottom.
+   */
+  const thread = useMemo(() => {
+    const byId = new Map<string, Message>();
+    for (const m of messages) byId.set(m.id, m);
+    // The tour hands off to a clean workspace on purpose, so it stays clean —
+    // the channel's shared history would contradict the handoff it just made.
+    // Presence and status still stream; only the log is withheld.
+    if (!fresh) {
+      for (const m of streamed) {
+        if (!byId.has(m.id) && !heldIds.includes(m.id)) byId.set(m.id, m);
+      }
+    }
+    return [...byId.values()].sort((a, b) => a.ts.localeCompare(b.ts));
+  }, [messages, streamed, heldIds, fresh]);
+
   const citedPaths = useMemo(() => {
     const seen: string[] = [];
-    for (const m of [...messages].reverse()) {
+    for (const m of [...thread].reverse()) {
       for (const p of m.cites ?? []) if (!seen.includes(p)) seen.push(p);
     }
     return seen.slice(0, 3);
-  }, [messages]);
+  }, [thread]);
 
   useEffect(() => {
     if (citedPaths.length === 0) {
@@ -123,9 +158,11 @@ export function Workspace({
     // computed; the pause is so a reply does not appear in the same frame as
     // the message it answers, which reads as canned.
     if (reply) {
-      setTyping(reply.authorId);
+      setHeldIds((prev) => [...prev, reply.id]);
+      setAgentTyping(reply.authorId);
       setTimeout(() => {
-        setTyping(null);
+        setAgentTyping(null);
+        setHeldIds((prev) => prev.filter((id) => id !== reply.id));
         setMessages((prev) => [...prev, reply]);
       }, 700);
     }
@@ -157,14 +194,16 @@ export function Workspace({
       contextDocs={contextDocs}
       citedDocs={citedDocs}
       loadingContext={loadingContext}
+      liveStatuses={statuses}
+      presence={<PresenceBar viewers={viewers} connected={connected} />}
     >
       <MessageThread
-        messages={messages}
+        messages={thread}
         loading={loadingMessages}
-        typing={typing}
+        typing={agentTyping}
         onPinned={(reply) => setMessages((prev) => [...prev, reply as Message])}
       />
-      <Composer channelName={channel.name} onSend={handleSend} />
+      <Composer channelName={channel.name} onSend={handleSend} onTyping={setTyping} />
     </AppShell>
   );
 }
