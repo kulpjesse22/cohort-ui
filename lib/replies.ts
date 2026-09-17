@@ -34,6 +34,7 @@ export function responder(channelId: string, text: string): AgentId | null {
     new RegExp(`@${id}\\b`, "i").test(text)
   );
   if (mentioned) return mentioned;
+  if (channelId === "cohort") return "claudia";
   if (AGENTS[channelId as AgentId]) return channelId as AgentId;
   // #design-crit has no single owner; the design director takes point.
   if (channelId === "design-crit") return "hephaestus";
@@ -106,10 +107,132 @@ const REPLIES: Record<AgentId, Record<Intent, string>> = {
 export interface GeneratedReply {
   agentId: AgentId;
   text: string;
+  /** Repo-relative paths, rendered as links that open the real file. */
+  cites?: string[];
 }
 
-export function replyTo(channelId: string, text: string): GeneratedReply | null {
+/**
+ * Asking an agent to put documents on the table.
+ *
+ * Deliberately generous about phrasing: this gets used live, in a room, by
+ * someone who will not say the words they rehearsed. It matches on the subject
+ * ("roadmap", "design", "plan") with or without a verb, so "roadmap?" works as
+ * well as "can you pull up the design docs".
+ */
+const DOC_SUBJECTS: Array<{ match: RegExp; paths: string[] }> = [
+  { match: /\b(road\s?map|plan|planning|queue|backlog|what'?s next|priorities)\b/, paths: ["Agents/planning.md"] },
+  { match: /\b(design|visual|tokens?|styling|brand)\b/, paths: ["Agents/design.md"] },
+  { match: /\b(ux|interaction|research|glossary|copy)\b/, paths: ["Agents/UX.md"] },
+  { match: /\b(context|architecture|constraints?|stack)\b/, paths: ["Agents/project_context.md"] },
+  { match: /\b(lessons?|learn(ed|ing)?|memory|mistakes?)\b/, paths: ["Agents/lessons/INDEX.md"] },
+];
+
+/**
+ * Subjects that are already a document request on their own. "Roadmap?" needs
+ * no verb; "the design is wrong" is a complaint and must not start citing
+ * files at someone.
+ */
+const SELF_SUFFICIENT = /\b(road\s?map|backlog|what'?s next|planning\.md)\b/;
+
+const PULL_VERB = /\b(pull|show|open|share|bring|get|see|look at|display|surface|find)\b/;
+const DOC_NOUN = /\b(docs?|files?|documents?|contracts?|guides?|assets?|artifacts?|materials?)\b/;
+
+/**
+ * "Show me the assets" names no subject at all. Rather than guess, hand over
+ * the planner's own two: what the work is, and what it must look like.
+ */
+const GENERIC_ASK = /\b(assets?|artifacts?|materials?|docs?|documents?|files?)\b/;
+
+/**
+ * Follow-ups. "Can you show them in preview" names no subject at all — it
+ * refers back to what was just cited. Someone in a room will do this
+ * constantly, and answering it with a lecture about planning.md is the worst
+ * possible response to "show me".
+ */
+const FOLLOW_UP = /\b(them|these|those|it|that one|the same)\b/;
+const SURFACE = /\b(preview|panel|rail|side|sidebar|window|here|inline|open)\b/;
+const DEFAULT_PATHS = ["Agents/planning.md", "Agents/design.md"];
+
+/** Null when this is not a request for documents. */
+function documentPull(text: string): string[] | null {
+  const t = text.toLowerCase();
+  const hits = DOC_SUBJECTS.filter((d) => d.match.test(t));
+
+  // A bare "can you pull the assets" is still a document request — it just has
+  // not said which. Answering with the planner's two beats a fallback that
+  // tells someone to go read a file themselves.
+  if (hits.length === 0) {
+    if (GENERIC_ASK.test(t) && (PULL_VERB.test(t) || /\?\s*$/.test(t))) return DEFAULT_PATHS;
+    return null;
+  }
+  // A subject alone is enough when paired with a verb or the word "docs" —
+  // otherwise "the design is wrong" would start citing files at people.
+  if (
+    !SELF_SUFFICIENT.test(t) &&
+    !PULL_VERB.test(t) &&
+    !DOC_NOUN.test(t) &&
+    !/\?\s*$/.test(t)
+  )
+    return null;
+  return [...new Set(hits.flatMap((h) => h.paths))];
+}
+
+/**
+ * `canon` is the document the human has named authoritative. It is threaded in
+ * rather than read here so this module stays synchronous and testable.
+ */
+export function replyTo(
+  channelId: string,
+  text: string,
+  canon?: string | null,
+  recentCites?: string[]
+): GeneratedReply | null {
   const agentId = responder(channelId, text);
   if (!agentId) return null;
+
+  let cites = documentPull(text);
+
+  // Nothing named, but referring back to what is already on the table.
+  if (!cites) {
+    const t = text.toLowerCase();
+    const isFollowUp =
+      (FOLLOW_UP.test(t) || SURFACE.test(t)) && (PULL_VERB.test(t) || SURFACE.test(t));
+    if (isFollowUp) cites = recentCites?.length ? recentCites : DEFAULT_PATHS;
+  }
+
+  // The whole point of naming a source of truth is that it changes later
+  // answers. It leads the citation list, and the reply says why — otherwise
+  // the choice was a courtesy rather than a commitment.
+  if (cites && canon) {
+    cites = [canon, ...cites.filter((c) => c !== canon)];
+  }
+
+  if (cites) {
+    // She raises it; the human decides. Silently choosing what is
+    // authoritative would undercut the whole point, and making the human ask
+    // every time just moves the bookkeeping. So: notice the repeat, offer once,
+    // and only when nothing has been chosen yet.
+    const repeated = recentCites?.length
+      ? cites.find((c) => recentCites.includes(c))
+      : undefined;
+    const offer =
+      !canon && repeated
+        ? ` That's twice ${repeated.split("/").pop()} has come up — want me to treat it as the source of truth so I lead with it from here? There's a control on it in the panel.`
+        : "";
+
+    return {
+      agentId,
+      text:
+        (canon && cites[0] === canon
+          ? `Leading with ${canon}, since you named it the source of truth — I'm not making you say that again. ${
+              cites.length > 1 ? `Also pulling ${cites.slice(1).join(" and ")}. ` : ""
+            }These are read live; the files are the truth, not this preview of them.`
+          : cites.length === 1
+          ? `Here it is, read live from ${cites[0]} — that file is the truth, not this preview of it. If it is out of date, the fix belongs in the file rather than in this thread.`
+          : `Pulling those up, read live from ${cites.join(" and ")}. Those files are the truth; what you see here is just a window onto them. If what you need is missing, that is a gap to close in the file rather than something I should improvise here.`) + offer,
+      cites,
+    };
+  }
+
   return { agentId, text: REPLIES[agentId][classify(text)] };
 }

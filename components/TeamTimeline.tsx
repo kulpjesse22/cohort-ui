@@ -7,7 +7,7 @@ import { getEntriesByDate, getActiveActorIds, type TimelineEntry } from "@/lib/t
 import { KIND_DOT, KIND_LABEL, VERDICT_STYLE } from "./AgentTimeline";
 import { Avatar } from "./Avatar";
 import { ArtifactLink } from "./ArtifactLink";
-import { FirstRunCard } from "./FirstRunCard";
+import { ContributionRecord } from "./ContributionRecord";
 
 function formatDate(iso: string): string {
   return new Date(`${iso}T12:00:00Z`).toLocaleDateString(undefined, {
@@ -92,8 +92,6 @@ export function TeamTimeline() {
   return (
     <div className="flex-1 overflow-y-auto px-4 py-5 lg:px-6">
       <div className="mx-auto max-w-3xl">
-        <FirstRunCard />
-
         <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
           <p className="max-w-xl text-[14px] leading-relaxed text-ink-2">
             Everything that happened on this project, in one stream — human
@@ -144,6 +142,8 @@ export function TeamTimeline() {
             );
           })}
         </div>
+
+        <ContributionRecord />
 
         <div className="mb-3 flex items-baseline justify-between">
           <h2 className="text-[10px] font-medium uppercase tracking-[0.06em] text-ink-3">

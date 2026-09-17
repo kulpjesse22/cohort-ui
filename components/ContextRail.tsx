@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { ContextDoc } from "@/lib/harness";
+import { DocPreview } from "./DocPreview";
 
 function RailSkeleton() {
   return (
@@ -16,8 +17,47 @@ function RailSkeleton() {
   );
 }
 
-export function ContextRail({ docs, loading }: { docs: ContextDoc[]; loading: boolean }) {
+export function ContextRail({
+  docs,
+  loading,
+  citedDocs = [],
+  channelId,
+}: {
+  docs: ContextDoc[];
+  loading: boolean;
+  /** Documents the agent put on the table in this conversation. */
+  citedDocs?: ContextDoc[];
+  channelId?: string;
+}) {
   const [open, setOpen] = useState(true);
+  const [canon, setCanon] = useState<string | null>(null);
+  const [pinning, setPinning] = useState<string | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    fetch("/api/canon")
+      .then((r) => r.json())
+      .then((d) => active && setCanon(d.path ?? null))
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, [citedDocs.length]);
+
+  async function pin(path: string) {
+    setPinning(path);
+    try {
+      const res = await fetch("/api/canon", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path, channelId }),
+      });
+      const d = await res.json();
+      setCanon(d.canon ?? path);
+    } finally {
+      setPinning(null);
+    }
+  }
 
   return (
     <aside className="flex h-full w-80 shrink-0 flex-col border-l border-line bg-panel shadow-2xl lg:shadow-none">
@@ -26,9 +66,9 @@ export function ContextRail({ docs, loading }: { docs: ContextDoc[]; loading: bo
         className="flex items-center justify-between border-b border-line px-4 py-3 text-left"
       >
         <span className="text-[10px] font-medium uppercase tracking-[0.06em] text-ink-3">
-          Pinned repo context
+          {citedDocs.length ? "On the table" : "Pinned repo context"}
         </span>
-        <span className="text-xs text-ink-3">{open ? "hide" : "show"}</span>
+        <span className="text-xs text-ink-3">{open ? "✕" : "+"}</span>
       </button>
 
       {open &&
@@ -36,7 +76,40 @@ export function ContextRail({ docs, loading }: { docs: ContextDoc[]; loading: bo
           <RailSkeleton />
         ) : (
           <div className="flex-1 space-y-4 overflow-y-auto px-4 py-4">
-            {docs.length === 0 && (
+            {/* What the agent just put up, ahead of the channel's standing
+                pins — this is the live subject of the conversation, and it is
+                where the human names one authoritative. */}
+            {citedDocs.map((doc) => (
+              <DocPreview
+                key={`cited-${doc.path}`}
+                path={doc.path}
+                content={doc.content}
+                state={
+                  canon === doc.path ? "canon" : canon ? "considered" : "neutral"
+                }
+                action={
+                  canon === doc.path ? (
+                    <span className="text-[10px] text-ink-4">chosen</span>
+                  ) : doc.content ? (
+                    <button
+                      onClick={() => pin(doc.path)}
+                      disabled={pinning === doc.path}
+                      className="text-[11px] text-ink-3 underline decoration-dotted underline-offset-2 transition-colors hover:text-ink disabled:opacity-50"
+                    >
+                      {pinning === doc.path ? "Noting…" : "Set as source of truth"}
+                    </button>
+                  ) : null
+                }
+              />
+            ))}
+
+            {citedDocs.length > 0 && docs.length > 0 && (
+              <div className="border-t border-line pt-3 text-[10px] font-medium uppercase tracking-[0.06em] text-ink-4">
+                Channel context
+              </div>
+            )}
+
+            {docs.length === 0 && citedDocs.length === 0 && (
               <p className="text-xs text-ink-3">Nothing pinned for this channel.</p>
             )}
             {docs.map((doc) => (

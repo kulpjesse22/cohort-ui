@@ -3,6 +3,7 @@
 import { useMemo, useRef, useState } from "react";
 import { AGENT_ORDER, AGENTS } from "@/lib/agents";
 import { Avatar } from "./Avatar";
+import { LeadHandoffIndicator } from "./LeadHandoffIndicator";
 
 /** Wraps the selection in `token`, or inserts a placeholder if nothing is selected. */
 function wrapSelection(el: HTMLTextAreaElement, token: string, placeholder: string) {
@@ -16,9 +17,12 @@ function wrapSelection(el: HTMLTextAreaElement, token: string, placeholder: stri
 export function Composer({
   channelName,
   onSend,
+  onTyping,
 }: {
   channelName: string;
   onSend: (text: string) => Promise<void>;
+  /** Tells the room someone is composing. Fires on transitions, not keystrokes. */
+  onTyping?: (typing: boolean) => void;
 }) {
   const [text, setText] = useState("");
   const [sending, setSending] = useState(false);
@@ -47,6 +51,7 @@ export function Composer({
 
   function update(value: string, caret?: number) {
     setText(value);
+    onTyping?.(value.trim().length > 0);
     requestAnimationFrame(() => {
       const el = ref.current;
       if (!el) return;
@@ -77,8 +82,12 @@ export function Composer({
     if (!trimmed || sending) return;
     setSending(true);
     setError(null);
+    onTyping?.(false);
     try {
-      await onSend(trimmed);
+      await Promise.all([
+        onSend(trimmed),
+        new Promise((resolve) => setTimeout(resolve, 900)),
+      ]);
       setText("");
       if (ref.current) ref.current.style.height = "auto";
     } catch (err) {
@@ -120,6 +129,12 @@ export function Composer({
   return (
     <div className="safe-b safe-x px-4 pt-1 lg:px-6 lg:pb-4">
       <div className="relative">
+        {sending && (
+          <div className="pointer-events-none absolute inset-x-0 bottom-full z-10 mb-3 flex justify-center">
+            <LeadHandoffIndicator compact />
+          </div>
+        )}
+
         {matches.length > 0 && (
           <div className="absolute bottom-full left-0 z-20 mb-2 w-64 overflow-hidden rounded-lg border border-line-strong bg-canvas py-1 shadow-2xl">
             {matches.map((id, i) => (

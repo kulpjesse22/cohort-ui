@@ -5,6 +5,7 @@ import type { Message } from "@/lib/messages";
 import { AGENTS, type AgentId } from "@/lib/agents";
 import { Avatar } from "./Avatar";
 
+
 function formatTime(iso: string): string {
   return new Date(iso).toLocaleTimeString(undefined, {
     hour: "numeric",
@@ -87,9 +88,12 @@ export function MessageThread({
   messages,
   loading,
   typing,
+  onPinned,
 }: {
   messages: Message[];
   loading: boolean;
+  /** Naming a doc authoritative produces a reply; the thread shows it at once. */
+  onPinned?: (reply: Message) => void;
   /** Agent id currently composing a reply, if any. */
   typing?: string | null;
 }) {
@@ -164,6 +168,20 @@ export function MessageThread({
                 <p className="whitespace-pre-wrap text-[14px] leading-[1.62] text-ink-2">
                   {message.text}
                 </p>
+                {message.cites && message.cites.length > 0 && (
+                  /* A pointer, not the document. The thread stays a
+                     conversation; the panel is where things get read. */
+                  <p className="mt-1.5 flex flex-wrap items-center gap-x-1.5 text-[11px] text-ink-4">
+                    <span aria-hidden="true">→</span>
+                    <span>Opened in the panel:</span>
+                    {message.cites.map((path, i) => (
+                      <span key={path} className="font-mono text-ink-3">
+                        {path.split("/").pop()}
+                        {i < message.cites!.length - 1 ? "," : ""}
+                      </span>
+                    ))}
+                  </p>
+                )}
               </div>
             </div>
           </div>

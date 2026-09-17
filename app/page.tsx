@@ -1,5 +1,5 @@
-import { ProjectView } from "@/components/ProjectView";
+import { WelcomeScreen } from "@/components/WelcomeScreen";
 
 export default function Home() {
-  return <ProjectView />;
+  return <WelcomeScreen />;
 }

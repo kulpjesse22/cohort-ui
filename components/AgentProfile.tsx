@@ -10,6 +10,7 @@ import { AppShell } from "./AppShell";
 import { AgentTimeline } from "./AgentTimeline";
 import { AgentEditor } from "./AgentEditor";
 import { Avatar } from "./Avatar";
+import { AgentTrustChip } from "./AgentTrustChip";
 
 export function AgentProfile({ agentId }: { agentId: AgentId }) {
   const [contextDocs, setContextDocs] = useState<ContextDoc[]>([]);
@@ -56,9 +57,7 @@ export function AgentProfile({ agentId }: { agentId: AgentId }) {
           <h1 className="truncate text-[15px] font-semibold tracking-[-0.01em] text-ink">
             {name}
           </h1>
-          <span className="shrink-0 rounded border border-line-strong px-1.5 py-0.5 text-[10px] text-ink-2">
-            {agent.seniority}
-          </span>
+          <AgentTrustChip agentId={agentId} compact />
         </div>
         <p className="truncate text-[11px] text-ink-3">{title}</p>
       </div>

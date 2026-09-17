@@ -40,6 +40,10 @@ Mocked or absent:
 - Conversation content is seeded. Nothing is wired to a running agent.
 - Timeline history is seeded, not derived from `handoffs/` or `lessons/`.
 - Seniority labels are static placeholders, flagged as such in the UI.
+- No agent holds approval authority. Human approval and peer review are both
+  enforced; an agent being granted approval rights by a human is the intended
+  third tier and is not built. Nothing in the product may imply an agent can
+  approve its own or another's work.
 
 ## 4. Architectural stance
 
@@ -52,3 +56,11 @@ Mocked or absent:
 - Next.js App Router, TypeScript, Tailwind. No component library.
 - Reads the harness from `process.cwd()`, overridable with `HARNESS_ROOT`.
 - No external network calls at runtime. The app reads local files only.
+
+### Standing Gates (lesson-promoted)
+
+Always-on completion rules promoted from confirmed failures. Claudia edits only between these markers through the `lesson-logger` skill. Keep at most 7 gates.
+
+<!-- standing-gates:start -->
+- Never paste a secret, API key, or token into chat or a tracked file; put it in `.env.local` and refer to it by variable name only. (src demo-video-tts)
+<!-- standing-gates:end -->
