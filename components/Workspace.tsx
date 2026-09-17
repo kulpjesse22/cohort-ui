@@ -201,7 +201,6 @@ export function Workspace({
         messages={thread}
         loading={loadingMessages}
         typing={agentTyping}
-        onPinned={(reply) => setMessages((prev) => [...prev, reply as Message])}
       />
       <Composer channelName={channel.name} onSend={handleSend} onTyping={setTyping} />
     </AppShell>

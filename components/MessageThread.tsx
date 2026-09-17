@@ -88,12 +88,9 @@ export function MessageThread({
   messages,
   loading,
   typing,
-  onPinned,
 }: {
   messages: Message[];
   loading: boolean;
-  /** Naming a doc authoritative produces a reply; the thread shows it at once. */
-  onPinned?: (reply: Message) => void;
   /** Agent id currently composing a reply, if any. */
   typing?: string | null;
 }) {
