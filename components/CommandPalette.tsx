@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { SearchResponse, SearchResult } from "@/lib/search";
-import { AGENTS, type AgentId } from "@/lib/agents";
+import type { AgentId } from "@/lib/agents";
 import { Avatar } from "./Avatar";
 
 const SUGGESTIONS = [
