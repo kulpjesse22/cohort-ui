@@ -1,13 +1,17 @@
 import { AGENTS, getParticipant, type ActorId, type AgentId } from "@/lib/agents";
-import { Portrait } from "./Portrait";
+import { CrewFigure, type CrewState } from "./CrewFigure";
 
 /**
- * Slack-style rounded-square avatars. Agents get illustrated portraits so the
- * roster reads as a team rather than a set of icons; humans get initials on a
- * warm tint.
+ * Slack-style rounded-square avatars. Agents get a bust crop of their crew
+ * figure so the roster reads as a team rather than a set of icons; humans get
+ * initials on a warm tint.
+ *
+ * The crop is the same SVG the full-body figure uses, through a 46x46 window
+ * — one asset, not two, which is why the hair silhouette still identifies a
+ * teammate at 24px where a face never could.
  *
  * Agents carry a small corner dot. It is the honest counterpart to the
- * portrait: these look like teammates, and the badge keeps it clear which ones
+ * figure: these look like teammates, and the badge keeps it clear which ones
  * are agents — the same job Slack's "APP" tag does.
  */
 
@@ -24,11 +28,17 @@ export function Avatar({
   agentId,
   size = "md",
   badge = true,
+  state = "idle",
 }: {
   agentId: ActorId | "user";
   size?: AvatarSize;
   /** Corner dot marking an agent. Off in dense pickers. */
   badge?: boolean;
+  /**
+   * What the agent's machine is doing. Most surfaces have no live status and
+   * leave this alone; the roster, which does, passes the real one.
+   */
+  state?: CrewState;
 }) {
   const agent = AGENTS[agentId as AgentId];
 
@@ -39,7 +49,7 @@ export function Avatar({
           className={`overflow-hidden ${RADIUS[size]} ${BOX[size]} ring-1 ring-inset ring-black/[0.06]`}
           title={agent.name}
         >
-          <Portrait agentId={agent.id} size={PX[size]} />
+          <CrewFigure agentId={agent.id} size={PX[size]} state={state} />
         </span>
         {badge && (
           <span

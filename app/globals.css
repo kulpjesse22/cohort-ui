@@ -1044,3 +1044,457 @@ body * {
     animation: none;
   }
 }
+
+/* ===========================================================================
+   CREW FIGURES
+   Nendoroid-derived teammates. See components/CrewFigure.tsx for the grammar:
+   shape is identity, eyes are state, sleeve pips are rank.
+   ======================================================================== */
+
+/* A figure is a picture, and pictures do not change colour when the UI does.
+   These deliberately shadow nothing in the dark-mode blocks above — the
+   `--agent-*` tokens lighten for contrast against a dark surface because they
+   are used as UI accents, and a figure is not one. */
+:root {
+  --fig-violet: #7c3aed;
+  --fig-sky: #0284c7;
+  --fig-teal: #0d9488;
+  --fig-amber: #b45309;
+  --fig-rose: #e11d48;
+}
+.fig-violet {
+  --hue: var(--fig-violet);
+}
+.fig-sky {
+  --hue: var(--fig-sky);
+}
+.fig-teal {
+  --hue: var(--fig-teal);
+}
+.fig-amber {
+  --hue: var(--fig-amber);
+}
+.fig-rose {
+  --hue: var(--fig-rose);
+}
+
+.crew {
+  display: block;
+  flex: 0 0 auto;
+  overflow: visible;
+  transform-origin: 50% 96%;
+  --hd: color-mix(in srgb, var(--hue) 70%, #241a2c);
+  --skin: #f9e1cd;
+}
+/* A crop viewBox does nothing on its own: overflow:visible lets the figure
+   render straight past its box and across the separator below it. */
+.crew-crop {
+  overflow: hidden;
+}
+
+.crew .hue {
+  fill: var(--hue);
+}
+.crew .hd {
+  fill: var(--hd);
+}
+.crew .hueline {
+  stroke: var(--hue);
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.crew .skin {
+  fill: var(--skin);
+}
+.crew .trim {
+  stroke: #fdf8f0;
+  fill: none;
+  stroke-width: 1.3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.crew .pip {
+  fill: #fdf8f0;
+  opacity: 0.9;
+}
+.crew .band {
+  stroke: #fdf8f0;
+  fill: none;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.crew .band.tail {
+  stroke-width: 1.6;
+}
+.crew .knot {
+  opacity: 1;
+}
+.crew .ewhite {
+  fill: #fff;
+}
+.crew .iris1 {
+  fill: color-mix(in srgb, var(--hue) 86%, #1a1220);
+}
+.crew .pupil {
+  fill: #221a28;
+}
+.crew .shine {
+  fill: #fff;
+}
+.crew .shine2 {
+  fill: #fff;
+  opacity: 0.75;
+}
+.crew .lash {
+  stroke: #2b2230;
+  fill: none;
+  stroke-width: 2.1;
+  stroke-linecap: round;
+}
+.crew .brow {
+  stroke: var(--hd);
+  fill: none;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.3s;
+}
+.crew .blush {
+  fill: #ef9d8d;
+  opacity: 0.4;
+}
+.crew .mouth {
+  stroke: #a85a48;
+  fill: none;
+  stroke-width: 1.3;
+  stroke-linecap: round;
+}
+.crew .mouth-o {
+  display: none;
+  fill: #a85a48;
+}
+.crew .beard {
+  fill: #a89e91;
+}
+.crew .glass {
+  stroke: #4a4250;
+  fill: none;
+  stroke-width: 1.2;
+}
+
+/* Rank. One pip mid, two senior, three principal; the grey streak arrives
+   with senior. Nothing here is decorative — each mark is a permission. */
+.crew .p2,
+.crew .p3,
+.crew .grey {
+  display: none;
+}
+.crew[data-rank="3"] .p2,
+.crew[data-rank="4"] .p2,
+.crew[data-rank="4"] .p3 {
+  display: block;
+}
+.crew[data-rank="3"] .grey,
+.crew[data-rank="4"] .grey {
+  display: block;
+}
+.crew .grey {
+  fill: #fff;
+  opacity: 0.5;
+}
+
+/* Colour is the machine's power. It bleeds in over three quarters of a second
+   when a box wakes and drains when it dies, and the light dies before the
+   warmth does — that lag is the whole difference between a state and a wake. */
+.crew .hue,
+.crew .hd,
+.crew .iris1 {
+  transition: fill 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.crew .hueline {
+  transition: stroke 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.crew .blush {
+  transition: opacity 0.75s;
+}
+.crew[data-state="asleep"] .hue,
+.crew[data-state="asleep"] .hd,
+.crew[data-state="asleep"] .iris1,
+.crew[data-state="asleep"] .hueline {
+  transition-delay: 0.2s;
+}
+.crew[data-state="booting"] .hue {
+  fill: color-mix(in srgb, var(--hue) 62%, #cdc6bc);
+}
+.crew[data-state="booting"] .hd {
+  fill: color-mix(in srgb, var(--hue) 62%, #aaa398);
+}
+.crew[data-state="asleep"] .hue {
+  fill: color-mix(in srgb, var(--hue) 26%, #cdc6bc);
+}
+.crew[data-state="asleep"] .hd {
+  fill: color-mix(in srgb, var(--hue) 30%, #aaa398);
+}
+.crew[data-state="asleep"] .iris1 {
+  fill: #b8b1a7;
+}
+.crew[data-state="asleep"] .blush {
+  opacity: 0.18;
+}
+
+/* The stand is the machine. Asleep means it is off, not merely quiet. */
+.crew .stand {
+  fill: #c3d0d8;
+  opacity: 0.5;
+  transition:
+    fill 0.5s,
+    opacity 0.5s;
+}
+.crew:not([data-state="asleep"]) .stand {
+  fill: var(--hue);
+  opacity: 0.34;
+}
+.crew .led {
+  fill: #bdb6ac;
+  transition: fill 0.28s;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.crew:not([data-state="asleep"]) .led {
+  fill: var(--hue);
+}
+.crew[data-state="booting"] .led {
+  animation: crew-blip 0.7s infinite;
+}
+@keyframes crew-blip {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+
+/* The eye is one object; a skin-coloured lid rides down over it. Half-lidded
+   is concentration, wide is idle, shut is off. */
+.crew .lid {
+  transition: transform 0.3s cubic-bezier(0.3, 0.8, 0.3, 1);
+}
+.crew[data-state="working"] .lid,
+.crew[data-state="reviewing"] .lid {
+  transform: translateY(2.5px);
+}
+.crew[data-state="booting"] .lid {
+  transform: translateY(3.6px);
+}
+.crew[data-state="blocked"] .lid {
+  transform: translateY(1.2px);
+}
+.crew .eshut {
+  display: none;
+}
+.crew[data-state="asleep"] .eopen,
+.crew[data-state="happy"] .eopen {
+  display: none;
+}
+.crew[data-state="asleep"] .e-sleep,
+.crew[data-state="happy"] .e-happy {
+  display: block;
+}
+.crew[data-state="happy"] .mouth-o {
+  display: block;
+}
+.crew[data-state="happy"] .mouth {
+  display: none;
+}
+
+/* Brows carry the mood the eyes cannot. */
+.crew[data-state="working"] .bl,
+.crew[data-state="blocked"] .bl {
+  transform: rotate(9deg);
+}
+.crew[data-state="working"] .br,
+.crew[data-state="blocked"] .br {
+  transform: rotate(-9deg);
+}
+.crew[data-state="happy"] .bl {
+  transform: translateY(-1.4px) rotate(-5deg);
+}
+.crew[data-state="happy"] .br {
+  transform: translateY(-1.4px) rotate(5deg);
+}
+.crew[data-state="happy"] .blush {
+  opacity: 0.62;
+}
+
+/* Anime shorthand: a sweat bead when held, a z when the machine is off. */
+.crew .sweat,
+.crew .zzz {
+  display: none;
+}
+.crew[data-state="blocked"] .sweat {
+  display: block;
+  animation: crew-drip 2.1s ease-in-out infinite;
+}
+@keyframes crew-drip {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.9;
+  }
+  55% {
+    transform: translateY(2.6px);
+    opacity: 1;
+  }
+}
+.crew .zzz {
+  font:
+    700 9px var(--font-sans, system-ui),
+    sans-serif;
+  fill: #a5a19a;
+}
+.crew[data-state="asleep"] .zzz {
+  display: block;
+  animation: crew-float 3s ease-in-out infinite;
+}
+@keyframes crew-float {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  35% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(3px, -7px);
+  }
+}
+
+/* Idle motion. The ahoge never stops — that one curl is most of the charm. */
+.crew .ahoge {
+  transform-box: fill-box;
+  transform-origin: bottom center;
+  animation: crew-wag var(--ad, 3.4s) ease-in-out infinite;
+}
+@keyframes crew-wag {
+  0%,
+  100% {
+    transform: rotate(-7deg);
+  }
+  50% {
+    transform: rotate(8deg);
+  }
+}
+.crew[data-state="asleep"] .ahoge {
+  animation-duration: 6.5s;
+}
+.crew .body {
+  transform-box: fill-box;
+  transform-origin: bottom center;
+  animation: crew-breath 3.6s ease-in-out infinite;
+}
+@keyframes crew-breath {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(1.022);
+  }
+}
+.crew .head {
+  transform-box: fill-box;
+  transform-origin: bottom center;
+  transition: transform 0.7s cubic-bezier(0.3, 0.8, 0.3, 1);
+}
+.crew[data-state="asleep"] .head {
+  transform: translateY(1.3px) rotate(-2deg);
+}
+.crew[data-state="working"] .head {
+  animation: crew-bob 2.4s ease-in-out infinite;
+}
+@keyframes crew-bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+  50% {
+    transform: translateY(-1.3px) rotate(1.2deg);
+  }
+}
+.crew[data-state="blocked"] .head {
+  transform: rotate(-5deg);
+}
+.crew[data-state="reviewing"] .head {
+  transform: rotate(3deg);
+}
+
+/* Eyes blink on one rhythm and look around on another, both staggered per
+   teammate so five figures do not read as one animation played five times. */
+.crew .eyes {
+  transform-origin: 24px 26px;
+}
+.crew .iris {
+  transform-origin: 24px 26px;
+  transition: transform 0.35s ease;
+}
+.crew:not([data-state="asleep"]) .eyes {
+  animation: crew-blink var(--bd, 5.4s) infinite;
+}
+@keyframes crew-blink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  94.5% {
+    transform: scaleY(0.06);
+  }
+  97% {
+    transform: scaleY(1);
+  }
+}
+.crew:not([data-state="asleep"]) .iris {
+  animation: crew-glance var(--gd, 11s) infinite;
+}
+@keyframes crew-glance {
+  0%,
+  64%,
+  100% {
+    transform: translateX(0);
+  }
+  70%,
+  80% {
+    transform: translateX(1.5px);
+  }
+  86%,
+  94% {
+    transform: translateX(-1.4px);
+  }
+}
+
+/* The figures are idle decoration by default, so they stop completely rather
+   than slowing down. Every state is still legible without motion: the lids,
+   brows, stand light and colour are all static properties. */
+@media (prefers-reduced-motion: reduce) {
+  .crew .ahoge,
+  .crew .body,
+  .crew .head,
+  .crew .eyes,
+  .crew .iris,
+  .crew .led,
+  .crew .sweat {
+    animation: none;
+  }
+  .crew .zzz {
+    animation: none;
+  }
+  .crew[data-state="asleep"] .zzz {
+    opacity: 0.9;
+  }
+}

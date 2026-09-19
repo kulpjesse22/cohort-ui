@@ -78,7 +78,7 @@ export function AgentActivityBar({ statuses }: { statuses: AgentStatus[] }) {
         <span className="flex -space-x-1.5">
           {active.map((s) => (
             <span key={s.agentId} className="relative inline-flex">
-              <Avatar agentId={s.agentId} size="sm" badge={false} />
+              <Avatar agentId={s.agentId} size="sm" badge={false} state="working" />
               <span
                 aria-hidden="true"
                 className={`${hueClass(s.agentId)} agent-live-dot absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full ring-2 ring-canvas`}
@@ -100,7 +100,7 @@ export function AgentActivityBar({ statuses }: { statuses: AgentStatus[] }) {
           <ul className="mt-2 flex flex-col gap-3">
             {active.map((s) => (
               <li key={s.agentId} className="flex gap-2.5">
-                <Avatar agentId={s.agentId} size="sm" badge={false} />
+                <Avatar agentId={s.agentId} size="sm" badge={false} state="working" />
                 <div className="min-w-0 flex-1">
                   <div className="flex items-baseline justify-between gap-2">
                     <span className={`${hueClass(s.agentId)} agent-fg text-[12px] font-semibold`}>

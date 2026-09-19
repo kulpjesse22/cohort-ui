@@ -8,7 +8,7 @@ import {
   type AgentCustomization,
   type ColorId,
 } from "@/lib/roster";
-import { Avatar } from "./Avatar";
+import { CrewFigure } from "./CrewFigure";
 
 const CHIP: Record<string, string> = {
   violet: "agent-violet agent-chip",
@@ -104,8 +104,17 @@ export function AgentEditor({
 
   return (
     <div className="rounded-xl border border-line bg-raised p-4 lg:p-5">
+      {/* The whole figure, not the bust crop. This is the one screen where the
+          colour below is being chosen, and a head-and-shoulders thumbnail hides
+          most of what the choice actually changes — the sleeves, the stand and
+          its light all carry the hue too. */}
       <div className="mb-4 flex items-start gap-3">
-        <Avatar agentId={agentId} size="lg" />
+        <CrewFigure
+          agentId={agentId}
+          size={68}
+          crop={false}
+          color={draft.color}
+        />
         <div className="min-w-0 flex-1">
           <h2 className="text-[15px] font-semibold tracking-[-0.01em] text-ink">
             Customize {AGENTS[agentId].name}

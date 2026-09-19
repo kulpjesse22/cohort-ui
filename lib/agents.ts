@@ -6,6 +6,13 @@ export interface Agent {
   title: string;
   /** Illustrative placeholder — not derived from lesson counts or history yet. */
   seniority: string;
+  /**
+   * The rung behind `seniority`, 1–4 (junior, mid, senior, principal). A rank
+   * is a permission, not a compliment: it says what this teammate may do
+   * without you. The crew figure draws it as sleeve pips and a grey streak,
+   * so the roster shows authority without anyone having to open a profile.
+   */
+  rank: 1 | 2 | 3 | 4;
   initials: string;
   color: string;
   blurb: string;
@@ -17,6 +24,7 @@ export const AGENTS: Record<AgentId, Agent> = {
     name: "Claudia",
     title: "Planner & Orchestrator",
     seniority: "Lead",
+    rank: 4,
     initials: "CL",
     color: "violet",
     blurb: "Turns a request into a low-ambiguity plan, keeps planning.md current, coordinates workers.",
@@ -26,6 +34,7 @@ export const AGENTS: Record<AgentId, Agent> = {
     name: "Augustus",
     title: "Builder",
     seniority: "Senior",
+    rank: 3,
     initials: "AU",
     color: "sky",
     blurb: "Worker. Scope comes from tasks/augustus.md, not a fixed technical area.",
@@ -35,6 +44,7 @@ export const AGENTS: Record<AgentId, Agent> = {
     name: "Julius",
     title: "Builder",
     seniority: "Mid",
+    rank: 2,
     initials: "JU",
     color: "teal",
     blurb: "Worker. Scope comes from tasks/julius.md, not a fixed technical area.",
@@ -44,6 +54,7 @@ export const AGENTS: Record<AgentId, Agent> = {
     name: "Athena",
     title: "Design Reviewer",
     seniority: "Senior",
+    rank: 3,
     initials: "AT",
     color: "amber",
     blurb: "Read-only enterprise product-design review. Assigns fixes back to the producing worker.",
@@ -53,6 +64,7 @@ export const AGENTS: Record<AgentId, Agent> = {
     name: "Hephaestus",
     title: "Design Director",
     seniority: "Senior",
+    rank: 3,
     initials: "HE",
     color: "rose",
     blurb: "Human-interface designer. Owns the design contract; never touches product code.",
