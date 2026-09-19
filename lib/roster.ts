@@ -18,8 +18,28 @@ export const MARK_OPTIONS = [
 ] as const;
 export type MarkId = (typeof MARK_OPTIONS)[number];
 
-export const COLOR_OPTIONS = ["violet", "sky", "teal", "amber", "rose"] as const;
+export const COLOR_OPTIONS = ["slate", "teal", "sand", "clay", "rust"] as const;
 export type ColorId = (typeof COLOR_OPTIONS)[number];
+
+/**
+ * Colours saved before the palette change. The ids were named for the hues
+ * they were (violet, sky, amber, rose); the new set is named for the hues it
+ * is. A stored id that no longer exists would resolve to no `.agent-*` class
+ * at all, leaving `--hue` unset, so it is translated on read rather than left
+ * to fail quietly. `teal` kept its name and needs no entry.
+ */
+const LEGACY_COLORS: Record<string, ColorId> = {
+  violet: "slate",
+  sky: "sand",
+  amber: "clay",
+  rose: "rust",
+};
+
+export function normalizeColor(value: unknown): ColorId | undefined {
+  if (typeof value !== "string") return undefined;
+  if ((COLOR_OPTIONS as readonly string[]).includes(value)) return value as ColorId;
+  return LEGACY_COLORS[value];
+}
 
 export interface Voice {
   id: string;

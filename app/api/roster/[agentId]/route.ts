@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAgent, type AgentId } from "@/lib/agents";
 import {
-  COLOR_OPTIONS,
   MARK_OPTIONS,
+  normalizeColor,
   VOICES,
   type AgentCustomization,
 } from "@/lib/roster";
@@ -67,10 +67,13 @@ export async function PUT(
     patch.mark = body.mark;
   }
   if (body.color !== undefined) {
-    if (!COLOR_OPTIONS.includes(body.color)) {
+    // Accepts a legacy id and stores its replacement, so an older client does
+    // not get a 400 for a colour it was legitimately shown.
+    const color = normalizeColor(body.color);
+    if (!color) {
       return NextResponse.json({ error: "Unknown colour" }, { status: 400 });
     }
-    patch.color = body.color;
+    patch.color = color;
   }
   if (body.voiceId !== undefined) {
     if (!VOICES.some((v) => v.id === body.voiceId)) {

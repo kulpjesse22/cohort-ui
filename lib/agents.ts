@@ -26,7 +26,7 @@ export const AGENTS: Record<AgentId, Agent> = {
     seniority: "Lead",
     rank: 4,
     initials: "CL",
-    color: "violet",
+    color: "slate",
     blurb: "Turns a request into a low-ambiguity plan, keeps planning.md current, coordinates workers.",
   },
   augustus: {
@@ -36,7 +36,7 @@ export const AGENTS: Record<AgentId, Agent> = {
     seniority: "Senior",
     rank: 3,
     initials: "AU",
-    color: "sky",
+    color: "sand",
     blurb: "Worker. Scope comes from tasks/augustus.md, not a fixed technical area.",
   },
   julius: {
@@ -56,7 +56,7 @@ export const AGENTS: Record<AgentId, Agent> = {
     seniority: "Senior",
     rank: 3,
     initials: "AT",
-    color: "amber",
+    color: "clay",
     blurb: "Read-only enterprise product-design review. Assigns fixes back to the producing worker.",
   },
   hephaestus: {
@@ -66,7 +66,7 @@ export const AGENTS: Record<AgentId, Agent> = {
     seniority: "Senior",
     rank: 3,
     initials: "HE",
-    color: "rose",
+    color: "rust",
     blurb: "Human-interface designer. Owns the design contract; never touches product code.",
   },
 };

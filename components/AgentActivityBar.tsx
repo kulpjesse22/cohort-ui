@@ -20,7 +20,7 @@ import { Avatar } from "./Avatar";
 const REFRESH_MS = 10_000;
 
 function hueClass(agentId: AgentId): string {
-  return `agent-${AGENTS[agentId]?.color ?? "violet"}`;
+  return `agent-${AGENTS[agentId]?.color ?? "slate"}`;
 }
 
 /**

@@ -76,11 +76,16 @@
   --revise-line: rgb(244 63 94 / 0.35);
 
   /* agent identity */
-  --agent-violet: #7c3aed;
-  --agent-sky: #0284c7;
-  --agent-teal: #0d9488;
-  --agent-amber: #b45309;
-  --agent-rose: #e11d48;
+  /* Palette: #264653 #2A9D8F #E9C46A #F4A261 #E76F51. Those are the figure
+     fills; these are the same five darkened until each clears 4.5:1 on
+     --raised, because --hue is rendered as TEXT here (.agent-fg, .agent-chip)
+     and not one of the five passes as drawn. Slate is already dark enough to
+     use unchanged. */
+  --agent-slate: #264653;
+  --agent-teal: #217a6f;
+  --agent-sand: #8a6814;
+  --agent-clay: #ae540c;
+  --agent-rust: #c53d1b;
   --agent-tint: 0.12;
   --agent-ring: 0.3;
 }
@@ -122,11 +127,15 @@
   --revise-bg: rgb(244 63 94 / 0.1);
   --revise-line: rgb(244 63 94 / 0.4);
 
-  --agent-violet: #c4b5fd;
-  --agent-sky: #7dd3fc;
-  --agent-teal: #5eead4;
-  --agent-amber: #fcd34d;
-  --agent-rose: #fda4af;
+  /* On this ground four of the five pass as drawn; only slate has to be
+     lifted, at 1.72:1 against #1a1a1c. Lifted against --raised rather than
+     --canvas: cards are the darkest ground agent text lands on, and a value
+     tuned to canvas came to 4.18:1 on them. */
+  --agent-slate: #5493ac;
+  --agent-teal: #2a9d8f;
+  --agent-sand: #e9c46a;
+  --agent-clay: #f4a261;
+  --agent-rust: #e76f51;
   --agent-tint: 0.2;
   --agent-ring: 0.3;
 }
@@ -172,20 +181,20 @@
 
 /* Agent identity: one class per agent so the hue, its tint, and its ring all
    move together between themes. */
-.agent-violet {
-  --hue: var(--agent-violet);
+.agent-slate {
+  --hue: var(--agent-slate);
 }
-.agent-sky {
-  --hue: var(--agent-sky);
+.agent-sand {
+  --hue: var(--agent-sand);
 }
 .agent-teal {
   --hue: var(--agent-teal);
 }
-.agent-amber {
-  --hue: var(--agent-amber);
+.agent-clay {
+  --hue: var(--agent-clay);
 }
-.agent-rose {
-  --hue: var(--agent-rose);
+.agent-rust {
+  --hue: var(--agent-rust);
 }
 
 /* A relay token is an identity, not a portrait. On this strip the subject is
@@ -218,7 +227,7 @@
 }
 
 .lead-handoff {
-  --lead-handoff-hue: var(--agent-violet);
+  --lead-handoff-hue: var(--agent-slate);
   color: var(--lead-handoff-hue);
 }
 
@@ -1057,28 +1066,36 @@ body * {
 /* A figure is a picture, and pictures do not change colour when the UI does.
    These deliberately shadow nothing in the dark-mode blocks above — the
    `--agent-*` tokens lighten for contrast against a dark surface because they
-   are used as UI accents, and a figure is not one. */
+   are used as UI accents, and a figure is not one.
+
+   Sand and clay are the palette's #E9C46A and #F4A261 darkened. Not for text
+   contrast — these are fills — but because the figure draws hair over skin,
+   and both are LIGHTER than the #f9e1cd skin: 1.33:1 and 1.64:1. At 24px the
+   head became one pale blob and the silhouette, which is the whole way you
+   tell one teammate from another in a row, disappeared. The hues the crop
+   replaced never went below 2.97:1; these two are back at 2.97 and 3.14.
+   Slate, teal and rust are the palette untouched. */
 :root {
-  --fig-violet: #7c3aed;
-  --fig-sky: #0284c7;
-  --fig-teal: #0d9488;
-  --fig-amber: #b45309;
-  --fig-rose: #e11d48;
+  --fig-slate: #264653;
+  --fig-teal: #2a9d8f;
+  --fig-sand: #ad7b16;
+  --fig-clay: #c46725;
+  --fig-rust: #e76f51;
 }
-.fig-violet {
-  --hue: var(--fig-violet);
+.fig-slate {
+  --hue: var(--fig-slate);
 }
-.fig-sky {
-  --hue: var(--fig-sky);
+.fig-sand {
+  --hue: var(--fig-sand);
 }
 .fig-teal {
   --hue: var(--fig-teal);
 }
-.fig-amber {
-  --hue: var(--fig-amber);
+.fig-clay {
+  --hue: var(--fig-clay);
 }
-.fig-rose {
-  --hue: var(--fig-rose);
+.fig-rust {
+  --hue: var(--fig-rust);
 }
 
 .crew {

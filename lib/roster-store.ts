@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { AGENTS, type AgentId } from "./agents";
-import { defaultCustomization, type AgentCustomization } from "./roster";
+import { defaultCustomization, normalizeColor, type AgentCustomization } from "./roster";
 
 // Server-only. Kept apart from lib/roster.ts so client components can import
 // the voice catalog and types without pulling node:fs into the browser bundle.
@@ -18,16 +18,27 @@ async function readStore(): Promise<Store> {
   }
 }
 
+/**
+ * A stored record can predate the palette rename, so the colour is translated
+ * on the way out. Doing it here rather than at each call site means a row
+ * written months ago cannot reach a component as an id with no `.agent-*`
+ * class behind it, which would leave `--hue` unset and the agent uncoloured.
+ */
+function hydrate(id: AgentId, stored: Partial<AgentCustomization> | undefined): AgentCustomization {
+  const merged = { ...defaultCustomization(id), ...(stored ?? {}) };
+  return { ...merged, color: normalizeColor(merged.color) ?? defaultCustomization(id).color };
+}
+
 export async function getCustomization(id: AgentId): Promise<AgentCustomization> {
   const store = await readStore();
-  return { ...defaultCustomization(id), ...(store[id] ?? {}) };
+  return hydrate(id, store[id]);
 }
 
 export async function getAllCustomizations(): Promise<Record<AgentId, AgentCustomization>> {
   const store = await readStore();
   const out = {} as Record<AgentId, AgentCustomization>;
   for (const id of Object.keys(AGENTS) as AgentId[]) {
-    out[id] = { ...defaultCustomization(id), ...(store[id] ?? {}) };
+    out[id] = hydrate(id, store[id]);
   }
   return out;
 }

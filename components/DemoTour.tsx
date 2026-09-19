@@ -31,13 +31,13 @@ const TOUR_HANDOFF: HandoffDetails = {
 };
 
 const TOUR_FLOW = [
-  { label: "Intake", hue: "agent-violet" },
+  { label: "Intake", hue: "agent-slate" },
   { label: "Scope", hue: "agent-teal" },
-  { label: "Handoff", hue: "agent-violet" },
-  { label: "Review", hue: "agent-amber" },
-  { label: "Lesson", hue: "agent-sky" },
+  { label: "Handoff", hue: "agent-slate" },
+  { label: "Review", hue: "agent-clay" },
+  { label: "Lesson", hue: "agent-sand" },
   { label: "Growth", hue: "agent-teal" },
-  { label: "Record", hue: "agent-rose" },
+  { label: "Record", hue: "agent-rust" },
 ];
 
 function dim(region: Spotlight, active: Spotlight): string {

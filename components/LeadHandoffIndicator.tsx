@@ -139,11 +139,11 @@ function HandoffBead({
   lead?: boolean;
 }) {
   const hueClass = {
-    claudia: "agent-violet",
-    augustus: "agent-sky",
+    claudia: "agent-slate",
+    augustus: "agent-sand",
     julius: "agent-teal",
-    athena: "agent-amber",
-    hephaestus: "agent-rose",
+    athena: "agent-clay",
+    hephaestus: "agent-rust",
   }[agentId];
 
   return (

@@ -5,11 +5,11 @@ import { AGENTS, type AgentId } from "@/lib/agents";
 import { getTimelineSummary } from "@/lib/timeline";
 
 const HUE: Record<AgentId, string> = {
-  claudia: "agent-violet",
-  augustus: "agent-sky",
+  claudia: "agent-slate",
+  augustus: "agent-sand",
   julius: "agent-teal",
-  athena: "agent-amber",
-  hephaestus: "agent-rose",
+  athena: "agent-clay",
+  hephaestus: "agent-rust",
 };
 
 export function AgentTrustChip({

@@ -11,11 +11,11 @@ import {
 import { CrewFigure } from "./CrewFigure";
 
 const CHIP: Record<string, string> = {
-  violet: "agent-violet agent-chip",
-  sky: "agent-sky agent-chip",
+  slate: "agent-slate agent-chip",
+  sand: "agent-sand agent-chip",
   teal: "agent-teal agent-chip",
-  amber: "agent-amber agent-chip",
-  rose: "agent-rose agent-chip",
+  clay: "agent-clay agent-chip",
+  rust: "agent-rust agent-chip",
 };
 
 export function AgentEditor({

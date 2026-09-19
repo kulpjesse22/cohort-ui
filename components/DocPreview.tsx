@@ -17,11 +17,11 @@ import type { ReactNode } from "react";
 type DocKind = { label: string; hue: string; accent: string };
 
 function classify(path: string): DocKind {
-  if (/design/i.test(path)) return { label: "Design guide", hue: "agent-rose", accent: "text-[var(--hue)]" };
+  if (/design/i.test(path)) return { label: "Design guide", hue: "agent-rust", accent: "text-[var(--hue)]" };
   if (/ux/i.test(path)) return { label: "UX guide", hue: "agent-teal", accent: "text-[var(--hue)]" };
-  if (/planning/i.test(path)) return { label: "Plan", hue: "agent-sky", accent: "text-[var(--hue)]" };
-  if (/lesson/i.test(path)) return { label: "Lessons", hue: "agent-amber", accent: "text-[var(--hue)]" };
-  return { label: "Document", hue: "agent-violet", accent: "text-[var(--hue)]" };
+  if (/planning/i.test(path)) return { label: "Plan", hue: "agent-sand", accent: "text-[var(--hue)]" };
+  if (/lesson/i.test(path)) return { label: "Lessons", hue: "agent-clay", accent: "text-[var(--hue)]" };
+  return { label: "Document", hue: "agent-slate", accent: "text-[var(--hue)]" };
 }
 
 /** Hex tokens the document itself defines — a design file's real subject. */

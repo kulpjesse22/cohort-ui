@@ -2,7 +2,7 @@ import { getContributionSnapshot, getContributorIdentity, type ContributorId } f
 
 const TONE: Record<ContributorId, string> = {
   human: "border-ink-3 bg-raised text-ink",
-  claude: "agent-violet border-current/20 bg-canvas text-current",
+  claude: "agent-slate border-current/20 bg-canvas text-current",
   codex: "agent-teal border-current/20 bg-canvas text-current",
 };
 
