@@ -12,10 +12,15 @@
 :root {
   /* neutrals — light */
   /* Warm neutrals, not pure grey. Notion's off-white reads as paper; #fff plus
-     zinc reads as a spreadsheet. */
-  --canvas: #fdfdfc;
-  --panel: #f7f6f4; /* right rail: a quiet step off canvas */
-  --raised: #f2f1ee;
+     zinc reads as a spreadsheet. The whole ramp now sits on the same warm axis
+     as the left rail (R−G ≈ 2, G−B ≈ 5) rather than the rail being the only
+     warm surface with a near-neutral white beside it.
+
+     `--panel` is the rail cream exactly. Two chrome rails two units apart read
+     as a mistake; matched, they read as one plane holding the content. */
+  --canvas: #fdfbf7;
+  --panel: #f7f3ec; /* right rail: the same cream as the left */
+  --raised: #f4efe6;
 
   /* The third neutral: the left sidebar carries its own identity in both
      themes, the way Slack's does. In light mode that identity is a soft
@@ -36,18 +41,21 @@
   --sidebar-line-strong: #d5cdbc;
   --sidebar-hover: #efe9dd;
   --sidebar-active: #e6dfd0;
-  --ink: #191917;
-  --ink-2: #55524c;
-  --ink-3: #78746c;
-  --ink-4: #a5a19a;
-  --line: #e7e5e0;
-  --line-strong: #d6d3cc;
-  --hover: #f2f1ee;
-  --active: #e7e5e0;
+  --ink: #1b1813;
+  --ink-2: #57534a;
+  /* Darkened past a straight warm translation of #78746c. That value was
+     4.12:1 on --raised — under 4.5 before this change and still under it
+     after — and ink-3 carries 10–11px labels. #706b60 clears both grounds. */
+  --ink-3: #706b60;
+  --ink-4: #a8a296;
+  --line: #e9e3d8;
+  --line-strong: #d9d1c2;
+  --hover: #f4efe6;
+  --active: #e9e3d8;
 
   /* inverted control (the Send button): dark pill on light ground */
-  --control: #18181b;
-  --control-ink: #fafafa;
+  --control: #1f1b15;
+  --control-ink: #fdfbf7;
 
   /* Signature accent — fixed across both themes, not a semantic or per-agent
      hue. Reserved for a small, deliberate set of brand-only moments (app
