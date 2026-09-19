@@ -18,17 +18,24 @@
   --raised: #f2f1ee;
 
   /* The third neutral: the left sidebar carries its own identity in both
-     themes, the way Slack's does — but a cool graphite rather than their
-     aubergine, so it sits under the agent hues without competing. It stays
-     dark in light mode, so it needs its own text scale. */
-  --sidebar: #262229;
-  --sidebar-ink: #f4f2f4;
-  --sidebar-ink-2: #bdb5be;
-  --sidebar-ink-3: #8f8792;
-  --sidebar-line: #363039;
-  --sidebar-line-strong: #494151;
-  --sidebar-hover: #322c36;
-  --sidebar-active: #443c4a;
+     themes, the way Slack's does. In light mode that identity is a soft
+     cream — warmer than canvas rather than darker than it, so the rail reads
+     as its own surface without the hard dark/light seam down the middle of
+     the window. It keeps a separate text scale because its ground is warmer
+     than canvas and the neutral ink ramp goes slightly cold on it.
+
+     Ground and ink are gennydee.com/work: #f7f3ec under #17140f. The ink
+     steps are that same ink flattened onto the cream at 70% and 60% — the
+     site's own 55% step lands at 3.96:1, which is fine for its display type
+     and not for 10px uppercase labels, so the rail stops at 60%. */
+  --sidebar: #f7f3ec;
+  --sidebar-ink: #17140f;
+  --sidebar-ink-2: #5a5751; /* ink at 70% */
+  --sidebar-ink-3: #716d67; /* ink at 60% — 4.65:1, the last step that passes */
+  --sidebar-line: #e6e0d4;
+  --sidebar-line-strong: #d5cdbc;
+  --sidebar-hover: #efe9dd;
+  --sidebar-active: #e6dfd0;
   --ink: #191917;
   --ink-2: #55524c;
   --ink-3: #78746c;
@@ -153,18 +160,6 @@
 
   --font-sans: var(--font-sans-ui);
   --font-mono: var(--font-mono-ui);
-}
-
-/* The sidebar is dark in BOTH themes, so agent hues inside it always need the
-   bright tints — the light theme's 600-level values would disappear against it.
-   Scoping the vars here keeps every call site identical. */
-.sidebar-scope {
-  --agent-violet: #c4b5fd;
-  --agent-sky: #7dd3fc;
-  --agent-teal: #5eead4;
-  --agent-amber: #fcd34d;
-  --agent-rose: #fda4af;
-  --agent-tint: 0.2;
 }
 
 /* Agent identity: one class per agent so the hue, its tint, and its ring all

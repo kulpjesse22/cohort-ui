@@ -13,7 +13,7 @@ export function Sidebar({
   onSelect: (channelId: string) => void;
 }) {
   return (
-    <aside className="sidebar-scope flex h-full w-64 shrink-0 flex-col border-r border-sidebar-line bg-sidebar text-sm shadow-2xl lg:shadow-none">
+    <aside className="flex h-full w-64 shrink-0 flex-col border-r border-sidebar-line bg-sidebar text-sm shadow-2xl lg:shadow-none">
       <div className="border-b border-sidebar-line px-4 py-3">
         {/* The wordmark is the way back out. Only the mark itself is the target —
             the line under it is a descriptor, not a control. */}

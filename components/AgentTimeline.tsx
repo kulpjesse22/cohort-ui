@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { AGENTS } from "@/lib/agents";
 import { ArtifactLink } from "./ArtifactLink";
 import type { TimelineEntry, TimelineSummary, Verdict } from "@/lib/timeline";
@@ -165,12 +166,19 @@ function StandardEntry({ entry }: { entry: TimelineEntry }) {
 export function AgentTimeline({
   entries,
   summary,
+  masthead,
   highlightEntryId,
   dimStats,
   dimEntries,
 }: {
   entries: TimelineEntry[];
   summary: TimelineSummary;
+  /**
+   * Rendered above the stats, inside the same column and the same scroll.
+   * The profile puts its subject here; the tour and the workspace timeline
+   * have a subject already and leave it out.
+   */
+  masthead?: ReactNode;
   /** Demo tour: ring this entry and scroll it into view. */
   highlightEntryId?: string;
   dimStats?: boolean;
@@ -179,6 +187,8 @@ export function AgentTimeline({
   return (
     <div className="flex-1 overflow-y-auto px-4 py-5 lg:px-6">
       <div className="mx-auto max-w-2xl">
+        {masthead}
+
         <div
           className={`mb-6 grid grid-cols-2 gap-2 transition-opacity duration-500 sm:grid-cols-4 ${
             dimStats ? "opacity-25" : "opacity-100"

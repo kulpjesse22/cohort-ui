@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { AGENTS, type AgentId } from "@/lib/agents";
 import { getTimeline, getTimelineSummary } from "@/lib/timeline";
 import type { AgentCustomization } from "@/lib/roster";
@@ -9,8 +8,8 @@ import type { ContextDoc } from "@/lib/harness";
 import { AppShell } from "./AppShell";
 import { AgentTimeline } from "./AgentTimeline";
 import { AgentEditor } from "./AgentEditor";
+import { AgentMasthead } from "./AgentMasthead";
 import { Avatar } from "./Avatar";
-import { AgentTrustChip } from "./AgentTrustChip";
 
 export function AgentProfile({ agentId }: { agentId: AgentId }) {
   const [contextDocs, setContextDocs] = useState<ContextDoc[]>([]);
@@ -49,18 +48,27 @@ export function AgentProfile({ agentId }: { agentId: AgentId }) {
   const name = custom?.displayName ?? agent.name;
   const title = custom?.title ?? agent.title;
 
+  /**
+   * Deliberately still one row. This is shared chrome — search, presence and
+   * the activity board sit beside it on every route — so the page's subject
+   * gets a masthead in the scroll instead, and this stays the identity strip
+   * that survives once the masthead is scrolled past. The name alone answers
+   * what this strip is for.
+   *
+   * The trust chip came off it. Everything the chip opens to say now reads
+   * without a click a few pixels below — role and boundary in the masthead,
+   * authority in the rank caption, evidence in the stats row — and the chip
+   * would not shrink, so in a row already holding the activity board and
+   * search it overlapped Customize rather than giving way. Message #agent
+   * moved to the masthead for the same reason: this slot tops out near 260px,
+   * and two rigid buttons in it left the name four pixels wide.
+   */
   const header = (
     <div className="flex items-center gap-3">
-      <Avatar agentId={agentId} size="lg" />
-      <div className="min-w-0 flex-1">
-        <div className="flex items-baseline gap-2">
-          <h1 className="truncate text-[15px] font-semibold tracking-[-0.01em] text-ink">
-            {name}
-          </h1>
-          <AgentTrustChip agentId={agentId} compact />
-        </div>
-        <p className="truncate text-[11px] text-ink-3">{title}</p>
-      </div>
+      <Avatar agentId={agentId} size="md" />
+      <h2 className="min-w-0 flex-1 truncate text-[15px] font-semibold tracking-[-0.01em] text-ink">
+        {name}
+      </h2>
       <div className="flex shrink-0 items-center gap-1.5">
         <button
           onClick={() => setEditing((v) => !v)}
@@ -68,12 +76,6 @@ export function AgentProfile({ agentId }: { agentId: AgentId }) {
         >
           {editing ? "Close" : "Customize"}
         </button>
-        <Link
-          href={`/c/${agentId}`}
-          className="hidden rounded-md border border-line-strong px-2.5 py-1.5 text-xs text-ink-2 transition-colors hover:bg-hover hover:text-ink sm:block"
-        >
-          Message #{agentId}
-        </Link>
       </div>
     </div>
   );
@@ -97,7 +99,11 @@ export function AgentProfile({ agentId }: { agentId: AgentId }) {
           </div>
         </div>
       )}
-      <AgentTimeline entries={entries} summary={summary} />
+      <AgentTimeline
+        entries={entries}
+        summary={summary}
+        masthead={<AgentMasthead agentId={agentId} name={name} title={title} />}
+      />
     </AppShell>
   );
 }

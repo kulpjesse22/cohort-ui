@@ -66,7 +66,7 @@ export function WelcomeScreen() {
 
           <div className="overflow-hidden rounded-lg border border-line bg-panel lg:min-h-[540px]">
             <div className="grid lg:h-full lg:min-h-[540px] lg:grid-cols-[190px_minmax(0,1fr)_230px]">
-              <aside className="sidebar-scope hidden border-r border-sidebar-line bg-sidebar p-3 text-sidebar-ink lg:block">
+              <aside className="hidden border-r border-sidebar-line bg-sidebar p-3 text-sidebar-ink lg:block">
                 <Image
                   src="/cohort-wordmark-transparent.png"
                   alt="Cohort"
