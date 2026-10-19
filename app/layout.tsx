@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { headers } from "next/headers";
 import { Lato, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -52,11 +53,14 @@ export const viewport: Viewport = {
 // and the script does execute during SSR, which is the only time it needs to.
 const THEME_INIT = `(function(){try{var t=localStorage.getItem('cohort-theme');if(!t){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}if(t==='dark'){document.documentElement.classList.add('dark')}}catch(e){}})();`;
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Reading the request makes every page render per request, which the CSP
+  // nonce requires (proxy.ts): a prerendered page has no nonce to carry.
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
   return (
     <html
       lang="en"
@@ -64,7 +68,8 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: THEME_INIT }} />
+        {/* Browsers hide a nonce from the DOM after parsing, so hydration sees "". */}
+        <script nonce={nonce} suppressHydrationWarning dangerouslySetInnerHTML={{ __html: THEME_INIT }} />
       </head>
       <body className="flex h-full min-h-full flex-col bg-canvas">{children}</body>
     </html>
