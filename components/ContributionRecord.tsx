@@ -1,9 +1,12 @@
 import { getContributionSnapshot, getContributorIdentity, type ContributorId } from "@/lib/contributions";
+import { ProvenanceTag } from "./Marks";
 
-const TONE: Record<ContributorId, string> = {
-  human: "border-ink-3 bg-raised text-ink",
-  claude: "agent-violet border-current/20 bg-canvas text-current",
-  codex: "agent-teal border-current/20 bg-canvas text-current",
+// Claude and Codex are not the roster's agents, so they do not borrow a
+// roster hue: a human gets a filled dot, an agent an open one.
+const DOT: Record<ContributorId, string> = {
+  human: "bg-current",
+  claude: "ring-1 ring-inset ring-current",
+  codex: "ring-1 ring-inset ring-current",
 };
 
 function formatDay(iso: string): string {
@@ -21,8 +24,8 @@ function ContributorBadge({ id }: { id: ContributorId }) {
   const identity = getContributorIdentity(id);
 
   return (
-    <span className={`inline-flex items-center gap-1 rounded-full border px-1.5 py-0.5 text-[10px] font-medium ${TONE[id]}`}>
-      <span className="h-1.5 w-1.5 rounded-full bg-current" aria-hidden="true" />
+    <span className="inline-flex items-center gap-1.5 text-meta font-semibold text-ink-2">
+      <span className={`h-2 w-2 rounded-full ${DOT[id]}`} aria-hidden="true" />
       {identity.name}
     </span>
   );
@@ -33,72 +36,66 @@ export function ContributionRecord() {
   const recent = snapshot.commits.slice(0, 4);
 
   return (
-    <section className="mb-6 border-y border-line bg-panel/45 py-4">
-      <div className="mb-3 flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h2 className="text-[10px] font-medium uppercase tracking-[0.06em] text-ink-3">
-            Contribution record
-          </h2>
-          <p className="mt-1 max-w-xl text-[13px] leading-6 text-ink-2">
-            Built from Git history and co-author trailers. The UI is reading a
-            committed snapshot, so the attribution is part of the repo record.
-          </p>
-        </div>
-        <div className="rounded-md border border-line bg-canvas px-2 py-1 font-mono text-[11px] text-ink-3">
-          HEAD {snapshot.head}
-        </div>
+    <section>
+      <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 border-b border-line pb-2">
+        <h2 className="text-label font-semibold uppercase text-ink-3">Contribution record</h2>
+        <ProvenanceTag kind="snapshot" title="Built from Git history and co-author trailers, committed to the repo">
+          Committed snapshot at <span className="font-mono text-ink-2">{snapshot.head}</span>
+        </ProvenanceTag>
       </div>
 
-      <div className="grid gap-2 sm:grid-cols-3">
-        {snapshot.contributors.map((contributor) => {
-          const identity = getContributorIdentity(contributor.id);
-          return (
-            <div key={contributor.id} className="rounded-md border border-line bg-canvas p-3">
-              <div className="mb-2 flex items-center justify-between gap-2">
-                <ContributorBadge id={contributor.id} />
-                <span className="text-[10px] uppercase tracking-[0.06em] text-ink-4">
-                  {identity.kind}
-                </span>
-              </div>
-              <div className="grid grid-cols-3 gap-2 text-[11px] text-ink-3">
-                <Stat value={contributor.commits} label="Commits" />
-                <Stat value={contributor.files} label="Files" />
-                <Stat value={contributor.shared} label="Shared" />
-              </div>
-              <div className="mt-2 font-mono text-[10px] text-ink-4">
-                {formatLines(contributor.added, contributor.removed)}
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      <table className="mt-1 w-full text-left">
+        <caption className="sr-only">Commits, files and shared commits per contributor</caption>
+        <thead>
+          <tr className="text-meta text-ink-3">
+            <th scope="col" className="py-2 font-normal">Contributor</th>
+            <th scope="col" className="py-2 text-right font-normal">Commits</th>
+            <th scope="col" className="hidden py-2 text-right font-normal sm:table-cell">Files</th>
+            <th scope="col" className="py-2 text-right font-normal">Shared</th>
+            <th scope="col" className="hidden py-2 pl-4 text-right font-normal sm:table-cell">Lines</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-line border-t border-line">
+          {snapshot.contributors.map((contributor) => {
+            const identity = getContributorIdentity(contributor.id);
+            return (
+              <tr key={contributor.id} className="text-body tabular-nums">
+                <td className="py-2.5">
+                  <span className="flex items-center gap-2">
+                    <ContributorBadge id={contributor.id} />
+                    <span className="text-meta text-ink-3">{identity.kind}</span>
+                  </span>
+                </td>
+                <td className="py-2.5 text-right font-semibold text-ink">{contributor.commits.toLocaleString()}</td>
+                <td className="hidden py-2.5 text-right text-ink-2 sm:table-cell">{contributor.files.toLocaleString()}</td>
+                <td className="py-2.5 text-right text-ink-2">{contributor.shared.toLocaleString()}</td>
+                <td className="hidden py-2.5 pl-4 text-right font-mono text-meta text-ink-3 sm:table-cell">
+                  {formatLines(contributor.added, contributor.removed)}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
 
-      <div className="mt-4 space-y-2">
+      <h3 className="mt-6 text-meta text-ink-3">Latest commits</h3>
+      <ul className="mt-1 divide-y divide-line">
         {recent.map((commit) => (
-          <div
+          <li
             key={commit.sha}
-            className="grid gap-2 rounded-md border border-line bg-canvas px-3 py-2 text-[12px] sm:grid-cols-[4.25rem_minmax(0,1fr)_auto]"
+            className="grid gap-x-3 gap-y-1 py-2.5 sm:grid-cols-[4.25rem_minmax(0,1fr)_auto] sm:items-center"
           >
-            <span className="font-mono text-[11px] text-ink-4">{commit.sha}</span>
-            <span className="min-w-0 truncate font-medium text-ink">{commit.subject}</span>
+            <span className="font-mono text-meta text-ink-3">{commit.sha}</span>
+            <span className="min-w-0 text-body text-ink sm:truncate">{commit.subject}</span>
             <span className="flex flex-wrap items-center gap-1.5 sm:justify-end">
-              <span className="text-[10px] text-ink-4">{formatDay(commit.date)}</span>
+              <span className="text-meta tabular-nums text-ink-3">{formatDay(commit.date)}</span>
               {commit.contributors.map((id) => (
                 <ContributorBadge key={id} id={id} />
               ))}
             </span>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
-  );
-}
-
-function Stat({ value, label }: { value: number; label: string }) {
-  return (
-    <div>
-      <div className="text-[16px] font-semibold text-ink">{value.toLocaleString()}</div>
-      <div>{label}</div>
-    </div>
   );
 }

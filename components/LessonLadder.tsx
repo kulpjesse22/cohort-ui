@@ -3,6 +3,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import type { LessonMemory } from "@/lib/lessons";
 import { ArtifactLink } from "./ArtifactLink";
+import { ProvenanceTag } from "./Marks";
 
 /**
  * What the team learned, read live from Agents/lessons/INDEX.md.
@@ -42,7 +43,7 @@ export function LessonLadder() {
 
   if (!memory?.installed) {
     return (
-      <div className="flex-1 overflow-y-auto px-5 py-8">
+      <div className="flex-1 overflow-y-auto px-4 pt-8 lg:px-6 lg:pt-12">
         <EmptyNote title="This project's harness predates the lessons index">
           Nothing is being tracked because{" "}
           <span className="font-mono text-[11px]">Agents/lessons/INDEX.md</span>{" "}
@@ -58,21 +59,30 @@ export function LessonLadder() {
 
   return (
     <div className="flex-1 overflow-y-auto">
-      <div className="mx-auto w-full max-w-3xl px-5 py-6">
-        <p className="max-w-xl text-[13px] leading-relaxed text-ink-2">
-          A confirmed failure becomes a rule, and every rule is pushed as far
-          toward automation as it will go. What is left over is the smallest set
-          of judgment the team has to carry by hand.
-        </p>
+      <div className="mx-auto w-full max-w-2xl px-4 pb-16 pt-8 lg:px-6 lg:pt-12">
+        <h2 className="max-w-xl font-display text-title font-semibold text-ink">
+          Memory that gets smaller.{" "}
+          <span className="text-ink-3">
+            Failures become rules, and rules become checks.
+          </span>
+        </h2>
 
-        <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-line pt-4">
-          <Stat label="Queued checks" value={pending.length} />
-          <Stat label="Standing gates" value={gates.length} max={limits.gates} />
-          <Stat label="Conditional lessons" value={entries.length} max={limits.entries} />
-          <span className="ml-auto text-[11px] text-ink-3">
+        <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1">
+          <ProvenanceTag kind="live" title={`Read on this request from ${memory.indexPath}`}>
+            Read live from the repo
+          </ProvenanceTag>
+          <span className="text-meta tabular-nums text-ink-3">
             {lastSwept ? `Last swept ${lastSwept}` : "Never swept"}
           </span>
         </div>
+
+        {/* The caps are the point, so the three counts lead the page, each
+            against its cap. */}
+        <dl className="mt-10 grid grid-cols-3 gap-x-6 border-y border-line">
+          <Stat label="Becoming code" value={pending.length} />
+          <Stat label="Always on" value={gates.length} max={limits.gates} />
+          <Stat label="Conditional" value={entries.length} max={limits.entries} />
+        </dl>
 
         <Section
           tier="Tier 0"
@@ -86,7 +96,7 @@ export function LessonLadder() {
           ) : (
             pending.map((check) => (
               <Row key={check.text}>
-                <p className="text-[13px] leading-relaxed text-ink">{check.text}</p>
+                <p className="text-body text-ink">{check.text}</p>
                 {check.source && <Meta>from {check.source}</Meta>}
               </Row>
             ))
@@ -105,7 +115,7 @@ export function LessonLadder() {
           ) : (
             gates.map((gate) => (
               <Row key={gate.text}>
-                <p className="text-[13px] leading-relaxed text-ink">{gate.text}</p>
+                <p className="text-body text-ink">{gate.text}</p>
                 <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1">
                   <ArtifactLink path={memory.contextPath} />
                   {gate.source && <Meta>from {gate.source}</Meta>}
@@ -129,19 +139,19 @@ export function LessonLadder() {
               <Row key={entry.file}>
                 {/* The kind is one word. It earns colour, because a prohibition
                     is not the same as a preference — but it does not earn a box. */}
-                <p className="text-[11px] leading-relaxed text-ink-3">
+                <p className="text-meta text-ink-3">
                   <span
-                    className={`font-mono uppercase ${
-                      entry.kind === "never" ? "text-revise" : "text-ink-4"
+                    className={`text-label font-semibold uppercase ${
+                      entry.kind === "never" ? "text-revise" : "text-ink-3"
                     }`}
                   >
                     {entry.kind}
                   </span>
-                  <span className="text-ink-4"> · </span>
+                  <span> · </span>
                   when {entry.trigger}
                 </p>
 
-                <p className="mt-1.5 text-[13px] leading-relaxed text-ink">
+                <p className="mt-1 text-body text-ink">
                   {entry.imperative}
                 </p>
 
@@ -153,13 +163,13 @@ export function LessonLadder() {
                     {entry.fired === 1 ? " time" : " times"}
                   </Meta>
                   {entry.fired >= PROMOTION_PRESSURE && (
-                    <span className="text-[11px] font-medium text-fixes">
-                      promotion candidate
+                    <span className="text-meta font-semibold text-fixes">
+                      ↑ promotion candidate
                     </span>
                   )}
                   {entry.broken && (
-                    <span className="text-[11px] font-medium text-revise">
-                      lesson file missing
+                    <span className="text-meta font-semibold text-revise">
+                      ✕ lesson file missing
                     </span>
                   )}
                 </div>
@@ -182,7 +192,7 @@ export function LessonLadder() {
           </Section>
         )}
 
-        <p className="mt-8 text-[11px] text-ink-3">
+        <p className="mt-12 text-meta text-ink-3">
           Read live from <ArtifactLink path={memory.indexPath} />. Only Claudia
           writes it, and only through the{" "}
           <span className="font-mono text-[11px]">lesson-logger</span> skill.
@@ -194,24 +204,25 @@ export function LessonLadder() {
 
 function Stat({ label, value, max }: { label: string; value: number; max?: number }) {
   // Amber near the cap, rose at it: the caps only mean something if you can see
-  // yourself approaching one.
-  const tone =
-    max === undefined || value < max * 0.8
-      ? "text-ink"
-      : value < max
-        ? "text-fixes"
-        : "text-revise";
+  // yourself approaching one. The word under the figure says the same thing,
+  // so the hue is never the only signal.
+  const near = max !== undefined && value >= max * 0.8;
+  const at = max !== undefined && value >= max;
+  const tone = at ? "text-revise" : near ? "text-fixes" : "text-ink";
 
   return (
-    <span className="flex items-baseline gap-1.5">
-      <span className={`text-[15px] font-semibold tabular-nums ${tone}`}>
-        {value}
+    <div className="py-4">
+      <dt className="text-meta text-ink-3">{label}</dt>
+      <dd className="mt-1.5 flex items-baseline gap-1">
+        <span className={`font-display text-figure font-semibold tabular-nums ${tone}`}>{value}</span>
         {max !== undefined && (
-          <span className="text-[11px] font-normal text-ink-4"> / {max}</span>
+          <span className="text-meta tabular-nums text-ink-3">of {max}</span>
         )}
-      </span>
-      <span className="text-[11px] text-ink-3">{label}</span>
-    </span>
+      </dd>
+      {(near || at) && (
+        <dd className={`mt-1 text-meta font-semibold ${tone}`}>{at ? "At the cap" : "Near the cap"}</dd>
+      )}
+    </div>
   );
 }
 
@@ -230,15 +241,13 @@ function Section({
     // Space, not enclosure, is what separates one tier from the next. The
     // generous top margin is the only thing marking the boundary, and it is
     // enough.
-    <section className="mt-9">
-      <div className="flex items-baseline gap-2.5">
-        <h2 className="text-[13px] font-semibold text-ink">{name}</h2>
-        <span className="font-mono text-[11px] uppercase tracking-[0.06em] text-ink-4">
-          {tier}
-        </span>
+    <section className="mt-14">
+      <div className="flex items-baseline gap-2.5 border-b border-line pb-2">
+        <h2 className="text-heading font-semibold text-ink">{name}</h2>
+        <span className="text-label font-semibold uppercase text-ink-3">{tier}</span>
       </div>
-      <p className="mt-1 max-w-xl text-[11px] leading-relaxed text-ink-3">{blurb}</p>
-      <div className="mt-3 divide-y divide-line">{children}</div>
+      <p className="mt-2 max-w-xl text-meta text-ink-3">{blurb}</p>
+      <div className="mt-2 divide-y divide-line">{children}</div>
     </section>
   );
 }
@@ -250,18 +259,18 @@ function Section({
  * not end in a dangling edge.
  */
 function Row({ children }: { children: ReactNode }) {
-  return <div className="py-3.5 first:pt-0 last:pb-0">{children}</div>;
+  return <div className="py-4 last:pb-0">{children}</div>;
 }
 
 function Meta({ children }: { children: ReactNode }) {
-  return <span className="text-[11px] text-ink-4">{children}</span>;
+  return <span className="text-meta text-ink-3">{children}</span>;
 }
 
 function EmptyNote({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <div className="py-3.5 first:pt-0">
-      <p className="text-[13px] text-ink-3">{title}</p>
-      <p className="mt-0.5 max-w-md text-[11px] leading-relaxed text-ink-4">{children}</p>
+    <div className="py-4">
+      <p className="text-body font-semibold text-ink-2">{title}</p>
+      <p className="mt-0.5 max-w-md text-meta text-ink-3">{children}</p>
     </div>
   );
 }
@@ -269,7 +278,7 @@ function EmptyNote({ title, children }: { title: string; children: ReactNode }) 
 function LadderSkeleton() {
   return (
     <div className="flex-1 overflow-y-auto">
-      <div className="mx-auto w-full max-w-3xl space-y-6 px-5 py-6">
+      <div className="mx-auto w-full max-w-2xl space-y-6 px-4 pt-8 lg:px-6 lg:pt-12">
         {[0, 1, 2].map((i) => (
           <div key={i} className="animate-pulse space-y-2">
             <div className="h-3 w-40 rounded bg-raised" />
