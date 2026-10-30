@@ -84,12 +84,12 @@ export function Facepile({
             </span>
           )}
         </span>
-        <span className="text-[11px] text-ink-3">{memberIds.length}</span>
+        <span className="text-label text-ink-3">{memberIds.length}</span>
       </button>
 
       {open && (
         <div className="absolute right-0 top-full z-40 mt-1.5 w-64 overflow-hidden rounded-lg border border-line-strong bg-canvas py-1 shadow-2xl">
-          <div className="px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.06em] text-ink-3">
+          <div className="px-3 py-1.5 text-label font-medium uppercase tracking-[0.06em] text-ink-3">
             {label}
           </div>
           {memberIds.map((id) => {
@@ -101,12 +101,12 @@ export function Facepile({
                 <Avatar agentId={id} size="sm" />
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-[13px] text-ink">{p.name}</span>
-                  <span className="block truncate text-[11px] text-ink-3">{p.title}</span>
+                  <span className="block truncate text-label text-ink-3">{p.title}</span>
                 </span>
                 {active && (
                   <span
                     title={active.title}
-                    className="shrink-0 text-[10px] text-ink-4"
+                    className="shrink-0 text-label text-ink-3"
                   >
                     {active.label}
                   </span>
@@ -129,7 +129,7 @@ export function Facepile({
               </div>
             );
           })}
-          <p className="border-t border-line px-3 py-2 text-[10px] leading-relaxed text-ink-4">
+          <p className="border-t border-line px-3 py-2 text-label leading-relaxed text-ink-3">
             Times are last recorded activity, not presence.
           </p>
         </div>

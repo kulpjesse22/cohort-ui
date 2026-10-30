@@ -38,7 +38,7 @@ export function ContributionRecord() {
   return (
     <section>
       <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 border-b border-line pb-2">
-        <h2 className="text-label font-semibold uppercase text-ink-3">Contribution record</h2>
+        <h2 className="text-label font-semibold uppercase tracking-[0.06em] text-ink-3">Contribution record</h2>
         <ProvenanceTag kind="snapshot" title="Built from Git history and co-author trailers, committed to the repo">
           Committed snapshot at <span className="font-mono text-ink-2">{snapshot.head}</span>
         </ProvenanceTag>

@@ -36,7 +36,7 @@ export function AgentTrustChip({
         type="button"
         onClick={() => setOpen((v) => !v)}
         className={`agent-trust-pill inline-flex items-center gap-1.5 rounded-full border bg-canvas font-semibold text-current outline-none transition-colors hover:bg-hover focus-visible:ring-2 focus-visible:ring-line-strong ${
-          compact ? "px-2 py-0.5 text-[10px]" : "px-2.5 py-1 text-[11px]"
+          compact ? "px-2 py-0.5 text-label" : "px-2.5 py-1 text-label"
         }`}
         aria-label={`${agent.name} trust chip. Open agent details`}
         aria-expanded={visible}
@@ -61,7 +61,7 @@ export function AgentTrustChip({
         <div className="agent-trust-popover absolute left-1/2 top-[calc(100%+0.6rem)] z-50 w-[19rem] max-w-[calc(100vw-2rem)] -translate-x-1/2 rounded-lg border border-line-strong bg-canvas p-3 text-left text-ink shadow-2xl">
           <div className="flex items-start justify-between gap-3">
             <div>
-              <div className="text-[10px] font-medium uppercase tracking-[0.06em] text-ink-3">
+              <div className="text-label font-medium uppercase tracking-[0.06em] text-ink-3">
                 Agent trust
               </div>
               <div className="mt-0.5 text-[13px] font-semibold tracking-[-0.01em] text-ink">
@@ -80,7 +80,7 @@ export function AgentTrustChip({
             </button>
           </div>
 
-          <dl className="mt-3 grid grid-cols-[4.75rem_minmax(0,1fr)] gap-x-3 gap-y-2 text-[12px] leading-5">
+          <dl className="mt-3 grid grid-cols-[4.75rem_minmax(0,1fr)] gap-x-3 gap-y-2 text-meta leading-5">
             <dt className="text-ink-3">Role</dt>
             <dd className="text-ink-2">{agent.title}</dd>
             <dt className="text-ink-3">Evidence</dt>

@@ -45,7 +45,7 @@ export function ArtifactLink({ path }: { path: string }) {
       <button
         onClick={() => setOpen(true)}
         title={`Open ${path}`}
-        className="group inline-flex max-w-full items-center gap-1 font-mono text-[10px] text-ink-4 transition-colors hover:text-ink-2"
+        className="group inline-flex max-w-full items-center gap-1 font-mono text-label text-ink-3 transition-colors hover:text-ink-2"
       >
         <span className="truncate underline decoration-line-strong decoration-dotted underline-offset-2">
           {path}
@@ -82,12 +82,12 @@ export function ArtifactLink({ path }: { path: string }) {
             className="relative flex max-h-[78vh] w-full max-w-2xl flex-col overflow-hidden rounded-xl border border-line-strong bg-canvas shadow-2xl"
           >
             <div className="flex items-center gap-3 border-b border-line px-4 py-3">
-              <span className="min-w-0 flex-1 truncate font-mono text-[12px] text-ink">
+              <span className="min-w-0 flex-1 truncate font-mono text-meta text-ink">
                 {path}
               </span>
               {doc && (
                 <span
-                  className={`shrink-0 rounded border px-1.5 py-0.5 text-[10px] ${
+                  className={`shrink-0 rounded border px-1.5 py-0.5 text-label ${
                     doc.exists
                       ? "border-approved-line bg-approved-bg text-approved"
                       : "border-line-strong text-ink-3"
@@ -111,7 +111,7 @@ export function ArtifactLink({ path }: { path: string }) {
               {loading && <p className="text-[13px] text-ink-3">Reading from disk…</p>}
 
               {!loading && doc?.exists && (
-                <pre className="whitespace-pre-wrap font-mono text-[11px] leading-relaxed text-ink-2">
+                <pre className="whitespace-pre-wrap font-mono text-label leading-relaxed text-ink-2">
                   {doc.content}
                 </pre>
               )}
@@ -124,7 +124,7 @@ export function ArtifactLink({ path }: { path: string }) {
                   <p className="mx-auto mt-1.5 max-w-sm text-[13px] leading-relaxed text-ink-3">
                     It belongs to the seeded history that demonstrates the growth
                     arc. Entries from real sessions cite files that do exist —
-                    open one of the <span className="font-mono text-[11px]">Agents/</span>{" "}
+                    open one of the <span className="font-mono text-label">Agents/</span>{" "}
                     paths to see the difference.
                   </p>
                 </div>

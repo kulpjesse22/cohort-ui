@@ -337,7 +337,7 @@ function CaptionBar({
               agent's channel. Cohort is the product; Claudia is a role in it. */}
           <Link
             href="/start"
-            className="shrink-0 text-[11px] text-ink-3 hover:text-ink"
+            className="shrink-0 text-label text-ink-3 hover:text-ink"
           >
             Open Cohort
           </Link>
@@ -369,7 +369,7 @@ function CaptionBar({
           >
             Next
           </button>
-          <span className="ml-auto hidden text-[11px] text-ink-4 sm:block">
+          <span className="ml-auto hidden text-label text-ink-3 sm:block">
             ← → to step · space to pause
           </span>
         </div>
@@ -431,7 +431,7 @@ function TourFlow({
                 aria-hidden="true"
               />
               <span
-                className={`tour-step-chip tour-step-chip-active absolute left-1/2 z-10 -translate-x-1/2 inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border bg-canvas px-2.5 py-1 text-[10px] font-semibold text-current transition-[opacity,scale] duration-700 ease-out ${
+                className={`tour-step-chip tour-step-chip-active absolute left-1/2 z-10 -translate-x-1/2 inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border bg-canvas px-2.5 py-1 text-label font-semibold text-current transition-[opacity,scale] duration-700 ease-out ${
                   expanded ? "scale-100 opacity-100" : "pointer-events-none scale-95 opacity-0"
                 }`}
                 aria-hidden={!expanded}
@@ -451,7 +451,7 @@ function TourFlow({
             </button>
           );
         })}
-        <span className="ml-1 shrink-0 font-mono text-[11px] text-ink-3">
+        <span className="ml-1 shrink-0 font-mono text-label text-ink-3">
           {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
         </span>
       </div>

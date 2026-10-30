@@ -58,7 +58,7 @@ export function Sidebar({
           <span className="truncate">Team memory</span>
         </Link>
 
-        <div className="px-2 pb-1.5 text-label font-semibold uppercase text-sidebar-ink-3">
+        <div className="px-2 pb-1.5 text-label font-semibold uppercase tracking-[0.06em] text-sidebar-ink-3">
           Channels
         </div>
         <nav className="mb-4 space-y-0.5">
@@ -81,7 +81,7 @@ export function Sidebar({
           })}
         </nav>
 
-        <div className="px-2 pb-1.5 text-label font-semibold uppercase text-sidebar-ink-3">
+        <div className="px-2 pb-1.5 text-label font-semibold uppercase tracking-[0.06em] text-sidebar-ink-3">
           Registry
         </div>
         <ul className="space-y-1">

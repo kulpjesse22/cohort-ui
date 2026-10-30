@@ -50,7 +50,7 @@ function PromotionEntry({ entry }: { entry: TimelineEntry }) {
       </span>
 
       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <span className="text-label font-semibold uppercase text-approved">
+        <span className="text-label font-semibold uppercase tracking-[0.06em] text-approved">
           {KIND_LABEL.promotion}
         </span>
         <span className="ml-auto shrink-0 text-meta tabular-nums text-ink-3">
@@ -101,7 +101,7 @@ function StandardEntry({ entry }: { entry: TimelineEntry }) {
         <KindMark kind={entry.kind} />
       </span>
       <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-        <span className="text-label font-semibold uppercase text-ink-3">
+        <span className="text-label font-semibold uppercase tracking-[0.06em] text-ink-3">
           {KIND_LABEL[entry.kind]}
         </span>
         <span className="ml-auto shrink-0 text-meta tabular-nums text-ink-3">
@@ -189,7 +189,7 @@ export function AgentTimeline({
         </div>
 
         <div className="mb-5 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-          <h2 className="text-label font-semibold uppercase text-ink-3">History</h2>
+          <h2 className="text-label font-semibold uppercase tracking-[0.06em] text-ink-3">History</h2>
           {masthead && (
             <ProvenanceTag kind="seeded" title="An illustration of the growth arc, not a log">
               Seeded to show the shape

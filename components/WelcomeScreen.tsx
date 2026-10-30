@@ -37,7 +37,7 @@ export function WelcomeScreen() {
 
         <section className="grid flex-1 items-center gap-10 py-10 lg:grid-cols-[minmax(280px,0.72fr)_minmax(0,1.28fr)] lg:gap-12 lg:py-8">
           <div className="max-w-xl">
-            <p className="text-label font-semibold uppercase text-ink-3">
+            <p className="text-label font-semibold uppercase tracking-[0.06em] text-ink-3">
               A workspace for people and agents
             </p>
             <h1 className="mt-4 max-w-lg font-display text-lead font-bold text-ink sm:text-hero">
@@ -157,7 +157,7 @@ export function WelcomeScreen() {
                 </div>
 
                 <aside className="hidden border-l border-line bg-panel p-4 lg:block">
-                  <div className="text-label font-semibold uppercase text-ink-3">Context</div>
+                  <div className="text-label font-semibold uppercase tracking-[0.06em] text-ink-3">Context</div>
                   <div className="mt-3 space-y-3">
                     <ContextItem label="Current source" value="repo / Human / Agents" />
                     <ContextItem label="Routing" value="Planner approves dependency graph" />
@@ -210,7 +210,7 @@ function PreviewDecision() {
   return (
     <div className="border-l border-line-strong pl-3">
       <div className="flex items-center justify-between gap-3">
-        <span className="flex items-center gap-1.5 text-label font-semibold uppercase text-ink-3">
+        <span className="flex items-center gap-1.5 text-label font-semibold uppercase tracking-[0.06em] text-ink-3">
           <KindMark kind="decision" />
           Decision logged
         </span>

@@ -45,7 +45,7 @@ function Entry({ entry }: { entry: TimelineEntry }) {
             <span className="text-meta text-ink-3">human</span>
           )}
 
-          <span className="flex items-center gap-1.5 text-label font-semibold uppercase text-ink-3">
+          <span className="flex items-center gap-1.5 text-label font-semibold uppercase tracking-[0.06em] text-ink-3">
             <KindMark kind={entry.kind} />
             {KIND_LABEL[entry.kind]}
           </span>
@@ -139,7 +139,7 @@ export function TeamTimeline() {
         </div>
 
         <div className="mb-3 mt-14 flex items-baseline justify-between border-b border-line pb-2">
-          <h2 className="text-label font-semibold uppercase text-ink-3">Project history</h2>
+          <h2 className="text-label font-semibold uppercase tracking-[0.06em] text-ink-3">Project history</h2>
           <span className="text-meta tabular-nums text-ink-3">
             {total} {total === 1 ? "entry" : "entries"}
             {filter ? ` · ${getParticipant(filter)?.name}` : ""}

@@ -119,7 +119,7 @@ export function AgentEditor({
           <h2 className="text-[15px] font-semibold tracking-[-0.01em] text-ink">
             Customize {AGENTS[agentId].name}
           </h2>
-          <p className="mt-0.5 text-[11px] text-ink-3">
+          <p className="mt-0.5 text-label text-ink-3">
             Identity is yours to change. Scope and boundaries come from the role
             doc and stay fixed.
           </p>
@@ -191,7 +191,7 @@ export function AgentEditor({
                     className="min-w-0 flex-1 text-left"
                   >
                     <span className="block truncate text-[13px] text-ink">{v.name}</span>
-                    <span className="block truncate text-[10px] text-ink-3">
+                    <span className="block truncate text-label text-ink-3">
                       {v.accent} · {v.descriptive}
                     </span>
                   </button>
@@ -210,7 +210,7 @@ export function AgentEditor({
         </Field>
       </div>
 
-      {error && <p className="mt-3 text-[11px] text-revise">{error}</p>}
+      {error && <p className="mt-3 text-label text-revise">{error}</p>}
 
       <div className="mt-5 flex items-center gap-2">
         <button
@@ -228,7 +228,7 @@ export function AgentEditor({
         </button>
         <button
           onClick={reset}
-          className="ml-auto text-[11px] text-ink-3 hover:text-ink"
+          className="ml-auto text-label text-ink-3 hover:text-ink"
         >
           Reset to default
         </button>
@@ -248,11 +248,11 @@ function Field({
 }) {
   return (
     <div>
-      <div className="mb-1.5 text-[10px] font-medium uppercase tracking-[0.06em] text-ink-3">
+      <div className="mb-1.5 text-label font-medium uppercase tracking-[0.06em] text-ink-3">
         {label}
       </div>
       {children}
-      {hint && <p className="mt-1 text-[10px] text-ink-4">{hint}</p>}
+      {hint && <p className="mt-1 text-label text-ink-3">{hint}</p>}
     </div>
   );
 }

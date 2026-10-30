@@ -69,7 +69,7 @@ export function AgentMasthead({
 
         <div className="mt-5 max-w-lg">
           <div className="flex items-baseline justify-between gap-2">
-            <span className="text-label font-semibold uppercase text-ink-3">Rank</span>
+            <span className="text-label font-semibold uppercase tracking-[0.06em] text-ink-3">Rank</span>
             {/* The roster's own word, not a name for the rung. Two vocabularies
                 for one fact is how "Lead" in the chip above ends up reading as
                 a different rank from "Principal" down here. */}

@@ -147,7 +147,7 @@ function HandoffDetailsPanel({
     >
       <div className="flex items-center justify-between gap-3">
         <div>
-          <div className="text-label font-semibold uppercase text-ink-3">Handoff</div>
+          <div className="text-label font-semibold uppercase tracking-[0.06em] text-ink-3">Handoff</div>
           <div className="mt-0.5 text-heading font-semibold text-ink">{label}</div>
         </div>
         <button

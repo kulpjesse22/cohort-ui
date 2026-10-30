@@ -39,7 +39,7 @@ function inline(text: string): ReactNode {
       return <strong key={i} className="font-semibold text-ink">{p.slice(2, -2)}</strong>;
     if (p.startsWith("`") && p.endsWith("`"))
       return (
-        <code key={i} className="rounded bg-raised px-1 py-px font-mono text-[10px] text-ink-2">
+        <code key={i} className="rounded bg-raised px-1 py-px font-mono text-label text-ink-2">
           {p.slice(1, -1)}
         </code>
       );
@@ -93,7 +93,7 @@ export function DocPreview({
       <div className="flex items-center justify-between gap-2 px-3 pb-1.5 pt-2">
         <span className="flex min-w-0 items-center gap-2">
           <span
-            className="shrink-0 rounded px-1.5 py-0.5 text-[10px] font-medium transition-colors duration-500"
+            className="shrink-0 rounded px-1.5 py-0.5 text-label font-medium transition-colors duration-500"
             style={
               isConsidered
                 ? { color: "var(--color-ink-4)", background: "var(--color-raised)" }
@@ -103,17 +103,17 @@ export function DocPreview({
             {kind.label}
           </span>
           <span
-            className={`truncate text-[12px] font-semibold ${isConsidered ? "text-ink-3" : "text-ink"}`}
+            className={`truncate text-meta font-semibold ${isConsidered ? "text-ink-3" : "text-ink"}`}
           >
             {name}
           </span>
           {isCanon && (
-            <span className="shrink-0 rounded border border-approved-line bg-approved-bg px-1.5 py-0.5 text-[10px] font-medium text-approved">
+            <span className="shrink-0 rounded border border-approved-line bg-approved-bg px-1.5 py-0.5 text-label font-medium text-approved">
               source of truth
             </span>
           )}
           {isConsidered && (
-            <span className="shrink-0 text-[10px] text-ink-4">considered</span>
+            <span className="shrink-0 text-label text-ink-3">considered</span>
           )}
         </span>
       </div>
@@ -130,19 +130,19 @@ export function DocPreview({
               style={{ background: c }}
             />
           ))}
-          <span className="ml-1 text-[10px] text-ink-4">tokens</span>
+          <span className="ml-1 text-label text-ink-3">tokens</span>
         </div>
       )}
 
-      <div className="max-h-52 space-y-1 overflow-hidden px-3 pb-2 text-[11px] leading-relaxed">
+      <div className="max-h-52 space-y-1 overflow-hidden px-3 pb-2 text-label leading-relaxed">
         {content === null ? (
-          <p className="text-ink-4">Not in the repository yet.</p>
+          <p className="text-ink-3">Not in the repository yet.</p>
         ) : (
           lines.map((line, i) => {
             const t = line.trim();
             if (/^#\s/.test(t))
               return (
-                <p key={i} className="text-[12px] font-semibold text-ink">
+                <p key={i} className="text-meta font-semibold text-ink">
                   {t.replace(/^#\s/, "")}
                 </p>
               );
@@ -150,7 +150,7 @@ export function DocPreview({
               return (
                 <p
                   key={i}
-                  className="pt-1 text-[10px] font-medium uppercase tracking-[0.06em]"
+                  className="pt-1 text-label font-medium uppercase tracking-[0.06em]"
                   style={{ color: "var(--hue)" }}
                 >
                   {t.replace(/^#+\s/, "")}
@@ -159,7 +159,7 @@ export function DocPreview({
             if (/^-\s/.test(t))
               return (
                 <p key={i} className="flex gap-1.5 text-ink-2">
-                  <span className="shrink-0 text-ink-4">·</span>
+                  <span className="shrink-0 text-ink-3">·</span>
                   <span className="min-w-0">{inline(t.replace(/^-\s/, ""))}</span>
                 </p>
               );
@@ -173,7 +173,7 @@ export function DocPreview({
       </div>
 
       <div className="flex items-center justify-between gap-2 border-t border-line px-3 py-1.5">
-        <span className="truncate font-mono text-[10px] text-ink-4">{path}</span>
+        <span className="truncate font-mono text-label text-ink-3">{path}</span>
         <span className="flex shrink-0 items-center gap-2.5">{action}</span>
       </div>
     </div>

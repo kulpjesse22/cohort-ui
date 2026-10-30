@@ -141,7 +141,7 @@ export function LessonLadder() {
                     is not the same as a preference — but it does not earn a box. */}
                 <p className="text-meta text-ink-3">
                   <span
-                    className={`text-label font-semibold uppercase ${
+                    className={`text-label font-semibold uppercase tracking-[0.06em] ${
                       entry.kind === "never" ? "text-revise" : "text-ink-3"
                     }`}
                   >
@@ -244,7 +244,7 @@ function Section({
     <section className="mt-14">
       <div className="flex items-baseline gap-2.5 border-b border-line pb-2">
         <h2 className="text-heading font-semibold text-ink">{name}</h2>
-        <span className="text-label font-semibold uppercase text-ink-3">{tier}</span>
+        <span className="text-label font-semibold uppercase tracking-[0.06em] text-ink-3">{tier}</span>
       </div>
       <p className="mt-2 max-w-xl text-meta text-ink-3">{blurb}</p>
       <div className="mt-2 divide-y divide-line">{children}</div>

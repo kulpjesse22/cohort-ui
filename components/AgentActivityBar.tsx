@@ -86,14 +86,14 @@ export function AgentActivityBar({ statuses }: { statuses: AgentStatus[] }) {
             </span>
           ))}
         </span>
-        <span className="truncate text-[12px] font-medium tracking-[-0.01em] text-ink-2">
+        <span className="truncate text-meta font-medium tracking-[-0.01em] text-ink-2">
           {summary}
         </span>
       </button>
 
       {open && (
         <div className="absolute right-0 top-[calc(100%+0.6rem)] z-50 w-[22rem] max-w-[calc(100vw-2rem)] rounded-lg border border-line-strong bg-canvas p-3 text-left shadow-2xl">
-          <div className="text-[10px] font-medium uppercase tracking-[0.06em] text-ink-3">
+          <div className="text-label font-medium uppercase tracking-[0.06em] text-ink-3">
             Working now
           </div>
 
@@ -103,21 +103,21 @@ export function AgentActivityBar({ statuses }: { statuses: AgentStatus[] }) {
                 <Avatar agentId={s.agentId} size="sm" badge={false} state="working" />
                 <div className="min-w-0 flex-1">
                   <div className="flex items-baseline justify-between gap-2">
-                    <span className={`${hueClass(s.agentId)} agent-fg text-[12px] font-semibold`}>
+                    <span className={`${hueClass(s.agentId)} agent-fg text-meta font-semibold`}>
                       {AGENTS[s.agentId]?.name ?? s.agentId}
                     </span>
-                    <span className="shrink-0 text-[10px] text-ink-3">{age(s.ts, now)}</span>
+                    <span className="shrink-0 text-label text-ink-3">{age(s.ts, now)}</span>
                   </div>
-                  <p className="text-[12px] leading-4 text-ink">{s.label}</p>
+                  <p className="text-meta leading-4 text-ink">{s.label}</p>
                   {s.detail && (
-                    <p className="mt-0.5 text-[11px] leading-4 text-ink-3">{s.detail}</p>
+                    <p className="mt-0.5 text-label leading-4 text-ink-3">{s.detail}</p>
                   )}
                 </div>
               </li>
             ))}
           </ul>
 
-          <p className="mt-3 border-t border-line pt-2 text-[11px] leading-4 text-ink-3">
+          <p className="mt-3 border-t border-line pt-2 text-label leading-4 text-ink-3">
             Live. Reported by the harness as it works, and dropped after ninety
             seconds of silence rather than left standing.
           </p>

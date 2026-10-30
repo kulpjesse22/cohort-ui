@@ -67,7 +67,7 @@ export function ContextRail({
         aria-expanded={open}
         className="flex min-h-14 items-center justify-between gap-3 border-b border-line px-4 text-left"
       >
-        <span className="text-label font-semibold uppercase text-ink-3">
+        <span className="text-label font-semibold uppercase tracking-[0.06em] text-ink-3">
           {citedDocs.length ? "On the table" : "Pinned repo context"}
         </span>
         <span className="flex items-center gap-3">
@@ -111,7 +111,7 @@ export function ContextRail({
             ))}
 
             {citedDocs.length > 0 && docs.length > 0 && (
-              <div className="border-t border-line pt-3 text-label font-semibold uppercase text-ink-3">
+              <div className="border-t border-line pt-3 text-label font-semibold uppercase tracking-[0.06em] text-ink-3">
                 Channel context
               </div>
             )}

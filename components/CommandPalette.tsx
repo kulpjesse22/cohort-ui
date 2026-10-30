@@ -110,7 +110,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
             placeholder="Search the record, or ask a question…"
             className="flex-1 bg-transparent text-[14px] text-ink placeholder:text-ink-4 focus:outline-none"
           />
-          <kbd className="rounded border border-line-strong px-1.5 py-0.5 text-[10px] text-ink-4">
+          <kbd className="rounded border border-line-strong px-1.5 py-0.5 text-label text-ink-3">
             esc
           </kbd>
         </div>
@@ -118,7 +118,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
         <div className="min-h-0 flex-1 overflow-y-auto">
           {!q.trim() && (
             <div className="p-3">
-              <div className="px-2 pb-1.5 text-[10px] font-medium uppercase tracking-[0.06em] text-ink-3">
+              <div className="px-2 pb-1.5 text-label font-medium uppercase tracking-[0.06em] text-ink-3">
                 Try asking
               </div>
               {SUGGESTIONS.map((s) => (
@@ -127,7 +127,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
                   onClick={() => setQ(s)}
                   className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-[13px] text-ink-2 transition-colors hover:bg-hover hover:text-ink"
                 >
-                  <span className="text-ink-4">↳</span>
+                  <span className="text-ink-3">↳</span>
                   {s}
                 </button>
               ))}
@@ -136,7 +136,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
 
           {data?.answer && (
             <div className="border-b border-line bg-raised px-4 py-3.5">
-              <div className="mb-1.5 flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-[0.06em] text-ink-3">
+              <div className="mb-1.5 flex items-center gap-1.5 text-label font-medium uppercase tracking-[0.06em] text-ink-3">
                 <SparkIcon />
                 From the record
               </div>
@@ -147,7 +147,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
                     <button
                       key={c.id}
                       onClick={() => go(c)}
-                      className="max-w-full truncate rounded border border-line-strong bg-canvas px-1.5 py-0.5 text-[10px] text-ink-2 transition-colors hover:text-ink"
+                      className="max-w-full truncate rounded border border-line-strong bg-canvas px-1.5 py-0.5 text-label text-ink-2 transition-colors hover:text-ink"
                     >
                       {c.title}
                     </button>
@@ -178,16 +178,16 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
                     {r.kind === "agent" ? (
                       <Avatar agentId={r.id as AgentId} size="sm" badge={false} />
                     ) : (
-                      <span className="flex h-6 w-6 items-center justify-center rounded-[6px] border border-line text-ink-4">
+                      <span className="flex h-6 w-6 items-center justify-center rounded-[6px] border border-line text-ink-3">
                         {r.kind === "channel" ? "#" : r.kind === "message" ? <ChatIcon /> : <DotIcon />}
                       </span>
                     )}
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="block truncate text-[13px] text-ink">{r.title}</span>
-                    <span className="block truncate text-[11px] text-ink-3">{r.subtitle}</span>
+                    <span className="block truncate text-label text-ink-3">{r.subtitle}</span>
                   </span>
-                  <span className="mt-1 shrink-0 text-[10px] uppercase tracking-[0.06em] text-ink-4">
+                  <span className="mt-1 shrink-0 text-label uppercase tracking-[0.06em] text-ink-3">
                     {KIND_LABEL[r.kind]}
                   </span>
                 </button>
@@ -196,7 +196,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
           )}
         </div>
 
-        <div className="flex items-center gap-3 border-t border-line px-4 py-2 text-[10px] text-ink-4">
+        <div className="flex items-center gap-3 border-t border-line px-4 py-2 text-label text-ink-3">
           <span>↑↓ to move</span>
           <span>↵ to open</span>
           <span className="ml-auto">Answers are assembled from the record, not generated.</span>

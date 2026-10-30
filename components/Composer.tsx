@@ -152,7 +152,7 @@ export function Composer({
                 <Avatar agentId={id} size="sm" badge={false} />
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-[13px] text-ink">{AGENTS[id].name}</span>
-                  <span className="block truncate text-[11px] text-ink-3">{AGENTS[id].title}</span>
+                  <span className="block truncate text-label text-ink-3">{AGENTS[id].title}</span>
                 </span>
               </button>
             ))}
@@ -183,13 +183,13 @@ export function Composer({
 
           <div className="flex items-center gap-0.5 px-2 pb-2">
             <FormatButton label="Bold" onClick={() => applyFormat("**", "bold")}>
-              <span className="text-[12px] font-bold">B</span>
+              <span className="text-meta font-bold">B</span>
             </FormatButton>
             <FormatButton label="Italic" onClick={() => applyFormat("_", "italic")}>
-              <span className="text-[12px] italic">I</span>
+              <span className="text-meta italic">I</span>
             </FormatButton>
             <FormatButton label="Code" onClick={() => applyFormat("`", "code")}>
-              <span className="font-mono text-[11px]">{"</>"}</span>
+              <span className="font-mono text-label">{"</>"}</span>
             </FormatButton>
             <span className="mx-1 h-4 w-px bg-line" />
             <FormatButton
@@ -204,11 +204,11 @@ export function Composer({
                 update(next, caret + 1);
               }}
             >
-              <span className="text-[12px]">@</span>
+              <span className="text-meta">@</span>
             </FormatButton>
 
             <span className="ml-auto flex items-center gap-2">
-              <span className="hidden text-[10px] text-ink-4 sm:inline">
+              <span className="hidden text-label text-ink-3 sm:inline">
                 <kbd className="rounded border border-line px-1">↵</kbd> to send
               </span>
               <button
@@ -223,7 +223,7 @@ export function Composer({
         </div>
       </div>
 
-      {error && <p className="mt-1.5 text-[11px] text-revise">{error}</p>}
+      {error && <p className="mt-1.5 text-label text-revise">{error}</p>}
     </div>
   );
 }
