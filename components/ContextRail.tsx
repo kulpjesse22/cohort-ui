@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import type { ContextDoc } from "@/lib/harness";
 import { DocPreview } from "./DocPreview";
+import { ProvenanceMark, ProvenanceTag } from "./Marks";
 
 function RailSkeleton() {
   return (
@@ -10,7 +11,7 @@ function RailSkeleton() {
       {[0, 1].map((i) => (
         <div key={i} className="animate-pulse space-y-2">
           <div className="h-3 w-32 rounded bg-raised" />
-          <div className="h-20 rounded border border-line bg-raised" />
+          <div className="h-20 rounded bg-raised" />
         </div>
       ))}
     </div>
@@ -63,19 +64,25 @@ export function ContextRail({
     <aside className="flex h-full w-80 shrink-0 flex-col border-l border-line bg-panel shadow-2xl lg:shadow-none">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center justify-between border-b border-line px-4 py-3 text-left"
+        aria-expanded={open}
+        className="flex min-h-14 items-center justify-between gap-3 border-b border-line px-4 text-left"
       >
-        <span className="text-[10px] font-medium uppercase tracking-[0.06em] text-ink-3">
+        <span className="text-label font-semibold uppercase text-ink-3">
           {citedDocs.length ? "On the table" : "Pinned repo context"}
         </span>
-        <span className="text-xs text-ink-3">{open ? "✕" : "+"}</span>
+        <span className="flex items-center gap-3">
+          <ProvenanceTag kind="live" title="Read off disk on this request">
+            Live from disk
+          </ProvenanceTag>
+          <span className="text-meta text-ink-3" aria-hidden="true">{open ? "−" : "+"}</span>
+        </span>
       </button>
 
       {open &&
         (loading ? (
           <RailSkeleton />
         ) : (
-          <div className="flex-1 space-y-4 overflow-y-auto px-4 py-4">
+          <div className="flex-1 space-y-6 overflow-y-auto px-4 py-5">
             {/* What the agent just put up, ahead of the channel's standing
                 pins — this is the live subject of the conversation, and it is
                 where the human names one authoritative. */}
@@ -89,12 +96,12 @@ export function ContextRail({
                 }
                 action={
                   canon === doc.path ? (
-                    <span className="text-[10px] text-ink-4">chosen</span>
+                    <span className="text-meta text-ink-3">chosen</span>
                   ) : doc.content ? (
                     <button
                       onClick={() => pin(doc.path)}
                       disabled={pinning === doc.path}
-                      className="text-[11px] text-ink-3 underline decoration-dotted underline-offset-2 transition-colors hover:text-ink disabled:opacity-50"
+                      className="text-meta text-ink-2 underline decoration-line-strong underline-offset-4 transition-colors hover:text-ink disabled:opacity-40"
                     >
                       {pinning === doc.path ? "Noting…" : "Set as source of truth"}
                     </button>
@@ -104,30 +111,36 @@ export function ContextRail({
             ))}
 
             {citedDocs.length > 0 && docs.length > 0 && (
-              <div className="border-t border-line pt-3 text-[10px] font-medium uppercase tracking-[0.06em] text-ink-4">
+              <div className="border-t border-line pt-3 text-label font-semibold uppercase text-ink-3">
                 Channel context
               </div>
             )}
 
             {docs.length === 0 && citedDocs.length === 0 && (
-              <p className="text-xs text-ink-3">Nothing pinned for this channel.</p>
+              <p className="text-meta text-ink-3">Nothing pinned for this channel.</p>
             )}
             {docs.map((doc) => (
               <div key={doc.path}>
-                <div className="mb-1 flex items-center justify-between gap-2">
-                  <span className="text-xs font-medium text-ink-2">{doc.label}</span>
-                  <span className="truncate text-[10px] text-ink-4">{doc.path}</span>
+                <div className="mb-2 flex items-baseline justify-between gap-2">
+                  <span className="shrink-0 text-meta font-semibold text-ink">{doc.label}</span>
+                  <span className="truncate font-mono text-label text-ink-3" title={doc.path}>
+                    {doc.path}
+                  </span>
                 </div>
+                {/* Three states, three shapes: missing is a struck ring, an
+                    unfilled template a dashed one, a real file its text. */}
                 {doc.content === null ? (
-                  <p className="rounded border border-dashed border-line px-2 py-2 text-[11px] text-ink-4">
+                  <p className="flex items-center gap-2 border-t border-line pt-2 text-meta text-ink-3">
+                    <MissingMark />
                     Not found in the harness repo.
                   </p>
                 ) : doc.content.length === 0 ? (
-                  <p className="rounded border border-dashed border-line px-2 py-2 text-[11px] text-ink-4">
-                    Empty — this file is still an unfilled template.
+                  <p className="flex items-center gap-2 border-t border-line pt-2 text-meta text-ink-3">
+                    <ProvenanceMark kind="illustrative" />
+                    Empty. This file is still an unfilled template.
                   </p>
                 ) : (
-                  <pre className="max-h-56 overflow-y-auto whitespace-pre-wrap rounded border border-line bg-raised px-2 py-2 text-[11px] leading-relaxed text-ink-2">
+                  <pre className="max-h-56 overflow-y-auto whitespace-pre-wrap border-l border-line-strong pl-3 font-mono text-label leading-relaxed text-ink-2">
                     {doc.content}
                   </pre>
                 )}
@@ -136,5 +149,14 @@ export function ContextRail({
           </div>
         ))}
     </aside>
+  );
+}
+
+function MissingMark() {
+  return (
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true" className="shrink-0">
+      <circle cx="5" cy="5" r="3.2" stroke="currentColor" strokeWidth="1.2" />
+      <path d="M2.8 7.2 7.2 2.8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+    </svg>
   );
 }

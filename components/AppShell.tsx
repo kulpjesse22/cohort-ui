@@ -129,7 +129,7 @@ export function AppShell({
             setSidebarOpen(false);
             setRailOpen(false);
           }}
-          className="fixed inset-0 z-30 bg-black/60 lg:hidden"
+          className="fixed inset-0 z-30 bg-scrim lg:hidden"
         />
       )}
 
@@ -148,7 +148,7 @@ export function AppShell({
       </div>
 
       <main className="flex min-w-0 flex-1 flex-col">
-        <header className="flex items-center gap-3 border-b border-line px-4 py-3 lg:px-5">
+        <header className="flex min-h-14 items-center gap-3 border-b border-line px-4 py-2 lg:px-6">
           <button
             aria-label="Open channels"
             onClick={() => setSidebarOpen(true)}
@@ -167,21 +167,21 @@ export function AppShell({
             {live ? (
               <AgentActivityBar statuses={liveStatuses ?? []} />
             ) : (
-              <LeadHandoffIndicator label={activity.label} details={activity.details} compact />
+              <LeadHandoffIndicator label={activity.label} details={activity.details} variant="line" />
             )}
           </div>
 
           <button
             onClick={() => setSearchOpen(true)}
             aria-label="Search"
-            className="flex h-10 w-10 items-center justify-center gap-2 rounded-md text-[12px] text-ink-3 transition-colors hover:bg-hover hover:text-ink-2 sm:h-auto sm:w-auto sm:border sm:border-line-strong sm:px-2.5 sm:py-1.5"
+            className="flex h-10 w-10 items-center justify-center gap-2 rounded-md text-meta text-ink-3 transition-colors hover:bg-hover hover:text-ink-2 sm:h-8 sm:w-auto sm:px-2"
           >
             <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
               <circle cx="7.2" cy="7.2" r="4.6" stroke="currentColor" strokeWidth="1.4" />
               <path d="m10.7 10.7 2.8 2.8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
             </svg>
             <span className="hidden sm:inline">Search</span>
-            <kbd className="hidden rounded border border-line px-1 text-[10px] sm:inline">
+            <kbd className="hidden font-mono text-label text-ink-3 sm:inline">
               ⌘K
             </kbd>
           </button>

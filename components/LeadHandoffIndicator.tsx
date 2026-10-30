@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AGENTS, type AgentId } from "@/lib/agents";
+import { ProvenanceMark } from "./Marks";
 
 const PARTICIPANTS: AgentId[] = ["julius", "augustus", "claudia"];
 
@@ -18,11 +19,19 @@ export function LeadHandoffIndicator({
   compact = false,
   details,
   forceOpen = false,
+  variant = "relay",
 }: {
   label?: string;
   compact?: boolean;
   details?: HandoffDetails;
   forceOpen?: boolean;
+  /**
+   * "relay" is the animated strip, for places where the handoff is the
+   * subject (the welcome preview, the tour). "line" is for app chrome, where
+   * it sits beside the page's real subject and has to stay quiet: one line of
+   * text behind a dashed ring that says, before any click, nothing is running.
+   */
+  variant?: "relay" | "line";
 }) {
   const [open, setOpen] = useState(false);
   const interactive = Boolean(details);
@@ -31,6 +40,32 @@ export function LeadHandoffIndicator({
   useEffect(() => {
     setOpen(false);
   }, [label]);
+
+  if (variant === "line") {
+    return (
+      <div className="relative">
+        <button
+          type="button"
+          disabled={!interactive}
+          onClick={() => interactive && setOpen((v) => !v)}
+          aria-expanded={interactive ? visible : undefined}
+          aria-label={interactive ? `Illustrative: ${details?.from} to ${details?.to}, ${label} Open handoff details` : label}
+          className="flex min-h-8 max-w-[18rem] items-center gap-2 rounded-md px-2 text-meta text-ink-2 transition-colors hover:bg-hover hover:text-ink"
+        >
+          <ProvenanceMark kind="illustrative" />
+          {details && (
+            <span className="shrink-0 font-semibold text-ink">
+              {details.from} <span className="font-normal text-ink-3" aria-hidden="true">→</span> {details.to}
+            </span>
+          )}
+          <span className="truncate">{label}</span>
+        </button>
+        {visible && details && (
+          <HandoffDetailsPanel label={label} details={details} forceOpen={forceOpen} onClose={() => setOpen(false)} align="end" />
+        )}
+      </div>
+    );
+  }
 
   return (
     <div
@@ -85,48 +120,71 @@ export function LeadHandoffIndicator({
       </span>
 
       {interactive && visible && details && (
-        <div className="absolute left-1/2 top-[calc(100%+0.75rem)] z-50 w-[20rem] max-w-[calc(100vw-2rem)] -translate-x-1/2 rounded-lg border border-line-strong bg-canvas p-3 text-left text-ink shadow-2xl">
-          <div className="flex items-center justify-between gap-3">
-            <div>
-              <div className="text-[10px] font-medium uppercase tracking-[0.06em] text-ink-3">
-                Handoff
-              </div>
-              <div className="mt-0.5 text-[13px] font-semibold tracking-[-0.01em] text-ink">
-                {label}
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-ink-3 transition-colors hover:bg-hover hover:text-ink ${
-                forceOpen ? "invisible" : ""
-              }`}
-              aria-label="Close handoff details"
-            >
-              ×
-            </button>
-          </div>
-
-          <dl className="mt-3 grid grid-cols-[4.5rem_minmax(0,1fr)] gap-x-3 gap-y-2 text-[12px] leading-5">
-            <dt className="text-ink-3">From</dt>
-            <dd className="text-ink-2">{details.from}</dd>
-            <dt className="text-ink-3">To</dt>
-            <dd className="text-ink-2">{details.to}</dd>
-            <dt className="text-ink-3">Why</dt>
-            <dd className="text-ink-2">{details.why}</dd>
-            <dt className="text-ink-3">Source</dt>
-            <dd className="font-mono text-[11px] text-ink-2">{details.source}</dd>
-            <dt className="text-ink-3">Next</dt>
-            <dd className="text-ink-2">{details.next}</dd>
-          </dl>
-
-          <p className="mt-3 border-t border-line pt-2 text-[11px] leading-4 text-ink-3">
-            Illustrative. No agent is running — this cycles through the shapes a
-            handoff takes. Start the harness watcher and the header shows the
-            roster working instead.
-          </p>
-        </div>
+        <HandoffDetailsPanel label={label} details={details} forceOpen={forceOpen} onClose={() => setOpen(false)} align="center" />
       )}
+    </div>
+  );
+}
+
+function HandoffDetailsPanel({
+  label,
+  details,
+  forceOpen,
+  onClose,
+  align,
+}: {
+  label: string;
+  details: HandoffDetails;
+  forceOpen: boolean;
+  onClose: () => void;
+  align: "center" | "end";
+}) {
+  return (
+    <div
+      className={`absolute top-[calc(100%+0.75rem)] z-50 w-[20rem] max-w-[calc(100vw-2rem)] rounded-lg border border-line-strong bg-canvas p-3 text-left text-ink shadow-2xl ${
+        align === "center" ? "left-1/2 -translate-x-1/2" : "right-0"
+      }`}
+    >
+      <div className="flex items-center justify-between gap-3">
+        <div>
+          <div className="text-label font-semibold uppercase text-ink-3">Handoff</div>
+          <div className="mt-0.5 text-heading font-semibold text-ink">{label}</div>
+        </div>
+        <button
+          type="button"
+          onClick={onClose}
+          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-ink-3 transition-colors hover:bg-hover hover:text-ink ${
+            forceOpen ? "invisible" : ""
+          }`}
+          aria-label="Close handoff details"
+        >
+          ×
+        </button>
+      </div>
+
+      <dl className="mt-3 grid grid-cols-[4.5rem_minmax(0,1fr)] gap-x-3 gap-y-2 text-meta">
+        <dt className="text-ink-3">From</dt>
+        <dd className="text-ink-2">{details.from}</dd>
+        <dt className="text-ink-3">To</dt>
+        <dd className="text-ink-2">{details.to}</dd>
+        <dt className="text-ink-3">Why</dt>
+        <dd className="text-ink-2">{details.why}</dd>
+        <dt className="text-ink-3">Source</dt>
+        <dd className="font-mono text-ink-2">{details.source}</dd>
+        <dt className="text-ink-3">Next</dt>
+        <dd className="text-ink-2">{details.next}</dd>
+      </dl>
+
+      <p className="mt-3 flex gap-2 border-t border-line pt-2 text-meta text-ink-3">
+        <span className="mt-[3px]">
+          <ProvenanceMark kind="illustrative" />
+        </span>
+        <span>
+          Illustrative. No agent is running — this cycles through the shapes a
+          handoff takes. Start the harness watcher and the header shows the
+          roster working instead.
+        </span>
+      </p>
     </div>
   );
 }

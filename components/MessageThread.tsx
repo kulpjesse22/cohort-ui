@@ -50,11 +50,8 @@ function ThreadSkeleton() {
 
 function DayDivider({ label }: { label: string }) {
   return (
-    <div className="flex items-center gap-3 py-1">
-      <span className="h-px flex-1 bg-line" />
-      <span className="rounded-full border border-line bg-canvas px-2.5 py-0.5 text-[11px] font-medium text-ink-2">
-        {label}
-      </span>
+    <div className="flex items-center gap-3 pb-1 pt-4">
+      <span className="shrink-0 text-meta font-semibold text-ink-2">{label}</span>
       <span className="h-px flex-1 bg-line" />
     </div>
   );
@@ -67,7 +64,7 @@ function TypingRow({ agentId }: { agentId: AgentId }) {
         <Avatar agentId={agentId} />
       </div>
       <div className="flex min-w-0 flex-1 items-center gap-2">
-        <span className="text-[14px] font-semibold tracking-[-0.01em] text-ink">
+        <span className="text-body font-semibold text-ink">
           {AGENTS[agentId].name}
         </span>
         <span className="flex items-end gap-[3px]" aria-label="typing">
@@ -88,11 +85,14 @@ export function MessageThread({
   messages,
   loading,
   typing,
+  provenance,
 }: {
   messages: Message[];
   loading: boolean;
   /** Agent id currently composing a reply, if any. */
   typing?: string | null;
+  /** Said once, at the top of the thread: where these messages come from. */
+  provenance?: React.ReactNode;
 }) {
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -105,8 +105,8 @@ export function MessageThread({
   if (messages.length === 0) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-2 px-6 text-center">
-        <p className="text-sm font-medium text-ink">No messages yet</p>
-        <p className="max-w-xs text-[14px] leading-relaxed text-ink-3">
+        <p className="text-heading font-semibold text-ink">No messages yet</p>
+        <p className="max-w-xs text-body text-ink-3">
           Brief them like you would a colleague. Whatever gets decided here
           should end up in the repo, not just the thread.
         </p>
@@ -115,7 +115,8 @@ export function MessageThread({
   }
 
   return (
-    <div className="flex-1 overflow-y-auto py-3">
+    <div className="flex-1 overflow-y-auto pb-3 pt-2">
+      {provenance && <div className="px-4 pt-2 lg:px-6">{provenance}</div>}
       {messages.map((message, i) => {
         const prev = messages[i - 1];
         const grouped = continues(prev, message);
@@ -126,7 +127,7 @@ export function MessageThread({
         return (
           <div key={message.id}>
             {newDay && (
-              <div className="px-4 py-2 lg:px-6">
+              <div className="px-4 lg:px-6">
                 <DayDivider label={formatDay(message.ts)} />
               </div>
             )}
@@ -138,7 +139,7 @@ export function MessageThread({
             >
               <div className="w-9 shrink-0">
                 {grouped ? (
-                  <span className="mt-0.5 block text-right text-[10px] leading-5 text-ink-4 opacity-0 transition-opacity group-hover:opacity-100">
+                  <span className="mt-0.5 block text-right text-label leading-5 tabular-nums text-ink-3 opacity-0 transition-opacity group-hover:opacity-100">
                     {formatTime(message.ts)}
                   </span>
                 ) : (
@@ -149,30 +150,31 @@ export function MessageThread({
               <div className="min-w-0 flex-1">
                 {!grouped && (
                   <div className="flex items-baseline gap-2">
-                    <span className="text-[14px] font-semibold tracking-[-0.01em] text-ink">
+                    <span className="text-body font-semibold text-ink">
                       {message.authorName}
                     </span>
-                    <span className="text-[11px] text-ink-4">
+                    <span className="text-meta tabular-nums text-ink-3">
                       {formatTime(message.ts)}
                     </span>
                     {message.pinned && (
-                      <span className="rounded border border-line-strong px-1 text-[10px] text-ink-3">
-                        pinned
+                      <span className="inline-flex items-center gap-1 self-center text-meta text-ink-3">
+                        <PinIcon />
+                        Pinned
                       </span>
                     )}
                   </div>
                 )}
-                <p className="whitespace-pre-wrap text-[14px] leading-[1.62] text-ink-2">
+                <p className="max-w-[44rem] whitespace-pre-wrap text-body text-ink-2">
                   {message.text}
                 </p>
                 {message.cites && message.cites.length > 0 && (
                   /* A pointer, not the document. The thread stays a
                      conversation; the panel is where things get read. */
-                  <p className="mt-1.5 flex flex-wrap items-center gap-x-1.5 text-[11px] text-ink-4">
+                  <p className="mt-1.5 flex flex-wrap items-center gap-x-1.5 text-meta text-ink-3">
                     <span aria-hidden="true">→</span>
                     <span>Opened in the panel:</span>
                     {message.cites.map((path, i) => (
-                      <span key={path} className="font-mono text-ink-3">
+                      <span key={path} className="font-mono text-ink-2">
                         {path.split("/").pop()}
                         {i < message.cites!.length - 1 ? "," : ""}
                       </span>
@@ -189,5 +191,17 @@ export function MessageThread({
       )}
       <div ref={bottomRef} />
     </div>
+  );
+}
+
+function PinIcon() {
+  return (
+    <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+      <path
+        d="M7.6 1.4 10.6 4.4 8.7 5.2 6.9 7 7.1 9.2 6.3 10 2 5.7l.8-.8 2.2.2 1.8-1.8Z"
+        fill="currentColor"
+      />
+      <path d="M3.8 8.2 1.4 10.6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+    </svg>
   );
 }

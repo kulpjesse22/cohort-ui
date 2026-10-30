@@ -10,6 +10,7 @@ import { AppShell } from "./AppShell";
 import { MessageThread } from "./MessageThread";
 import { Composer } from "./Composer";
 import { PresenceBar } from "./PresenceBar";
+import { ProvenanceTag } from "./Marks";
 
 const TOUR_HANDOFF: Message = {
   id: "tour-cohort-welcome",
@@ -171,14 +172,14 @@ export function Workspace({
   const header = (
     <div className="flex items-center gap-3">
       <div className="min-w-0 flex-1">
-        <h1 className="truncate font-semibold text-ink">{channel.name}</h1>
-        <p className="truncate text-xs text-ink-3">{channel.description}</p>
+        <h1 className="truncate text-heading font-semibold text-ink">{channel.name}</h1>
+        <p className="truncate text-meta text-ink-3">{channel.description}</p>
       </div>
       <div className="hidden shrink-0 items-center gap-1.5 sm:flex">
         {isAgentChannel && (
           <Link
             href={`/agent/${channelId}`}
-            className="shrink-0 rounded-md border border-line-strong px-2.5 py-1.5 text-xs text-ink-3 transition-colors hover:bg-hover hover:text-ink"
+            className="flex min-h-8 shrink-0 items-center rounded-md px-2 text-meta text-ink-2 transition-colors hover:bg-hover hover:text-ink"
           >
             View profile
           </Link>
@@ -201,6 +202,14 @@ export function Workspace({
         messages={thread}
         loading={loadingMessages}
         typing={agentTyping}
+        provenance={
+          <ProvenanceTag
+            kind="seeded"
+            title="No live model. What you send is saved; the replies are written in advance, not generated."
+          >
+            Seeded conversation. Replies are scripted, not generated.
+          </ProvenanceTag>
+        }
       />
       <Composer channelName={channel.name} onSend={handleSend} onTyping={setTyping} />
     </AppShell>
