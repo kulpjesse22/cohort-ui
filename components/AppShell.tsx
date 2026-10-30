@@ -9,6 +9,7 @@ import { CommandPalette } from "./CommandPalette";
 import { LeadHandoffIndicator, type HandoffDetails } from "./LeadHandoffIndicator";
 import { AgentActivityBar } from "./AgentActivityBar";
 import type { AgentStatus } from "@/lib/realtime/status";
+import { InfoIcon, MenuIcon, SearchIcon } from "./Icons";
 
 const ACTIVITY_STATES: Array<{ label: string; details: HandoffDetails }> = [
   {
@@ -152,7 +153,7 @@ export function AppShell({
           <button
             aria-label="Open channels"
             onClick={() => setSidebarOpen(true)}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-ink-2 transition-colors hover:bg-hover hover:text-ink lg:hidden"
+            className="aff flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-ink-3 hover:text-ink lg:hidden"
           >
             <MenuIcon />
           </button>
@@ -174,12 +175,9 @@ export function AppShell({
           <button
             onClick={() => setSearchOpen(true)}
             aria-label="Search"
-            className="flex h-10 w-10 items-center justify-center gap-2 rounded-md text-meta text-ink-3 transition-colors hover:bg-hover hover:text-ink-2 sm:h-8 sm:w-auto sm:px-2"
+            className="aff flex h-10 w-10 items-center justify-center gap-2 rounded-md text-meta text-ink-3 hover:text-ink sm:h-8 sm:w-auto sm:px-2"
           >
-            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <circle cx="7.2" cy="7.2" r="4.6" stroke="currentColor" strokeWidth="1.4" />
-              <path d="m10.7 10.7 2.8 2.8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-            </svg>
+            <SearchIcon />
             <span className="hidden sm:inline">Search</span>
             <kbd className="hidden font-mono text-label text-ink-3 sm:inline">
               ⌘K
@@ -189,7 +187,7 @@ export function AppShell({
           <button
             aria-label="Open pinned context"
             onClick={() => setRailOpen(true)}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-ink-2 transition-colors hover:bg-hover hover:text-ink lg:hidden"
+            className="aff flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-ink-3 hover:text-ink lg:hidden"
           >
             <InfoIcon />
           </button>
@@ -213,22 +211,5 @@ export function AppShell({
 
       <CommandPalette open={searchOpen} onClose={() => setSearchOpen(false)} />
     </div>
-  );
-}
-
-function MenuIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-      <path d="M2 4.5h14M2 9h14M2 13.5h14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function InfoIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-      <circle cx="9" cy="9" r="7" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M9 8v4.5M9 5.75v.01" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
   );
 }

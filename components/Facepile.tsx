@@ -70,7 +70,7 @@ export function Facepile({
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-label={`${memberIds.length} members`}
-        className="flex items-center gap-1.5 rounded-md py-1 pl-1 pr-2 transition-colors hover:bg-hover"
+        className="aff flex items-center gap-1.5 rounded-md py-1 pl-1 pr-2"
       >
         <span className="flex -space-x-1.5">
           {shown.map((id) => (

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { AGENTS, type AgentId } from "@/lib/agents";
 import { ProvenanceMark } from "./Marks";
+import { CloseIcon } from "./Icons";
 
 const PARTICIPANTS: AgentId[] = ["julius", "augustus", "claudia"];
 
@@ -50,7 +51,7 @@ export function LeadHandoffIndicator({
           onClick={() => interactive && setOpen((v) => !v)}
           aria-expanded={interactive ? visible : undefined}
           aria-label={interactive ? `Illustrative: ${details?.from} to ${details?.to}, ${label} Open handoff details` : label}
-          className="flex min-h-8 max-w-[18rem] items-center gap-2 rounded-md px-2 text-meta text-ink-2 transition-colors hover:bg-hover hover:text-ink"
+          className="aff flex min-h-8 max-w-[18rem] items-center gap-2 rounded-md px-2 text-meta text-ink-2 hover:text-ink"
         >
           <ProvenanceMark kind="illustrative" />
           {details && (
@@ -153,12 +154,12 @@ function HandoffDetailsPanel({
         <button
           type="button"
           onClick={onClose}
-          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-ink-3 transition-colors hover:bg-hover hover:text-ink ${
+          className={`aff flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-ink-3 hover:text-ink ${
             forceOpen ? "invisible" : ""
           }`}
           aria-label="Close handoff details"
         >
-          ×
+          <CloseIcon />
         </button>
       </div>
 

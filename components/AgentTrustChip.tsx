@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { AGENTS, type AgentId } from "@/lib/agents";
 import { getTimelineSummary } from "@/lib/timeline";
+import { CloseIcon } from "./Icons";
 
 const HUE: Record<AgentId, string> = {
   claudia: "agent-violet",
@@ -35,7 +36,7 @@ export function AgentTrustChip({
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className={`agent-trust-pill inline-flex items-center gap-1.5 rounded-full border bg-canvas font-semibold text-current outline-none transition-colors hover:bg-hover focus-visible:ring-2 focus-visible:ring-line-strong ${
+        className={`agent-trust-pill inline-flex items-center gap-1.5 rounded-full font-semibold text-current ${
           compact ? "px-2 py-0.5 text-label" : "px-2.5 py-1 text-label"
         }`}
         aria-label={`${agent.name} trust chip. Open agent details`}
@@ -71,12 +72,12 @@ export function AgentTrustChip({
             <button
               type="button"
               onClick={() => setOpen(false)}
-              className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-ink-3 transition-colors hover:bg-hover hover:text-ink ${
+              className={`aff flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-ink-3 hover:text-ink ${
                 forceOpen ? "invisible" : ""
               }`}
               aria-label="Close agent details"
             >
-              ×
+              <CloseIcon />
             </button>
           </div>
 

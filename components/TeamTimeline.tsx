@@ -82,16 +82,14 @@ function FilterButton({
   onClick: () => void;
   children: React.ReactNode;
 }) {
-  // Selection is shape: the chosen name gets an underline at the baseline,
-  // the rest stay plain text. No outlined pill per name.
+  // The chosen name is a filled chip; the rest stay plain text. No outlined
+  // pill per name.
   return (
     <button
       onClick={onClick}
       aria-pressed={active}
-      className={`flex min-h-8 items-center gap-1 rounded-md px-2 text-meta transition-colors ${
-        active
-          ? "font-semibold text-ink underline decoration-ink decoration-[1.5px] underline-offset-[6px]"
-          : "text-ink-2 hover:bg-hover hover:text-ink"
+      className={`chip flex min-h-8 items-center gap-1 rounded-md px-2 text-meta ${
+        active ? "font-semibold text-ink" : "text-ink-2 hover:text-ink"
       }`}
     >
       {children}

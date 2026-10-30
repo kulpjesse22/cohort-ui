@@ -72,7 +72,7 @@ export function AgentProfile({ agentId }: { agentId: AgentId }) {
       <div className="flex shrink-0 items-center gap-1.5">
         <button
           onClick={() => setEditing((v) => !v)}
-          className="rounded-md border border-line-strong px-2.5 py-1.5 text-xs text-ink-2 transition-colors hover:bg-hover hover:text-ink"
+          className="aff-fill rounded-md px-2.5 py-1.5 text-xs text-ink-2 hover:text-ink"
         >
           {editing ? "Close" : "Customize"}
         </button>

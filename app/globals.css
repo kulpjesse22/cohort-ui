@@ -284,11 +284,28 @@
   z-index: 60;
 }
 
+/* A tag: filled with its hue, no outline. Hover and press indent it. */
 .agent-trust-pill {
-  border-color: color-mix(in srgb, var(--hue) 20%, var(--line));
+  background-color: color-mix(in srgb, var(--hue) 11%, var(--canvas));
+  outline: none;
+  transition-property: background-color, box-shadow;
+  transition-duration: 120ms;
+  transition-timing-function: ease-out;
+}
+.agent-trust-pill:hover,
+.agent-trust-pill[aria-expanded="true"] {
+  background-color: color-mix(in srgb, var(--hue) 16%, var(--canvas));
+  box-shadow: var(--aff-inset);
+}
+.agent-trust-pill:active {
+  background-color: color-mix(in srgb, var(--hue) 20%, var(--canvas));
+  box-shadow: var(--aff-inset-press);
+  transition-duration: 60ms;
+}
+.agent-trust-pill:focus-visible {
   box-shadow:
-    0 1px 2px rgb(0 0 0 / 0.03),
-    inset 0 0 0 1px color-mix(in srgb, var(--hue) 9%, transparent);
+    var(--aff-inset),
+    inset 0 0 0 1.5px color-mix(in srgb, var(--hue) 50%, transparent);
 }
 
 .agent-trust-popover {
@@ -844,6 +861,198 @@ body * {
 @media (prefers-reduced-motion: reduce) {
   body,
   body * {
+    transition: none;
+  }
+}
+
+/* --- Affordances ----------------------------------------------------------
+   How a control answers the hand, borrowed from Linear's behaviour and drawn
+   in Cohort's own warm ink. A control is pressed *into* its surface: a faint
+   ink tint plus a soft inset shadow on hover, a little deeper on press. No
+   outline and no border change at any point. Fills are mixed from ink rather
+   than taken from the hover token so the same rule reads on canvas, the rails
+   and raised cards.
+
+   - `aff`      any borderless control (icon buttons, rows, ghost links)
+   - `aff-fill` a quiet secondary button: tinted at rest, indents on hover
+   - `seg`      a segmented toggle: a tinted track, the chosen option a
+                filled, slightly raised pill (`aria-pressed` or
+                `aria-current` marks it)
+   - `chip`     a filter or tag: plain text off, filled when selected
+   - `tip`      a tooltip from `data-tip`, shown on hover and keyboard focus */
+:root {
+  --aff-fill: rgb(27 24 19 / 0.05);
+  --aff-fill-press: rgb(27 24 19 / 0.085);
+  --aff-sel: rgb(27 24 19 / 0.075);
+  --aff-inset: inset 0 1px 2px rgb(27 24 19 / 0.09);
+  --aff-inset-press: inset 0 1px 3px rgb(27 24 19 / 0.15);
+  --aff-focus: rgb(27 24 19 / 0.34);
+  --seg-track: rgb(27 24 19 / 0.055);
+  --seg-pill: #fffdf9;
+  --seg-raise: 0 1px 2px rgb(27 24 19 / 0.1), 0 0 0 0.5px rgb(27 24 19 / 0.07);
+}
+.dark {
+  --aff-fill: rgb(244 244 245 / 0.055);
+  --aff-fill-press: rgb(244 244 245 / 0.08);
+  --aff-sel: rgb(244 244 245 / 0.09);
+  --aff-inset: inset 0 1px 2px rgb(0 0 0 / 0.42);
+  --aff-inset-press: inset 0 1px 3px rgb(0 0 0 / 0.6);
+  --aff-focus: rgb(244 244 245 / 0.4);
+  --seg-track: rgb(244 244 245 / 0.06);
+  --seg-pill: #2b2b30;
+  --seg-raise: 0 1px 2px rgb(0 0 0 / 0.5), 0 0 0 0.5px rgb(255 255 255 / 0.06);
+}
+
+.aff,
+.aff-fill,
+.seg > *,
+.chip {
+  transition-property: background-color, box-shadow, color, opacity;
+  transition-duration: 120ms;
+  transition-timing-function: ease-out;
+  outline: none;
+}
+.aff-fill {
+  background-color: var(--aff-fill);
+}
+@media (hover: hover) {
+  .aff:hover,
+  .aff-fill:hover,
+  .chip:hover,
+  .seg > :hover {
+    background-color: var(--aff-fill);
+    box-shadow: var(--aff-inset);
+  }
+  .aff-fill:hover {
+    background-color: var(--aff-fill-press);
+  }
+}
+.aff:active,
+.aff-fill:active,
+.chip:active,
+.seg > :active {
+  background-color: var(--aff-fill-press);
+  box-shadow: var(--aff-inset-press);
+  transition-duration: 60ms;
+}
+.aff:focus-visible,
+.aff-fill:focus-visible,
+.chip:focus-visible,
+.seg > :focus-visible {
+  background-color: var(--aff-fill);
+  box-shadow: var(--aff-inset), inset 0 0 0 1.5px var(--aff-focus);
+}
+.aff:disabled,
+.aff-fill:disabled {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+/* Selected rows keep their fill; hover only deepens the indent. */
+.aff[aria-current="page"],
+.aff[aria-pressed="true"],
+.chip[aria-pressed="true"] {
+  background-color: var(--aff-sel);
+}
+@media (hover: hover) {
+  .aff[aria-current="page"]:hover,
+  .aff[aria-pressed="true"]:hover,
+  .chip[aria-pressed="true"]:hover {
+    background-color: var(--aff-fill-press);
+  }
+}
+
+/* Colour swatches are chips too: the chosen hue is a filled tile, the rest
+   are bare dots. */
+.swatch {
+  box-shadow: none;
+  outline: none;
+  transition-property: background-color, box-shadow;
+  transition-duration: 120ms;
+  transition-timing-function: ease-out;
+}
+.swatch:not([aria-pressed="true"]) {
+  background-color: transparent;
+}
+@media (hover: hover) {
+  .swatch:not([aria-pressed="true"]):hover {
+    background-color: var(--aff-fill);
+    box-shadow: var(--aff-inset);
+  }
+}
+.swatch:active {
+  box-shadow: var(--aff-inset-press);
+  transition-duration: 60ms;
+}
+.swatch:focus-visible {
+  box-shadow: inset 0 0 0 1.5px var(--aff-focus);
+}
+
+.seg {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 8px;
+  background-color: var(--seg-track);
+}
+.seg > * {
+  border-radius: 6px;
+}
+.seg > [aria-pressed="true"],
+.seg > [aria-current="page"],
+.seg > [aria-pressed="true"]:hover,
+.seg > [aria-pressed="true"]:focus-visible {
+  background-color: var(--seg-pill);
+  box-shadow: var(--seg-raise);
+}
+.seg > [aria-pressed="true"]:focus-visible {
+  box-shadow: var(--seg-raise), inset 0 0 0 1.5px var(--aff-focus);
+}
+.seg > [aria-pressed="true"]:active {
+  box-shadow: var(--aff-inset-press);
+}
+
+.tip {
+  position: relative;
+}
+.tip::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  translate: -50% 2px;
+  z-index: 60;
+  padding: 3px 7px;
+  border-radius: 5px;
+  background: var(--control);
+  color: var(--control-ink);
+  font-size: 11px;
+  line-height: 1.4;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition:
+    opacity 100ms ease-out,
+    translate 100ms ease-out;
+}
+@media (hover: hover) {
+  .tip:hover::after {
+    opacity: 1;
+    translate: -50% 0;
+    transition-delay: 400ms;
+  }
+}
+.tip:focus-visible::after {
+  opacity: 1;
+  translate: -50% 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .aff,
+  .aff-fill,
+  .seg > *,
+  .chip,
+  .tip::after {
     transition: none;
   }
 }

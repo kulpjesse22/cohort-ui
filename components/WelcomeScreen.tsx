@@ -22,13 +22,13 @@ export function WelcomeScreen() {
           <nav className="flex items-center gap-1">
             <Link
               href="/timeline"
-              className="flex min-h-9 items-center rounded-md px-3 text-meta text-ink-2 transition-colors hover:bg-hover hover:text-ink"
+              className="aff flex min-h-9 items-center rounded-md px-3 text-meta text-ink-2 hover:text-ink"
             >
               Project record
             </Link>
             <Link
               href="/cohort"
-              className="flex min-h-9 items-center rounded-md px-3 text-meta text-ink-2 transition-colors hover:bg-hover hover:text-ink"
+              className="aff flex min-h-9 items-center rounded-md px-3 text-meta text-ink-2 hover:text-ink"
             >
               Open Cohort
             </Link>

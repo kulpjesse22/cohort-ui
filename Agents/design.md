@@ -220,7 +220,32 @@ Dense metadata stays at 10–11px.
 
 - Depth comes from background steps and borders, not shadows.
 - The only shadows are on mobile drawers (`shadow-2xl`), where a panel genuinely
-  floats over content. Removed at `lg`.
+  floats over content. Removed at `lg`. Two small exceptions belong to
+  affordances, not depth: the faint inset of a pressed control and the hairline
+  lift of a segmented toggle's chosen pill (below).
+
+## Affordances
+
+How a control answers the hand. The behaviour follows Linear; the colours stay
+Cohort's warm ink. Classes live in `globals.css` § Affordances.
+
+- **Hover and press indent.** A control is pressed *into* its surface: a faint
+  ink tint plus a soft inset shadow on hover (`aff`), a little deeper on press,
+  120ms in and 60ms on press. No outline and no border change, ever. Keyboard
+  focus is the same indent with a soft inset ring.
+- **Icon buttons** are borderless, use the line icons in `Icons.tsx` (16px box,
+  1.4 stroke, round caps) and sit in `ink-3` until hovered or active. Each has
+  an `aria-label`; the composer's and the theme toggle's also show a `data-tip`
+  tooltip.
+- **Segmented toggles** (`seg`): no outer border. A tinted track; the chosen
+  option is a filled, slightly raised pill.
+- **Chips and filters** (`chip`): plain text when off, a filled tint when on.
+  No outlined pills. Colour swatches follow the same rule.
+- **Secondary buttons** (`aff-fill`): a quiet tint at rest instead of a border.
+- **Theme toggle:** sun and moon only, no words; "Light theme" / "Dark theme"
+  as label and tooltip.
+- **Switches** (none ship today): small and flat; a filled track when on,
+  plain grey when off.
 
 ## Motion
 
@@ -242,7 +267,7 @@ Dense metadata stays at 10–11px.
 | --- | --- | --- |
 | Avatar | agent (crew bust), human (initials); `sm` / `md` / `lg` | Agents carry a corner dot. |
 | Marks (`Marks.tsx`) | kind, verdict, provenance, rank | The only way state is drawn. See States. |
-| Channel row | default / active | Active is the `sidebar-active` fill. |
+| Channel row | default / active | Active is a filled ink tint (`aria-current`). |
 | Registry row | — | Avatar, name, title, then the seniority word and its rungs. No badge box. |
 | Message | agent / user, optional pinned | Avatar left, stacked meta and body right. Pinned is a pin glyph and the word. |
 | Timeline entry | task / review / lesson / decision / brief / promotion | A kind mark on a hairline rail. Promotion is set in `text-title` between two `approved-line` hairlines, no fill. |

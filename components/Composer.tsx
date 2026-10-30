@@ -4,6 +4,7 @@ import { useMemo, useRef, useState } from "react";
 import { AGENT_ORDER, AGENTS } from "@/lib/agents";
 import { Avatar } from "./Avatar";
 import { LeadHandoffIndicator } from "./LeadHandoffIndicator";
+import { AtIcon, BoldIcon, CodeIcon, ItalicIcon } from "./Icons";
 
 /** Wraps the selection in `token`, or inserts a placeholder if nothing is selected. */
 function wrapSelection(el: HTMLTextAreaElement, token: string, placeholder: string) {
@@ -145,7 +146,7 @@ export function Composer({
                   pickMention(id);
                 }}
                 onMouseEnter={() => setMentionCursor(i)}
-                className={`flex w-full items-center gap-2 px-2.5 py-1.5 text-left transition-colors ${
+                className={`flex w-full items-center gap-2 px-2.5 py-1.5 text-left ${
                   i === mentionCursor ? "bg-hover" : ""
                 }`}
               >
@@ -183,15 +184,15 @@ export function Composer({
 
           <div className="flex items-center gap-0.5 px-2 pb-2">
             <FormatButton label="Bold" onClick={() => applyFormat("**", "bold")}>
-              <span className="text-meta font-bold">B</span>
+              <BoldIcon />
             </FormatButton>
             <FormatButton label="Italic" onClick={() => applyFormat("_", "italic")}>
-              <span className="text-meta italic">I</span>
+              <ItalicIcon />
             </FormatButton>
             <FormatButton label="Code" onClick={() => applyFormat("`", "code")}>
-              <span className="font-mono text-label">{"</>"}</span>
+              <CodeIcon />
             </FormatButton>
-            <span className="mx-1 h-4 w-px bg-line" />
+            <span className="mx-1 h-4 w-px bg-line" aria-hidden="true" />
             <FormatButton
               label="Mention someone"
               onClick={() => {
@@ -204,7 +205,7 @@ export function Composer({
                 update(next, caret + 1);
               }}
             >
-              <span className="text-meta">@</span>
+              <AtIcon />
             </FormatButton>
 
             <span className="ml-auto flex items-center gap-2">
@@ -241,9 +242,9 @@ function FormatButton({
     <button
       type="button"
       onClick={onClick}
-      title={label}
+      data-tip={label}
       aria-label={label}
-      className="flex h-9 w-9 items-center justify-center rounded text-ink-3 transition-colors hover:bg-hover hover:text-ink sm:h-7 sm:w-7"
+      className="aff tip flex h-9 w-9 items-center justify-center rounded-md text-ink-3 hover:text-ink sm:h-7 sm:w-7"
     >
       {children}
     </button>

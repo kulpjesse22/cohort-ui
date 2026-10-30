@@ -125,7 +125,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
                 <button
                   key={s}
                   onClick={() => setQ(s)}
-                  className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-[13px] text-ink-2 transition-colors hover:bg-hover hover:text-ink"
+                  className="aff flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-[13px] text-ink-2 hover:text-ink"
                 >
                   <span className="text-ink-3">↳</span>
                   {s}
@@ -147,7 +147,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
                     <button
                       key={c.id}
                       onClick={() => go(c)}
-                      className="max-w-full truncate rounded border border-line-strong bg-canvas px-1.5 py-0.5 text-label text-ink-2 transition-colors hover:text-ink"
+                      className="aff-fill max-w-full truncate rounded px-1.5 py-0.5 text-label text-ink-2 hover:text-ink"
                     >
                       {c.title}
                     </button>

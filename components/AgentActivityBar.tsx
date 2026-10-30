@@ -73,7 +73,7 @@ export function AgentActivityBar({ statuses }: { statuses: AgentStatus[] }) {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-label={`${active.length} agent${active.length === 1 ? "" : "s"} working. Open activity details`}
-        className="flex max-w-[18rem] items-center gap-2 rounded-full border border-line-strong bg-canvas py-1.5 pl-1.5 pr-3 text-left transition-colors hover:bg-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-line-strong"
+        className="aff-fill flex max-w-[18rem] items-center gap-2 rounded-full py-1.5 pl-1.5 pr-3 text-left"
       >
         <span className="flex -space-x-1.5">
           {active.map((s) => (

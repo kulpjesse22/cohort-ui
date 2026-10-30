@@ -72,7 +72,7 @@ export function FirstRunCard() {
             </Link>
             <button
               onClick={markSeen}
-              className="rounded-md border border-line-strong px-3 py-1.5 text-xs text-ink-2 transition-colors hover:bg-hover hover:text-ink"
+              className="aff-fill rounded-md px-3 py-1.5 text-xs text-ink-2 hover:text-ink"
             >
               Explore on my own
             </button>

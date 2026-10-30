@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { CloseIcon } from "./Icons";
 
 /**
  * A cited file path, made openable.
@@ -99,11 +100,9 @@ export function ArtifactLink({ path }: { path: string }) {
               <button
                 onClick={() => setOpen(false)}
                 aria-label="Close"
-                className="shrink-0 rounded p-1 text-ink-3 transition-colors hover:bg-hover hover:text-ink"
+                className="aff shrink-0 rounded-md p-1.5 text-ink-3 hover:text-ink"
               >
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                  <path d="m3.5 3.5 7 7M10.5 3.5l-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-                </svg>
+                <CloseIcon />
               </button>
             </div>
 

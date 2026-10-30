@@ -21,7 +21,7 @@ export function Sidebar({
         <Link
           href="/cohort"
           aria-label="Open Cohort"
-          className="inline-block rounded transition-opacity hover:opacity-80"
+          className="aff -m-1 inline-block rounded-md p-1"
         >
           <Image
             src="/cohort-wordmark-transparent.png"
@@ -40,7 +40,7 @@ export function Sidebar({
       <div className="flex-1 overflow-y-auto px-2 py-3">
         <Link
           href="/timeline"
-          className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sidebar-ink-2 transition-colors hover:bg-sidebar-hover hover:text-sidebar-ink"
+          className="aff flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sidebar-ink-2 hover:text-sidebar-ink"
         >
           <span aria-hidden="true" className="text-sidebar-ink-3">
             ◈
@@ -50,7 +50,7 @@ export function Sidebar({
 
         <Link
           href="/memory"
-          className="mb-4 flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sidebar-ink-2 transition-colors hover:bg-sidebar-hover hover:text-sidebar-ink"
+          className="aff mb-4 flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sidebar-ink-2 hover:text-sidebar-ink"
         >
           <span aria-hidden="true" className="text-sidebar-ink-3">
             ◆
@@ -68,10 +68,9 @@ export function Sidebar({
               <button
                 key={channel.id}
                 onClick={() => onSelect(channel.id)}
-                className={`flex w-full items-center gap-2 rounded-md px-2.5 py-[7px] text-left transition-colors ${
-                  active
-                    ? "bg-sidebar-active text-sidebar-ink"
-                    : "text-sidebar-ink-2 hover:bg-sidebar-hover hover:text-sidebar-ink"
+                aria-current={active ? "page" : undefined}
+                className={`aff flex w-full items-center gap-2 rounded-md px-2.5 py-[7px] text-left ${
+                  active ? "text-sidebar-ink" : "text-sidebar-ink-2 hover:text-sidebar-ink"
                 }`}
               >
                 <span className="text-sidebar-ink-3">#</span>
@@ -91,7 +90,7 @@ export function Sidebar({
               <li key={id}>
                 <Link
                   href={`/agent/${id}`}
-                  className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left transition-colors hover:bg-sidebar-hover"
+                  className="aff flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left"
                 >
                   <Avatar agentId={id} size="sm" />
                   <span className="min-w-0 flex-1">
@@ -116,10 +115,10 @@ export function Sidebar({
         </ul>
       </div>
 
-      <div className="space-y-2 border-t border-sidebar-line px-2 py-3">
+      <div className="flex items-center justify-between gap-2 border-t border-sidebar-line px-2 py-3">
         <Link
           href="/demo"
-          className="flex min-h-8 items-center gap-2 rounded-md px-2 text-meta text-sidebar-ink-2 transition-colors hover:bg-sidebar-hover hover:text-sidebar-ink"
+          className="aff flex min-h-8 items-center gap-2 rounded-md px-2 text-meta text-sidebar-ink-2 hover:text-sidebar-ink"
         >
           <span aria-hidden="true" className="text-sidebar-ink-3">▶</span>
           Guided tour

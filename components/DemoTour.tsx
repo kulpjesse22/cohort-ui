@@ -352,7 +352,7 @@ function CaptionBar({
           <button
             onClick={onPrev}
             disabled={index === 0}
-            className="rounded-md border border-line-strong px-2.5 py-1.5 text-xs text-ink-2 transition-opacity hover:bg-hover disabled:opacity-30"
+            className="aff-fill rounded-md px-2.5 py-1.5 text-xs text-ink-2 hover:text-ink disabled:opacity-30"
           >
             Back
           </button>
@@ -365,7 +365,7 @@ function CaptionBar({
           <button
             onClick={onNext}
             disabled={isLast}
-            className="rounded-md border border-line-strong px-2.5 py-1.5 text-xs text-ink-2 transition-opacity hover:bg-hover disabled:opacity-30"
+            className="aff-fill rounded-md px-2.5 py-1.5 text-xs text-ink-2 hover:text-ink disabled:opacity-30"
           >
             Next
           </button>

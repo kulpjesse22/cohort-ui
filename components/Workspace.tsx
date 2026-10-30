@@ -179,7 +179,7 @@ export function Workspace({
         {isAgentChannel && (
           <Link
             href={`/agent/${channelId}`}
-            className="flex min-h-8 shrink-0 items-center rounded-md px-2 text-meta text-ink-2 transition-colors hover:bg-hover hover:text-ink"
+            className="aff flex min-h-8 shrink-0 items-center rounded-md px-2 text-meta text-ink-2 hover:text-ink"
           >
             View profile
           </Link>

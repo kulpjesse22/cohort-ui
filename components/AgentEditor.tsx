@@ -9,6 +9,7 @@ import {
   type ColorId,
 } from "@/lib/roster";
 import { CrewFigure } from "./CrewFigure";
+import { PlayIcon, WaveIcon } from "./Icons";
 
 const CHIP: Record<string, string> = {
   violet: "agent-violet agent-chip",
@@ -164,11 +165,13 @@ export function AgentEditor({
                 onClick={() => set("color", c as ColorId)}
                 aria-pressed={draft.color === c}
                 title={c}
-                className={`flex h-9 w-9 items-center justify-center rounded-[8px] ${CHIP[c]} ${
-                  draft.color === c ? "ring-2 ring-ink ring-offset-2 ring-offset-raised" : ""
-                }`}
+                className={`swatch flex h-9 w-9 items-center justify-center rounded-[8px] ${CHIP[c]}`}
               >
-                <span className="h-3 w-3 rounded-full bg-current" />
+                <span
+                  className={`rounded-full bg-current transition-[width,height] duration-150 ${
+                    draft.color === c ? "h-4 w-4" : "h-2.5 w-2.5"
+                  }`}
+                />
               </button>
             ))}
           </div>
@@ -181,8 +184,8 @@ export function AgentEditor({
               return (
                 <div
                   key={v.id}
-                  className={`flex items-center gap-2 rounded-md border px-2 py-1.5 transition-colors ${
-                    selected ? "border-ink-3 bg-canvas" : "border-line-strong"
+                  className={`flex items-center gap-2 rounded-md px-2 py-1.5 transition-colors ${
+                    selected ? "bg-[var(--aff-sel)]" : ""
                   }`}
                 >
                   <button
@@ -197,9 +200,9 @@ export function AgentEditor({
                   </button>
                   <button
                     onClick={() => previewVoice(v.id)}
-                    title={`Preview ${v.name}`}
                     aria-label={`Preview ${v.name}`}
-                    className="shrink-0 rounded p-1 text-ink-3 transition-colors hover:bg-hover hover:text-ink"
+                    data-tip={`Preview ${v.name}`}
+                    className="aff tip shrink-0 rounded-md p-1.5 text-ink-3 hover:text-ink"
                   >
                     {playing === v.id ? <WaveIcon /> : <PlayIcon />}
                   </button>
@@ -216,19 +219,19 @@ export function AgentEditor({
         <button
           onClick={save}
           disabled={saving}
-          className="rounded-md bg-control px-3 py-1.5 text-xs font-medium text-control-ink transition-opacity disabled:opacity-40"
+          className="rounded-md bg-control px-3 py-1.5 text-xs font-medium text-control-ink transition-opacity hover:opacity-90 disabled:opacity-40"
         >
           {saving ? "Saving…" : "Save"}
         </button>
         <button
           onClick={onClose}
-          className="rounded-md border border-line-strong px-3 py-1.5 text-xs text-ink-2 hover:bg-hover"
+          className="aff-fill rounded-md px-3 py-1.5 text-xs text-ink-2 hover:text-ink"
         >
           Cancel
         </button>
         <button
           onClick={reset}
-          className="ml-auto text-label text-ink-3 hover:text-ink"
+          className="aff -mr-1.5 ml-auto rounded-md px-1.5 py-1 text-label text-ink-3 hover:text-ink"
         >
           Reset to default
         </button>
@@ -254,26 +257,5 @@ function Field({
       {children}
       {hint && <p className="mt-1 text-label text-ink-3">{hint}</p>}
     </div>
-  );
-}
-
-function PlayIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-      <path d="M4.5 3.2v7.6L11 7 4.5 3.2Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function WaveIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-      <path
-        d="M2 7h1.6M5.2 4v6M8 2.4v9.2M10.8 5v4M13 7h-1"
-        stroke="currentColor"
-        strokeWidth="1.3"
-        strokeLinecap="round"
-      />
-    </svg>
   );
 }
