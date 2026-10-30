@@ -40,15 +40,20 @@ export function PresenceBar({
 
   if (!connected) {
     return (
-      <span className="flex items-center gap-1.5 text-[11px] text-ink-3" title="Reconnecting to the live stream">
-        <span className="h-1.5 w-1.5 rounded-full bg-ink-3/60" aria-hidden="true" />
-        Offline
+      <span className="flex items-center gap-1.5 text-meta text-ink-3" title="Reconnecting to the live stream">
+        <span className="h-2 w-2 rounded-full ring-1 ring-inset ring-ink-3" aria-hidden="true" />
+        Reconnecting
       </span>
     );
   }
 
   if (viewers.length === 0) {
-    return <span className="text-[11px] text-ink-3">Only you</span>;
+    return (
+      <span className="flex items-center gap-1.5 text-meta text-ink-3" title="Live presence: nobody else has this channel open">
+        <span className="h-2 w-2 rounded-full bg-ink-3" aria-hidden="true" />
+        Only you
+      </span>
+    );
   }
 
   return (
@@ -59,7 +64,7 @@ export function PresenceBar({
             key={v.sessionId}
             title={`${v.name} is here${v.typing ? " and typing" : ""}`}
             className={`flex h-6 w-6 items-center justify-center rounded-full border border-canvas bg-hover text-[9px] font-medium text-ink-2 ${
-              v.typing ? "ring-1 ring-emerald-400/70" : ""
+              v.typing ? "ring-1 ring-ink-3" : ""
             }`}
           >
             {initials(v.name)}
@@ -71,7 +76,7 @@ export function PresenceBar({
           </span>
         )}
       </div>
-      <span className="hidden text-[11px] text-ink-3 lg:inline">
+      <span className="hidden text-meta text-ink-3 lg:inline">
         {typing.length > 0
           ? typingLine(typing)
           : `${viewers.length} other${viewers.length === 1 ? "" : "s"} here`}

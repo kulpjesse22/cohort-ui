@@ -91,7 +91,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
       <button
         aria-label="Close search"
         onClick={onClose}
-        className="fixed inset-0 bg-black/40"
+        className="fixed inset-0 bg-scrim"
       />
 
       <div

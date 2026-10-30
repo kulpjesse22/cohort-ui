@@ -73,7 +73,7 @@ export function ArtifactLink({ path }: { path: string }) {
           <button
             aria-label="Close document"
             onClick={() => setOpen(false)}
-            className="fixed inset-0 bg-black/40"
+            className="fixed inset-0 bg-scrim"
           />
           <div
             role="dialog"

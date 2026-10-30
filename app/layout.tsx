@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
-import { Lato, JetBrains_Mono } from "next/font/google";
+import { Lato, JetBrains_Mono, Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 
 // Lato is what Slack ships in its product UI. Humanist rather than geometric:
@@ -22,6 +22,17 @@ const mono = JetBrains_Mono({
   display: "swap",
 });
 
+// The lead face: one element per screen (a title, a figure, the promotion).
+// A grotesk with ink traps and a heavy end, close to the wordmark's weight,
+// so the thing that leads a screen sounds like the product rather than the
+// interface around it. Lato reads and operates; mono marks the repo record.
+const display = Bricolage_Grotesque({
+  variable: "--font-display-ui",
+  subsets: ["latin"],
+  axes: ["opsz", "wdth"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Cohort — HAI-Harness",
   description: "A Slack-style workspace for the HAI-Harness agent roster.",
@@ -39,7 +50,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fdfdfc" },
+    { media: "(prefers-color-scheme: light)", color: "#fdfbf7" },
     { media: "(prefers-color-scheme: dark)", color: "#1a1a1c" },
   ],
 };
@@ -64,7 +75,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${sans.variable} ${mono.variable} h-full antialiased`}
+      className={`${sans.variable} ${mono.variable} ${display.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>

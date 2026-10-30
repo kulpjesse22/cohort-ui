@@ -57,6 +57,10 @@
   --control: #1f1b15;
   --control-ink: #fdfbf7;
 
+  /* Behind a drawer or dialog. Warm ink, not pure black, so the cream under it
+     dims instead of going grey. */
+  --scrim: rgb(27 24 19 / 0.45);
+
   /* Signature accent — fixed across both themes, not a semantic or per-agent
      hue. Reserved for a small, deliberate set of brand-only moments (app
      icon, primary landing CTA, tour spotlight) so it keeps standing out
@@ -112,6 +116,8 @@
   --control: #f4f4f5;
   --control-ink: #18181b;
 
+  --scrim: rgb(0 0 0 / 0.6);
+
   --approved: #6ee7b7; /* emerald-300 */
   --approved-bg: rgb(16 185 129 / 0.1);
   --approved-line: rgb(16 185 129 / 0.4);
@@ -153,6 +159,7 @@
   --color-active: var(--active);
   --color-control: var(--control);
   --color-control-ink: var(--control-ink);
+  --color-scrim: var(--scrim);
   --color-brand: var(--brand);
   --color-brand-ink: var(--brand-ink);
 
@@ -168,6 +175,39 @@
 
   --font-sans: var(--font-sans-ui);
   --font-mono: var(--font-mono-ui);
+  --font-display: var(--font-display-ui);
+
+  /* The type scale. Eight steps, each with one job; see Agents/design.md §
+     Typography. `hero`, `lead`, `title` and `figure` are the display face, and
+     a screen uses one of them for the thing that leads it. */
+  --text-hero: 3.5rem;
+  --text-hero--line-height: 0.98;
+  --text-hero--letter-spacing: -0.035em;
+  --text-lead: 2.5rem;
+  --text-lead--line-height: 1.04;
+  --text-lead--letter-spacing: -0.03em;
+  --text-title: 1.75rem;
+  --text-title--line-height: 1.1;
+  --text-title--letter-spacing: -0.025em;
+  --text-figure: 2rem;
+  --text-figure--line-height: 1;
+  --text-figure--letter-spacing: -0.03em;
+  --text-heading: 0.9375rem;
+  --text-heading--line-height: 1.35;
+  --text-heading--letter-spacing: -0.01em;
+  --text-body: 0.875rem;
+  --text-body--line-height: 1.62;
+  --text-meta: 0.75rem;
+  --text-meta--line-height: 1.45;
+  --text-label: 0.6875rem;
+  --text-label--line-height: 1.3;
+  --text-label--letter-spacing: 0.06em;
+}
+
+/* The lead face sits on its optical size for display, and a touch narrower so
+   a two-word headline holds one line at 390. */
+.font-display {
+  font-variation-settings: "opsz" 60, "wdth" 92;
 }
 
 /* Agent identity: one class per agent so the hue, its tint, and its ring all
