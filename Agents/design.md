@@ -48,6 +48,32 @@ Still forbidden:
 
 If a change makes a screenshot busier without making the work easier to read,
 it is out of scope.
+
+### Principles
+
+Every screen is checked against these. They are rules about hierarchy and
+honesty, not a look.
+
+1. **One thing leads.** Each screen has one element in the display face: the
+   welcome headline, a profile's name, the timeline's sentence, memory's three
+   counts against their caps, the promotion. Everything else steps down by
+   size, weight or tone, never by putting it in a box.
+2. **Three families, one job each.** Bricolage Grotesque leads, Lato reads and
+   operates, JetBrains Mono marks the record: a file path, a SHA, a file's
+   contents. If it is not in the repo, it is not mono.
+3. **Shape carries state.** Entry kinds, verdicts, provenance and rank read in
+   grayscale. Hue repeats what the shape says; it is never the only signal.
+4. **Hue means one thing.** Agent hues are identity. Verdict hues are verdicts.
+   The brand pink is the product speaking. Nothing borrows another's hue for
+   emphasis or decoration.
+5. **Space before lines.** Groups separate by space and a 1px hairline. Boxes
+   are kept for things that really are objects: the composer, inputs, the
+   welcome preview, floating panels.
+6. **Say where it came from.** Every surface says whether it reads the repo or
+   shows a staged example, up front rather than behind a click (see
+   Provenance under States).
+7. **Quiet chrome.** The header, rails and sidebar hold still and stay small,
+   so the page's subject is the loudest thing on it.
 - **Platforms:** web. Single breakpoint at Tailwind `lg` (1024px); below it the
   side panels become drawers.
 - **Light / dark:** both, as peer themes. Neither is the "real" one. Light is
@@ -135,9 +161,14 @@ rather than reinforce it.
 - **UI:** Lato — the face Slack ships in its own product. Humanist rather than
   geometric: open apertures and warmer letterforms. Geist, the previous face,
   read cold and generic, which worked against a product about teammates.
-- **Mono:** JetBrains Mono, for file paths, seniority transitions, and step
-  counters only. Chosen for its tall x-height, which sits optically level with
+- **Mono:** JetBrains Mono, for the repo record only: file paths, SHAs, file
+  contents. Chosen for its tall x-height, which sits optically level with
   Lato instead of shrinking beside it.
+- **Display:** Bricolage Grotesque (`font-display`), variable, set at optical
+  size 60 and width 92. Only for the one element that leads a screen. A
+  grotesk with ink traps and a heavy end, close to the wordmark's weight, so
+  the lead sounds like the product rather than the interface. Not a serif on
+  purpose: the reading voice here is Lato's.
 
 **Lato ships 400 / 700 / 900 — there is no 500 or 600.** Browsers resolve
 `font-semibold` (600) up to 700 and `font-medium` (500) down to 400. That is
@@ -146,24 +177,29 @@ bold, and medium only appears on small uppercase labels where the weight was
 never doing the work. Do not reach for medium to create emphasis — it will
 silently render as regular.
 
-| Role | Size | Weight | Tracking | Notes |
-| --- | --- | --- | --- | --- |
-| Moment | `text-2xl` | 600 | `-0.02em` | Promotion title. The one celebratory size. |
-| Stat value | `text-2xl` | 600 | `-0.02em` | Timeline summary numbers |
-| Page title | `text-[15px]` | 600 | `-0.01em` | Channel name, agent name |
-| Entry title | `text-sm` | 600 | `-0.01em` | Timeline entries, message authors |
-| Body | `text-[14px]` | 400 | normal | Message text, entry detail |
-| Meta | `text-[11px]` | 400 | normal | Timestamps, descriptions |
-| Micro | `text-[10px]` | 500 | `0.06em` | Badges, kind labels |
-| Mono | `text-[10px]` | 400 | normal | File paths, seniority transitions |
+The scale is eight named steps, defined once in `app/globals.css` (`@theme`)
+with their line height and tracking. Use the names, not pixel sizes.
+
+| Token | Size / line | Face | Use |
+| --- | --- | --- | --- |
+| `text-hero` | 56 / 0.98, −0.035em | Display 700 | Welcome headline only (`sm` and up) |
+| `text-lead` | 40 / 1.04, −0.03em | Display 600 | A profile's name; the welcome headline on phones |
+| `text-title` | 28 / 1.1, −0.025em | Display 600 | A screen's lead sentence (two-tone: ink, then `ink-3`), the promotion, the 404 |
+| `text-figure` | 32 / 1, −0.03em | Display 600, tabular | Stat figures: profile summary, memory counts |
+| `text-heading` | 15 / 1.35, −0.01em | Lato 700 | Channel name, entry titles, tier names |
+| `text-body` | 14 / 1.62 | Lato 400 | Messages, entry detail, rules |
+| `text-meta` | 12 / 1.45 | Lato 400 | Names in rows, times, provenance, captions |
+| `text-label` | 11 / 1.3 (uppercase labels add 0.06em) | Lato 700 uppercase, or mono | Section labels; paths and file contents in mono |
 
 Two rules do most of the work:
 
 - **Negative tracking above 14px, never below it.** Large text set at default
   tracking is the most common tell of an unconsidered interface; small text
   needs its spacing left alone.
-- **Section labels are the only uppercase.** `0.06em` tracking, `ink-3`, 500
-  weight — never larger than 11px, so they recede rather than compete.
+- **Section labels are the only uppercase.** `text-label`, `ink-3`, bold — so
+  they recede by size and tone rather than compete.
+- **Nothing under 11px, nothing in `ink-4`.** `ink-4` is for rules and
+  disabled states; text that carries meaning is `ink-3` or darker.
 
 Body sits at 14px. It was 13px under Geist, but Lato has a smaller x-height, so
 the same nominal size read noticeably tighter. Metrics travel with the typeface:
@@ -174,9 +210,11 @@ Dense metadata stays at 10–11px.
 
 - **Scale:** Tailwind default. In practice 1.5 / 2 / 3 / 4 / 5 / 6.
 - **Shell:** fixed 256px sidebar, fluid main column, fixed 320px context rail.
-- **Reading width:** timeline content caps at `max-w-2xl`. Threads run full width.
-- **Density:** compact. Vertical rhythm of 4 between messages, 5 between
-  timeline entries.
+  The header is one 56px row, matched by the rail's header.
+- **Reading width:** timeline, profile and memory cap at `max-w-2xl` with
+  48px above the lead (32px on phones). Message text caps at 44rem.
+- **Density:** compact rows, generous sections. 6–7 between timeline entries,
+  10 between day groups, 14 between memory tiers.
 
 ## Elevation & Depth
 
@@ -202,24 +240,37 @@ Dense metadata stays at 10–11px.
 
 | Component | Variants | Notes |
 | --- | --- | --- |
-| Avatar | agent (hued), user (neutral); `sm` / `md` | Initials only. No images. |
-| Badge | seniority, verdict, kind label | Bordered, never filled except verdicts. |
-| Channel row | default / active | Active is `zinc-800` fill. |
-| Registry row | — | Avatar, name, title, seniority. Links to profile. |
-| Message | agent / user, optional pinned | Avatar left, stacked meta and body right. |
-| Timeline entry | task / review / lesson / promotion | Promotion is a full-width card; the rest are dotted rail items. |
-| Stat tile | — | Value over label, bordered. |
-| Context doc | content / empty / missing | Monospace `pre`, capped at `max-h-56`. |
+| Avatar | agent (crew bust), human (initials); `sm` / `md` / `lg` | Agents carry a corner dot. |
+| Marks (`Marks.tsx`) | kind, verdict, provenance, rank | The only way state is drawn. See States. |
+| Channel row | default / active | Active is the `sidebar-active` fill. |
+| Registry row | — | Avatar, name, title, then the seniority word and its rungs. No badge box. |
+| Message | agent / user, optional pinned | Avatar left, stacked meta and body right. Pinned is a pin glyph and the word. |
+| Timeline entry | task / review / lesson / decision / brief / promotion | A kind mark on a hairline rail. Promotion is set in `text-title` between two `approved-line` hairlines, no fill. |
+| Figure row | — | Display figure over a `text-meta` label, the row between two hairlines. No tiles. |
+| Context doc | content / empty / missing | Mono `pre` behind a left hairline, capped at `max-h-56`. |
+| Handoff indicator | `relay` / `line` | `relay` (animated beads) where the handoff is the subject: welcome preview, tour. `line` in app chrome. |
 | Composer | — | Auto-growing textarea, inline error below. |
 | Skeleton | thread / rail | Pulsing shapes matching real content. |
 
 ## States
 
-- **Empty** — plain sentence in `zinc-500`, centered. Never an illustration.
+- **Empty** — a plain sentence in `ink-3` that says what will appear there.
+  Never an illustration, never a dashed box.
 - **Loading** — skeletons shaped like the content. Never a spinner.
-- **Error** — inline, `rose-400`, adjacent to the failed control, input preserved.
+- **Error** — inline, `revise`, adjacent to the failed control, input preserved.
 - **Disabled** — `opacity-40` plus `cursor-not-allowed`.
-- **Missing vs. empty** — dashed border for both, but distinct copy. See `UX.md`.
+- **Missing vs. empty** — two shapes and two sentences: a struck ring for a
+  file that is not in the repo, a dashed ring for one that is still an
+  unfilled template. See `UX.md`.
+- **Kinds** — shipped: filled square; review: ring; lesson: open diamond;
+  decision: filled diamond; brief: open wedge; promotion: filled chevron.
+  All `ink-3` except the promotion, which takes `approved`.
+- **Verdicts** — approved: filled check; approved with fixes: half-filled
+  ring; revise: a ring that turns back on itself. Each with its word, in its
+  verdict hue.
+- **Provenance** — filled dot: read live from the repo; half dot: a committed
+  snapshot; open ring: seeded to show a shape; dashed ring: illustrative,
+  nothing behind it. Shown at the top of the surface it describes.
 - **Long content** — `pre` blocks scroll internally; titles truncate; body wraps.
 - **Placeholder data** — anything not yet derived from evidence carries a visible
   caveat. See the seniority note in the sidebar footer.
