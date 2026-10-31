@@ -273,7 +273,8 @@ Cohort's warm ink. Classes live in `globals.css` § Affordances.
 | Timeline entry | task / review / lesson / decision / brief / promotion | A kind mark on a hairline rail. Promotion is set in `text-title` between two `approved-line` hairlines, no fill. |
 | Figure row | — | Display figure over a `text-meta` label, the row between two hairlines. No tiles. |
 | Context doc | content / empty / missing | Mono `pre` behind a left hairline, capped at `max-h-56`. |
-| Handoff indicator | `relay` / `line` | `relay` (animated beads) where the handoff is the subject: welcome preview, tour. `line` in app chrome. |
+| Handoff indicator | `relay` / `line` | `relay` (animated beads) where the handoff is the subject: the welcome preview. `line` in app chrome, including the guided tour, which is the app with a caption over it. |
+| Tour caption | — | A `rounded-xl` panel on `panel` with a 1px border, no shadow. Step dots are grey; the current one is brand. |
 | Composer | — | Auto-growing textarea, inline error below. |
 | Skeleton | thread / rail | Pulsing shapes matching real content. |
 
