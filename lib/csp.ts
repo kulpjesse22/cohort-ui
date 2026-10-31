@@ -1,13 +1,16 @@
 /**
  * Who may put Cohort in an iframe: itself, Kulpritt OS (production and its
  * Vercel alias), the UX portfolio that frames both Cohort and Laguna Seca,
- * and a local OS dev server on any port.
+ * any vercel.app deployment (the portfolio's previews are per-commit
+ * hostnames, so nothing narrower covers them), and a local OS dev server on
+ * any port.
  */
 export const FRAME_ANCESTORS = [
   "'self'",
   "https://os.kulpritt.com",
   "https://kulpritt-os.vercel.app",
   "https://ux.kulpritt.com",
+  "https://*.vercel.app",
   "http://127.0.0.1:*",
   "http://localhost:*",
 ].join(" ");
