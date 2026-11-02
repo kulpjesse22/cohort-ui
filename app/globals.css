@@ -514,18 +514,132 @@ body * {
   box-shadow: none;
 }
 
-/* Selected rows keep their fill; hover only deepens the indent. */
+/* Selected rows keep their fill; hover only deepens the indent. Tabs are chips
+   too, chosen by `aria-selected`. */
 .aff[aria-current="page"],
 .aff[aria-pressed="true"],
-.chip[aria-pressed="true"] {
+.chip[aria-pressed="true"],
+.chip[aria-selected="true"] {
   background-color: var(--aff-sel);
 }
 @media (hover: hover) {
   .aff[aria-current="page"]:hover,
   .aff[aria-pressed="true"]:hover,
-  .chip[aria-pressed="true"]:hover {
+  .chip[aria-pressed="true"]:hover,
+  .chip[aria-selected="true"]:hover {
     background-color: var(--aff-fill-press);
   }
+}
+
+/* A switch: small and flat. A filled ink track when on, plain grey when off;
+   no outline, no glow. The knob slides 120ms, and not at all under reduced
+   motion. */
+.switch {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  width: 28px;
+  height: 16px;
+  border-radius: 9999px;
+  background-color: var(--switch-off);
+  outline: none;
+  transition: background-color 120ms ease-out, box-shadow 120ms ease-out;
+}
+.switch[aria-checked="true"] {
+  background-color: var(--control);
+}
+.switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 9999px;
+  background-color: var(--switch-knob);
+  transition: translate 120ms ease-out, background-color 120ms ease-out;
+}
+.switch[aria-checked="true"]::after {
+  translate: 12px 0;
+  background-color: var(--control-ink);
+}
+.switch:focus-visible {
+  box-shadow: 0 0 0 2px var(--canvas), 0 0 0 3.5px var(--aff-focus);
+}
+.switch:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+@media (prefers-reduced-motion: reduce) {
+  .switch,
+  .switch::after {
+    transition: none;
+  }
+}
+
+/* --- Code ------------------------------------------------------------------
+   The diff panel is the one place syntax hue appears, and it never leaves it.
+   The hues are muted on purpose: the record is the subject, not the
+   highlighting. Added and removed lines also carry a + or − in the gutter, so
+   the tint repeats what the sign says. */
+:root {
+  --switch-off: #d9d1c2;
+  --switch-knob: #fffdf9;
+  --code-bg: #fbf8f2;
+  --diff-add-bg: rgb(22 140 80 / 0.1);
+  --diff-del-bg: rgb(200 50 50 / 0.085);
+  --diff-add-ink: #1d6b45;
+  --diff-del-ink: #a3343a;
+  --syn-keyword: #8c3f6a;
+  --syn-string: #4d6a26;
+  --syn-type: #2d5d7c;
+  --syn-number: #8a5300;
+  --syn-comment: #716b60;
+}
+.dark {
+  --switch-off: #3f3f46;
+  --switch-knob: #a1a1aa;
+  --code-bg: #161618;
+  --diff-add-bg: rgb(52 211 153 / 0.1);
+  --diff-del-bg: rgb(248 113 113 / 0.1);
+  --diff-add-ink: #86d9b0;
+  --diff-del-ink: #f4a3a8;
+  --syn-keyword: #e0a3c8;
+  --syn-string: #b9cf8f;
+  --syn-type: #92bcd6;
+  --syn-number: #e3c27f;
+  --syn-comment: #8b8b95;
+}
+.code-panel {
+  background-color: var(--code-bg);
+}
+.diff-add {
+  background-color: var(--diff-add-bg);
+}
+.diff-del {
+  background-color: var(--diff-del-bg);
+}
+.diff-add-ink {
+  color: var(--diff-add-ink);
+}
+.diff-del-ink {
+  color: var(--diff-del-ink);
+}
+.syn-keyword {
+  color: var(--syn-keyword);
+}
+.syn-string {
+  color: var(--syn-string);
+}
+.syn-type {
+  color: var(--syn-type);
+}
+.syn-number {
+  color: var(--syn-number);
+}
+.syn-comment {
+  color: var(--syn-comment);
+  font-style: italic;
 }
 
 /* Colour swatches are chips too: the chosen hue is a filled tile, the rest

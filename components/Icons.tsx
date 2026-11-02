@@ -125,3 +125,98 @@ export function WaveIcon(p: Props) {
     </Icon>
   );
 }
+
+export function ChevronDownIcon(p: Props) {
+  return (
+    <Icon {...p}>
+      <path d="m4.5 6.25 3.5 3.5 3.5-3.5" />
+    </Icon>
+  );
+}
+
+export function ChevronRightIcon(p: Props) {
+  return (
+    <Icon {...p}>
+      <path d="m6.25 4.5 3.5 3.5-3.5 3.5" />
+    </Icon>
+  );
+}
+
+export function ArrowLeftIcon(p: Props) {
+  return (
+    <Icon {...p}>
+      <path d="M13 8H3.5M7.5 4 3.5 8l4 4" />
+    </Icon>
+  );
+}
+
+export function LinkIcon(p: Props) {
+  return (
+    <Icon {...p}>
+      <path d="M6.75 9.25a2.75 2.75 0 0 0 3.9 0l2-2a2.76 2.76 0 0 0-3.9-3.9l-.6.6" />
+      <path d="M9.25 6.75a2.75 2.75 0 0 0-3.9 0l-2 2a2.76 2.76 0 0 0 3.9 3.9l.6-.6" />
+    </Icon>
+  );
+}
+
+export function BranchIcon(p: Props) {
+  return (
+    <Icon {...p}>
+      <circle cx="4.75" cy="3.75" r="1.5" />
+      <circle cx="4.75" cy="12.25" r="1.5" />
+      <circle cx="11.25" cy="5.25" r="1.5" />
+      <path d="M4.75 5.25v5.5M11.25 6.75c0 2.5-2 3-4.25 3.5-1 .2-1.75.6-2.25 1" />
+    </Icon>
+  );
+}
+
+export function PromptIcon(p: Props) {
+  return (
+    <Icon {...p}>
+      <path d="M2.5 4h7M2.5 7.25h5M2.5 10.5h3.5M9.5 9.25 12 11.5l-2.5 2.25M12.5 13.75H14" />
+    </Icon>
+  );
+}
+
+export function ShareIcon(p: Props) {
+  return (
+    <Icon {...p}>
+      <path d="M8 2.5v7.5M5 5.25 8 2.5l3 2.75M3.5 8.5v3.75c0 .7.55 1.25 1.25 1.25h6.5c.7 0 1.25-.55 1.25-1.25V8.5" />
+    </Icon>
+  );
+}
+
+export function ExternalIcon(p: Props) {
+  return (
+    <Icon {...p}>
+      <path d="M9.5 2.75h3.75V6.5M13.25 2.75 7.5 8.5M11.5 9.5v2.75c0 .55-.45 1-1 1h-6.75c-.55 0-1-.45-1-1V5.5c0-.55.45-1 1-1H6.5" />
+    </Icon>
+  );
+}
+
+export function CheckIcon(p: Props) {
+  return (
+    <Icon {...p}>
+      <path d="m3.5 8.25 3 3 6-6.5" />
+    </Icon>
+  );
+}
+
+export function FileIcon(p: Props) {
+  return (
+    <Icon {...p}>
+      <path d="M9 2.25H4.75c-.55 0-1 .45-1 1v9.5c0 .55.45 1 1 1h6.5c.55 0 1-.45 1-1V5.5Z" />
+      <path d="M9 2.25V5.5h3.25" />
+    </Icon>
+  );
+}
+
+export function SettingsIcon(p: Props) {
+  return (
+    <Icon {...p}>
+      <path d="M2.5 4.75h6M11.5 4.75h2M2.5 11.25h2M7.5 11.25h6" />
+      <circle cx="10" cy="4.75" r="1.5" />
+      <circle cx="6" cy="11.25" r="1.5" />
+    </Icon>
+  );
+}

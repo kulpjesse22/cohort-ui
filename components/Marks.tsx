@@ -135,6 +135,88 @@ export function ProvenanceTag({
   );
 }
 
+/**
+ * Where a handoff stands. Open states are ink-3 shapes; only a verdict takes a
+ * hue, because only a reviewer issues one. A stale close is the settings
+ * acting, not a judgment, so it stays grey whatever it is called.
+ */
+export type HandoffMarkKind =
+  | "waiting"
+  | "reviewing"
+  | "revising"
+  | "approved"
+  | "fixes"
+  | "filed"
+  | "closed"
+  | "returned"
+  | "parked";
+
+const HANDOFF_TONE: Partial<Record<HandoffMarkKind, string>> = {
+  revising: "text-revise",
+  approved: "text-approved",
+  fixes: "text-fixes",
+};
+
+function HandoffGlyph({ kind }: { kind: HandoffMarkKind }) {
+  switch (kind) {
+    case "waiting":
+      return <path d="M4 2.6 10.6 7 4 11.4Z" stroke="currentColor" strokeWidth="1.3" fill="none" strokeLinejoin="round" />;
+    case "reviewing":
+      return (
+        <>
+          <circle cx="7" cy="7" r="4.6" stroke="currentColor" strokeWidth="1.4" fill="none" />
+          <circle cx="7" cy="7" r="1.6" fill="currentColor" />
+        </>
+      );
+    case "revising":
+      return <VerdictGlyph verdict="Revise" />;
+    case "approved":
+      return <VerdictGlyph verdict="Approved" />;
+    case "fixes":
+      return <VerdictGlyph verdict="Approved with fixes" />;
+    case "filed":
+      return <rect x="3" y="3" width="8" height="8" rx="1.5" fill="currentColor" />;
+    case "closed":
+      return (
+        <>
+          <circle cx="7" cy="7" r="4.6" stroke="currentColor" strokeWidth="1.4" fill="none" />
+          <path d="M4.6 7h4.8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+        </>
+      );
+    case "returned":
+      return (
+        <path
+          d="M11 10.5V8.25A2.75 2.75 0 0 0 8.25 5.5H3.5M5.75 3.25 3.5 5.5l2.25 2.25"
+          stroke="currentColor"
+          strokeWidth="1.4"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      );
+    case "parked":
+      return <path d="M5.25 3.5v7M8.75 3.5v7" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />;
+  }
+}
+
+export function HandoffMark({ kind, className }: { kind: HandoffMarkKind; className?: string }) {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 14 14"
+      aria-hidden="true"
+      className={`shrink-0 ${className ?? HANDOFF_TONE[kind] ?? "text-ink-3"}`}
+    >
+      <HandoffGlyph kind={kind} />
+    </svg>
+  );
+}
+
+export function handoffTone(kind: HandoffMarkKind): string {
+  return HANDOFF_TONE[kind] ?? "text-ink-3";
+}
+
 /** Rank as rungs. The word stays beside it: rungs alone are not self-explanatory. */
 export function RankTicks({ rank, of = 4, className = "" }: { rank: number; of?: number; className?: string }) {
   return (
