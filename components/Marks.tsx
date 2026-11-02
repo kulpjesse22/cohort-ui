@@ -217,6 +217,63 @@ export function handoffTone(kind: HandoffMarkKind): string {
   return HANDOFF_TONE[kind] ?? "text-ink-3";
 }
 
+/**
+ * Where a conversation stands on the board. Squares are the work itself:
+ * empty while queued, half while working, filled once done (the same filled
+ * block as a shipped entry). Needs you is the handoff wedge, and stopped is
+ * the barred ring a stale close uses. All grey: a column is not a verdict.
+ */
+export type BoardStateKind = "queued" | "working" | "needs" | "done" | "stopped";
+
+function BoardStateGlyph({ kind }: { kind: BoardStateKind }) {
+  switch (kind) {
+    case "queued":
+      return <rect x="3" y="3" width="8" height="8" rx="1.5" stroke="currentColor" strokeWidth="1.3" fill="none" />;
+    case "working":
+      return (
+        <>
+          <rect x="3" y="3" width="8" height="8" rx="1.5" stroke="currentColor" strokeWidth="1.3" fill="none" />
+          <path d="M3.65 7h6.7v2.35a1 1 0 0 1-1 1h-4.7a1 1 0 0 1-1-1Z" fill="currentColor" />
+        </>
+      );
+    case "needs":
+      return <HandoffGlyph kind="waiting" />;
+    case "done":
+      return <rect x="3" y="3" width="8" height="8" rx="1.5" fill="currentColor" />;
+    case "stopped":
+      return <HandoffGlyph kind="closed" />;
+  }
+}
+
+export function BoardStateMark({ kind, className = "text-ink-3" }: { kind: BoardStateKind; className?: string }) {
+  return (
+    <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" className={`shrink-0 ${className}`}>
+      <BoardStateGlyph kind={kind} />
+    </svg>
+  );
+}
+
+/** Priority as three bars, the filled count rising with it. The word goes beside it. */
+export function PriorityMark({ level }: { level: "high" | "normal" | "low" }) {
+  const filled = level === "high" ? 3 : level === "normal" ? 2 : 1;
+  return (
+    <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" className="shrink-0">
+      {[0, 1, 2].map((i) => (
+        <rect
+          key={i}
+          x={1.5 + i * 3.25}
+          y={8 - i * 2.5}
+          width="2.2"
+          height={2.5 + i * 2.5}
+          rx="0.6"
+          fill="currentColor"
+          opacity={i < filled ? 1 : 0.25}
+        />
+      ))}
+    </svg>
+  );
+}
+
 /** Rank as rungs. The word stays beside it: rungs alone are not self-explanatory. */
 export function RankTicks({ rank, of = 4, className = "" }: { rank: number; of?: number; className?: string }) {
   return (
