@@ -151,6 +151,19 @@ rung down.
 demonstrates a shape; these are rules this project actually learned, including
 one about pasting API keys into chat that was earned the hard way.
 
+### Reviews — work handed to a person
+
+`/reviews` lists the handoffs waiting on you: *needs your review*, *you're
+reviewing*, and *completed*. Open one for its **Activity** (the agent's steps
+and the handoff), a plain-language **Guide** to what changed and what to
+check, and the **Diff**. The seeded handoffs carry diffs written to show the
+shape; the notes in `Agents/handoffs/` are read off disk on each request and
+carry none, because a handoff note records the baton pass, not the patch.
+
+`/settings` decides how handoffs age: auto-close stale ones, what status they
+get, when completed ones archive, and who takes a handoff that names no
+reviewer. Settings live in the browser and change the view, never the files.
+
 ### Agent profiles — the growth arc
 
 Click anyone in the registry. You get their history: tasks shipped, reviews
@@ -298,6 +311,9 @@ Being explicit, because a demo that overclaims is worse than no demo.
 - **Team memory is real.** `/memory` parses `Agents/lessons/INDEX.md` and the
   standing-gates block of `project_context.md` off disk. The rules there are
   ones this project actually learned; the lesson files open from the repo.
+- **The handoff notes in Reviews are real.** `/reviews` reads
+  `Agents/handoffs/` off disk on each request; a note whose blockers name a
+  decision is shown as waiting on a person.
 - The five roles, their scopes, and their boundaries come from the harness.
 - Every view is a URL; reload lands where you were.
 - The harness install, including filled-in `design.md`, `UX.md`,
@@ -317,6 +333,9 @@ Being explicit, because a demo that overclaims is worse than no demo.
 - **Timeline history is seeded.** Not yet derived from `handoffs/` and
   `lessons/`, though those are the obvious sources. Julius's growth arc is an
   illustration, not a log. The guided tour says so out loud at the end.
+- **Review diffs are seeded.** The handoffs with diffs, activity and guides
+  are written to show the shape; no agent produced them. Review settings are
+  kept in the browser and never touch the files.
 - **Seniority is a static label.** It is not computed from the timeline sitting
   directly above it. The UI says so wherever it appears.
 

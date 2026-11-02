@@ -151,6 +151,12 @@ conversational UI (composer, verdict badges, agent rings) — those already
 carry meaning, and a fourth unassigned color there would compete with it
 rather than reinforce it.
 
+**Code.** Inside the diff panel only, and never outside it: a muted syntax set
+(`syn-keyword`, `syn-string`, `syn-type`, `syn-number`, `syn-comment`) and the
+diff tints (`diff-add`, `diff-del`, with `diff-add-ink` / `diff-del-ink` for
+the signs and line counts). Each holds AA on `code-bg` in both themes. The
+hues are low-chroma on purpose, and the `+`/`−` sign says what the tint says.
+
 - **Contrast target:** WCAG AA (4.5:1) for body text, in **both** themes. A
   token that passes in dark and fails in light is a bug, not a tradeoff.
 - Color is never the only signal (see `UX.md`), so hues may soften — but the
@@ -210,7 +216,10 @@ Dense metadata stays at 10–11px.
 
 - **Scale:** Tailwind default. In practice 1.5 / 2 / 3 / 4 / 5 / 6.
 - **Shell:** fixed 256px sidebar, fluid main column, fixed 320px context rail.
-  The header is one 56px row, matched by the rail's header.
+  The header is one 56px row, matched by the rail's header. Reviews and
+  Settings drop the rail: Reviews brings its own list panel (336px) beside
+  the handoff. Below `lg` the list and the handoff are separate screens, with
+  "All reviews" leading back.
 - **Reading width:** timeline, profile and memory cap at `max-w-2xl` with
   48px above the lead (32px on phones). Message text caps at 44rem.
 - **Density:** compact rows, generous sections. 6–7 between timeline entries,
@@ -244,15 +253,27 @@ Cohort's warm ink. Classes live in `globals.css` § Affordances.
 - **Secondary buttons** (`aff-fill`): a quiet tint at rest instead of a border.
 - **Theme toggle:** sun and moon only, no words; "Light theme" / "Dark theme"
   as label and tooltip.
-- **Switches** (none ship today): small and flat; a filled track when on,
-  plain grey when off.
+- **Switches** (`switch`, on Settings): 28×16 and flat; a filled `control`
+  track when on, plain grey when off, no outline. The knob slides 120ms and
+  not at all under reduced motion. `role="switch"`, labelled by its row.
+- **Dropdowns** in settings rows are native `select`s with `aff-fill`: a quiet
+  tint, a line chevron, `text-meta`. Native so phones get their own picker.
+- **Menus** (the share menu on a handoff): a floating panel on `canvas` with a
+  `line-strong` border and no shadow. Rows are `aff`, a line icon then the
+  label, with a `text-meta` hint on the right. Groups split by a hairline and
+  an uppercase label ("Open in"). Arrow keys, Home and End move; Escape closes
+  and hands focus back. A copy is confirmed on the row itself ("Copied"),
+  never by a toast.
+- **Tabs** are chips with `role="tab"`; the chosen one is filled via
+  `aria-selected`. Arrow keys move between them.
 
 ## Motion
 
 - **Durations:** 200ms for drawers, 300ms for progress fills, 500ms for
   spotlight dimming.
-- Only three things animate: drawer transforms, opacity for tour focus, and
-  skeleton pulse. Nothing animates on load.
+- Only these animate: drawer transforms, opacity for tour focus, skeleton
+  pulse, and a switch's knob (120ms). Nothing animates on load, and under
+  reduced motion the drawers and the knob jump.
 - Layout never animates. No entrance transitions on threads or timelines.
 
 ## Shape & Radius
@@ -277,6 +298,9 @@ Cohort's warm ink. Classes live in `globals.css` § Affordances.
 | Tour caption | — | A `rounded-xl` panel on `panel` with a 1px border, no shadow. Step dots are grey; the current one is brand. |
 | Composer | — | Auto-growing textarea, inline error below. |
 | Skeleton | thread / rail | Pulsing shapes matching real content. |
+| Review row | — | Title, then a handoff mark and its status in `text-meta`; the author's avatar and the age on the right. Selected is the filled ink tint. |
+| Diff panel | — | A `rounded-lg` object on `code-bg` with a 1px border. File header in mono with `+n −m`. Rows carry old and new numbers, a `+`/`−` sign, the line tinted `diff-add`/`diff-del`. At `lg` an "After" column sits beside it in one quiet tone (`ink-3`, no syntax hue). Lines wrap with a two-character hang; ligatures off. |
+| Settings card | — | Rows on a `raised` card, `rounded-lg`, no border, split by hairlines. Label and hint left, one control right. |
 
 ## States
 
@@ -294,6 +318,10 @@ Cohort's warm ink. Classes live in `globals.css` § Affordances.
 - **Verdicts** — approved: filled check; approved with fixes: half-filled
   ring; revise: a ring that turns back on itself. Each with its word, in its
   verdict hue.
+- **Handoffs** — waiting: open wedge; in review: ring with a centre dot;
+  verdicts use the verdict marks; filed: filled square. A stale close is the
+  settings acting, not a judgment, so it stays `ink-3` whatever it is called:
+  closed is a barred ring, returned a turn-back arrow, parked two bars.
 - **Provenance** — filled dot: read live from the repo; half dot: a committed
   snapshot; open ring: seeded to show a shape; dashed ring: illustrative,
   nothing behind it. Shown at the top of the surface it describes.

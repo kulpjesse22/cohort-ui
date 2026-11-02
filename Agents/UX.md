@@ -61,11 +61,14 @@ here, it is not the standard.
 | Undo / reversibility | Prefer undo over confirmation. | The product is a record; recovery matters more than prevention. |
 | Error recovery | Errors appear inline next to the control that failed, and preserve the user's input. | A failed send must never cost the message. |
 | Data entry | Explicit send. No autosaved drafts. | Posting to a durable record should be deliberate. |
-| Navigation | Every view is a URL — `/c/[id]`, `/agent/[id]`. Reload lands where you were. | State a user cannot link to is state they cannot cite. |
+| Navigation | Every view is a URL — `/c/[id]`, `/agent/[id]`, `/reviews/[id]?tab=diff`. Reload lands where you were. | State a user cannot link to is state they cannot cite. |
 | Notifications | None. No badges, unread counts, or toasts. | Urgency contradicts the durable-log thesis. |
 | Long-running work | Skeletons shaped like the incoming content, never spinners. | Preserves layout and signals what is arriving. |
 | Empty vs. missing | Distinguish explicitly: "not found in the repo" and "empty — still an unfilled template" are different messages. | An unfilled template is an expected state in a fresh harness, not an error. |
 | Permissions | Not modeled. | No auth layer exists yet. |
+| Settings | Local to the browser, applied the moment they change, with a reset. They change the view of the record, never the record: a handoff closed as stale stays open on disk. The page says so. | Anything durable must be a file; a setting that silently rewrote one would break that. |
+| Stale handoffs | Closing a stale handoff sets a status (closed, returned, parked), never a verdict. | A verdict belongs to the reviewer who issued it. |
+| Sharing a handoff | Copy link, branch, or a review prompt; "Open in" names only what Cohort already names (GitHub, Claude, Codex). Where there is nothing to deep-link into, the item copies the prompt and says so. | Never imply an integration that does not exist. |
 
 - **Keyboard:** Enter sends, Shift+Enter newlines. The guided tour takes arrow
   keys and space.
@@ -82,6 +85,7 @@ here, it is not the standard.
 | Timeline | An agent's chronological record on its profile. | feed, activity log |
 | Verdict | A review outcome: Approved / Approved with fixes / Revise. | score, rating, grade |
 | Handoff | A written baton pass between roles, stored in `handoffs/`. | ticket, assignment |
+| Reviews | The view of handoffs waiting on a person: needs your review, you're reviewing, completed. | inbox, queue, PRs |
 | Lesson | A durable learning written to `lessons/`. | note, memory |
 | Seniority | An agent's current standing. Currently a placeholder. | rank, level, XP |
 | Harness | The underlying HAI-Harness markdown layer. | backend, framework |
