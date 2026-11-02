@@ -219,7 +219,17 @@ Dense metadata stays at 10–11px.
   The header is one 56px row, matched by the rail's header. Reviews and
   Settings drop the rail: Reviews brings its own list panel (336px) beside
   the handoff. Below `lg` the list and the handoff are separate screens, with
-  "All reviews" leading back.
+  "All reviews" leading back. The Board drops it too; its Display panel
+  (304px) opens on the right at `lg` and as a bottom sheet below it.
+- **Sidebar:** top to bottom: the workspace menu (wordmark and chevron), search
+  and compose; Inbox and My agents; the collapsible Workspace group (Board,
+  timeline, memory, the shared channels); Your agents, each expandable to its
+  Conversations and Reviews; then Try, pinned to the bottom above Settings and
+  the theme toggle. Group labels are uppercase `text-label`. No row carries a
+  count. Collapsed groups are remembered in the browser.
+- **Board:** columns 264px wide on a horizontally scrolling canvas, 8px apart.
+  Column headers stick to the top; swimlane headers stick to the left so a
+  lane's name stays in view on a phone.
 - **Reading width:** timeline, profile and memory cap at `max-w-2xl` with
   48px above the lead (32px on phones). Message text caps at 44rem.
 - **Density:** compact rows, generous sections. 6–7 between timeline entries,
@@ -266,6 +276,15 @@ Cohort's warm ink. Classes live in `globals.css` § Affordances.
   never by a toast.
 - **Tabs** are chips with `role="tab"`; the chosen one is filled via
   `aria-selected`. Arrow keys move between them.
+- **Board cards** (`board-card`): `raised` on the column's wash, `rounded-lg`,
+  no border. Hover is the same tint and inset as `aff`, laid over the raised
+  fill; focus adds the inset ring.
+- **Column wash** (`board-col`, `board-col-head`): a 2% ink tint, 4% on Needs
+  you. Neutral on purpose: hue belongs to verdicts, and a column is not one.
+- **"+ New"** is a bare `aff` row in `ink-3`: in each lane's Queued cell, or in
+  the lane header when columns are by priority. It opens the channel where a
+  task is briefed; it never creates anything by itself.
+- **Display properties** are chips with `aria-pressed`: filled when shown.
 
 ## Motion
 
@@ -301,6 +320,11 @@ Cohort's warm ink. Classes live in `globals.css` § Affordances.
 | Review row | — | Title, then a handoff mark and its status in `text-meta`; the author's avatar and the age on the right. Selected is the filled ink tint. |
 | Diff panel | — | A `rounded-lg` object on `code-bg` with a 1px border. File header in mono with `+n −m`. Rows carry old and new numbers, a `+`/`−` sign, the line tinted `diff-add`/`diff-del`. At `lg` an "After" column sits beside it in one quiet tone (`ink-3`, no syntax hue). Lines wrap with a two-character hang; ligatures off. |
 | Settings card | — | Rows on a `raised` card, `rounded-lg`, no border, split by hairlines. Label and hint left, one control right. |
+| Board column | state / priority | Header: a board-state (or priority) mark, the name, the count, on the column wash. |
+| Board card | — | Task (two lines), an optional note, the last line as "Name: text", then avatar and name, priority bars and word, provenance mark, age. Each part after the task is a display property. |
+| Swimlane | agent / project / none | A chevron, the avatar or folder mark, the name, the count. Collapses; remembered. |
+| Display panel | side / sheet | Layout `seg`, three compact selects, three switches, property chips, then Reset and Set default. Escape closes and returns focus. |
+| Workspace menu | — | The wordmark and a chevron. The one workspace there is, then Welcome and the tour. |
 
 ## States
 

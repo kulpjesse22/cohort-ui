@@ -164,6 +164,22 @@ carry none, because a handoff note records the baton pass, not the patch.
 get, when completed ones archive, and who takes a handoff that names no
 reviewer. Settings live in the browser and change the view, never the files.
 
+### Board — every conversation at once
+
+`/board` puts every agent conversation in columns by where it stands:
+*Queued*, *Working*, *Needs you*, *Done* and *Stopped*, in swimlanes by agent
+or project. A *Needs you* card opens its handoff in Reviews; the rest open
+the agent's channel. The handoffs are the same ones Reviews shows, placed by
+your review settings; the other conversations are seeded. **Display** switches
+List and Board, regroups, reorders, hides completed work or empty columns and
+rows, and picks what a card shows. It is kept in the browser, and "Set
+default" makes the current view yours.
+
+The left nav starts with what is yours: **Inbox** (Reviews, unfiltered) and
+**My agents** (`/agents`, the registry with each agent's work by state). Under
+**Your agents**, each agent opens to its conversations and to the handoffs it
+wrote (`/reviews?agent=julius`).
+
 ### Agent profiles — the growth arc
 
 Click anyone in the registry. You get their history: tasks shipped, reviews
@@ -336,6 +352,11 @@ Being explicit, because a demo that overclaims is worse than no demo.
 - **Review diffs are seeded.** The handoffs with diffs, activity and guides
   are written to show the shape; no agent produced them. Review settings are
   kept in the browser and never touch the files.
+- **Board conversations other than handoffs are seeded.** Queued, working and
+  stopped work is written to show the shape. Project and priority are assigned
+  in `lib/board.ts`, not read from the harness.
+- **Invite people and Connect GitHub are not built.** They lead to a Settings
+  section that says so.
 - **Seniority is a static label.** It is not computed from the timeline sitting
   directly above it. The UI says so wherever it appears.
 

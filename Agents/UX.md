@@ -61,7 +61,10 @@ here, it is not the standard.
 | Undo / reversibility | Prefer undo over confirmation. | The product is a record; recovery matters more than prevention. |
 | Error recovery | Errors appear inline next to the control that failed, and preserve the user's input. | A failed send must never cost the message. |
 | Data entry | Explicit send. No autosaved drafts. | Posting to a durable record should be deliberate. |
-| Navigation | Every view is a URL — `/c/[id]`, `/agent/[id]`, `/reviews/[id]?tab=diff`. Reload lands where you were. | State a user cannot link to is state they cannot cite. |
+| Navigation | Every view is a URL — `/c/[id]`, `/agent/[id]`, `/reviews/[id]?tab=diff`, `/reviews?agent=julius`, `/board`. Reload lands where you were. | State a user cannot link to is state they cannot cite. |
+| Left nav | Personal first (Inbox, My agents), then the workspace's views, then each agent with its Conversations and Reviews, then Try. Every page is reachable from it or from the workspace menu. Groups collapse and stay collapsed. On phones it is a drawer that closes on choosing. | You start from what needs you, not from the org chart. |
+| Board display | Layout, grouping, ordering, empty columns and rows, and which properties a card shows are local, applied at once, and persist. "Set default" saves the current view as yours; Reset goes back to it, and from there to Cohort's. | A view you tune should still be there tomorrow, and must be undoable. |
+| Creating work | "+ New" and compose open a channel to brief in; they never create a card by themselves. A new task without an agent goes to Claudia. | Claudia scopes and routes every request. |
 | Notifications | None. No badges, unread counts, or toasts. | Urgency contradicts the durable-log thesis. |
 | Long-running work | Skeletons shaped like the incoming content, never spinners. | Preserves layout and signals what is arriving. |
 | Empty vs. missing | Distinguish explicitly: "not found in the repo" and "empty — still an unfilled template" are different messages. | An unfilled template is an expected state in a fresh harness, not an error. |
@@ -85,7 +88,11 @@ here, it is not the standard.
 | Timeline | An agent's chronological record on its profile. | feed, activity log |
 | Verdict | A review outcome: Approved / Approved with fixes / Revise. | score, rating, grade |
 | Handoff | A written baton pass between roles, stored in `handoffs/`. | ticket, assignment |
-| Reviews | The view of handoffs waiting on a person: needs your review, you're reviewing, completed. | inbox, queue, PRs |
+| Reviews | The view of handoffs waiting on a person: needs your review, you're reviewing, completed. | queue, PRs |
+| Inbox | The sidebar's way into Reviews, unfiltered: what needs you. The only place "inbox" is used; it never takes a count. | notifications |
+| Board | Every agent conversation at once, in columns by state: Queued, Working, Needs you, Done, Stopped. | kanban, pipeline, tickets |
+| Conversation | One task's thread with an agent. A card on the Board; it lives in that agent's channel or, once handed off, in Reviews. | ticket, issue, job |
+| Stopped | A conversation that ended without a verdict: a rule stopped it, or your stale setting did. | failed, cancelled, rejected |
 | Lesson | A durable learning written to `lessons/`. | note, memory |
 | Seniority | An agent's current standing. Currently a placeholder. | rank, level, XP |
 | Harness | The underlying HAI-Harness markdown layer. | backend, framework |
