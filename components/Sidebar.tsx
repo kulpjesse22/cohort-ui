@@ -1,9 +1,19 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { AGENT_ORDER, AGENTS, CHANNELS } from "@/lib/agents";
 import { Avatar } from "./Avatar";
 import { ThemeToggle } from "./ThemeToggle";
 import { RankTicks } from "./Marks";
+import { SettingsIcon } from "./Icons";
+
+const PAGES = [
+  { href: "/timeline", label: "Project timeline", glyph: "◈" },
+  { href: "/memory", label: "Team memory", glyph: "◆" },
+  { href: "/reviews", label: "Reviews", glyph: "◇" },
+];
 
 export function Sidebar({
   activeChannelId,
@@ -13,6 +23,9 @@ export function Sidebar({
   activeChannelId: string | null;
   onSelect: (channelId: string) => void;
 }) {
+  const pathname = usePathname() ?? "";
+  const on = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+
   return (
     <aside className="flex h-full w-64 shrink-0 flex-col border-r border-sidebar-line bg-sidebar text-sm shadow-2xl lg:shadow-none">
       <div className="border-b border-sidebar-line px-4 py-3">
@@ -38,25 +51,26 @@ export function Sidebar({
       </div>
 
       <div className="flex-1 overflow-y-auto px-2 py-3">
-        <Link
-          href="/timeline"
-          className="aff flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sidebar-ink-2 hover:text-sidebar-ink"
-        >
-          <span aria-hidden="true" className="text-sidebar-ink-3">
-            ◈
-          </span>
-          <span className="truncate">Project timeline</span>
-        </Link>
-
-        <Link
-          href="/memory"
-          className="aff mb-4 flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sidebar-ink-2 hover:text-sidebar-ink"
-        >
-          <span aria-hidden="true" className="text-sidebar-ink-3">
-            ◆
-          </span>
-          <span className="truncate">Team memory</span>
-        </Link>
+        <nav aria-label="Views" className="mb-4 space-y-0.5">
+          {PAGES.map((page) => {
+            const active = on(page.href);
+            return (
+              <Link
+                key={page.href}
+                href={page.href}
+                aria-current={active ? "page" : undefined}
+                className={`aff flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left ${
+                  active ? "text-sidebar-ink" : "text-sidebar-ink-2 hover:text-sidebar-ink"
+                }`}
+              >
+                <span aria-hidden="true" className="text-sidebar-ink-3">
+                  {page.glyph}
+                </span>
+                <span className="truncate">{page.label}</span>
+              </Link>
+            );
+          })}
+        </nav>
 
         <div className="px-2 pb-1.5 text-label font-semibold uppercase tracking-[0.06em] text-sidebar-ink-3">
           Channels
@@ -123,7 +137,20 @@ export function Sidebar({
           <span aria-hidden="true" className="text-sidebar-ink-3">▶</span>
           Guided tour
         </Link>
-        <ThemeToggle />
+        <div className="flex items-center gap-1">
+          <Link
+            href="/settings"
+            aria-label="Settings"
+            data-tip="Settings"
+            aria-current={on("/settings") ? "page" : undefined}
+            className={`aff tip flex h-8 w-8 items-center justify-center rounded-md ${
+              on("/settings") ? "text-sidebar-ink" : "text-sidebar-ink-3 hover:text-sidebar-ink"
+            }`}
+          >
+            <SettingsIcon />
+          </Link>
+          <ThemeToggle />
+        </div>
       </div>
     </aside>
   );
