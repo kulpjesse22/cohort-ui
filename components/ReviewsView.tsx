@@ -18,11 +18,11 @@ import {
 } from "@/lib/reviews";
 import { ARCHIVE_OPTIONS, STALE_STATUS_OPTIONS, labelOf } from "@/lib/settings";
 import { useReviewSettings } from "@/lib/useReviewSettings";
+import { ActorAvatar } from "./ActorAvatar";
 import { AppShell } from "./AppShell";
 import { ArtifactLink } from "./ArtifactLink";
-import { Avatar } from "./Avatar";
 import { DiffPanel } from "./DiffPanel";
-import { ArrowLeftIcon, BranchIcon, ChevronDownIcon, ChevronRightIcon } from "./Icons";
+import { ArrowLeftIcon, BranchIcon, ChevronDownIcon, ChevronRightIcon, CloseIcon } from "./Icons";
 import { HandoffMark, KindMark, ProvenanceTag, handoffTone, type HandoffMarkKind } from "./Marks";
 import { ShareMenu } from "./ShareMenu";
 
@@ -39,22 +39,6 @@ type Tab = (typeof TABS)[number]["id"];
 function nameOf(id: ActorId, fallback?: string): string {
   if (id === YOU) return "You";
   return getParticipant(id)?.name ?? fallback ?? id;
-}
-
-/** Roster members get their crew bust; Claude and Codex, who are not on the roster, get a plain tile. */
-function ActorAvatar({ id, name }: { id: ActorId; name?: string }) {
-  if (getParticipant(id)) return <Avatar agentId={id === YOU ? "user" : id} size="sm" />;
-  const label = name ?? id;
-  return (
-    <span className="relative inline-flex shrink-0" title={`${label}, an agent outside the roster`}>
-      <span className="inline-flex h-6 w-6 items-center justify-center rounded-[6px] bg-raised text-[9px] font-semibold text-ink-2 ring-1 ring-inset ring-line-strong">
-        {label.slice(0, 2).toUpperCase()}
-      </span>
-      <span aria-hidden="true" className="absolute -bottom-0.5 -right-0.5 rounded-full bg-canvas p-[1.5px]">
-        <span className="block h-1.5 w-1.5 rounded-full ring-1 ring-inset ring-ink-3" />
-      </span>
-    </span>
-  );
 }
 
 function statusOf(h: ResolvedHandoff): { mark: HandoffMarkKind; text: string } {
@@ -129,8 +113,13 @@ function promptFor(h: ResolvedHandoff): string {
     .join("\n");
 }
 
-function hrefFor(id: string, tab?: Tab) {
-  return `/reviews/${encodeURIComponent(id)}${tab ? `?tab=${tab}` : ""}`;
+/** `agent` is the sidebar's per-agent filter; it rides along so the list stays filtered. */
+function hrefFor(id: string, tab?: Tab, agent?: string | null) {
+  const q = new URLSearchParams();
+  if (agent) q.set("agent", agent);
+  if (tab) q.set("tab", tab);
+  const qs = q.toString();
+  return `/reviews/${encodeURIComponent(id)}${qs ? `?${qs}` : ""}`;
 }
 
 function isPlainClick(e: React.MouseEvent) {
@@ -141,10 +130,12 @@ function isPlainClick(e: React.MouseEvent) {
 
 function Row({
   h,
+  href,
   selected,
   onOpen,
 }: {
   h: ResolvedHandoff;
+  href: string;
   selected: boolean;
   onOpen: (e: React.MouseEvent, id: string) => void;
 }) {
@@ -153,7 +144,7 @@ function Row({
   return (
     <li>
       <Link
-        href={hrefFor(h.id)}
+        href={href}
         scroll={false}
         data-review-row
         onClick={(e) => onOpen(e, h.id)}
@@ -186,6 +177,7 @@ function Group({
   open,
   onToggle,
   selectedId,
+  hrefOf,
   onOpen,
   empty,
 }: {
@@ -194,6 +186,7 @@ function Group({
   open: boolean;
   onToggle: () => void;
   selectedId: string | null;
+  hrefOf: (id: string) => string;
   onOpen: (e: React.MouseEvent, id: string) => void;
   empty: string;
 }) {
@@ -220,7 +213,7 @@ function Group({
           ) : (
             <ul className="space-y-0.5">
               {items.map((h) => (
-                <Row key={h.id} h={h} selected={h.id === selectedId} onOpen={onOpen} />
+                <Row key={h.id} h={h} href={hrefOf(h.id)} selected={h.id === selectedId} onOpen={onOpen} />
               ))}
             </ul>
           )}
@@ -408,9 +401,11 @@ export function ReviewsView({ live }: { live: ReviewHandoff[] }) {
   const params = useSearchParams();
   const [collapsed, setCollapsed] = useState<Partial<Record<ReviewGroup, boolean>>>({});
 
+  const agent = params.get("agent");
+  const agentName = agent ? nameOf(agent) : null;
   const all = useMemo(() => resolveHandoffs([...SEEDED_HANDOFFS, ...live], settings), [live, settings]);
   const by = useMemo(() => {
-    const pick = (g: ReviewGroup) => all.filter((h) => h.group === g);
+    const pick = (g: ReviewGroup) => all.filter((h) => h.group === g && (!agent || h.author === agent));
     return {
       needs: pick("needs").sort((a, b) => a.ageMinutes - b.ageMinutes),
       reviewing: pick("reviewing").sort((a, b) => a.ageMinutes - b.ageMinutes),
@@ -418,7 +413,9 @@ export function ReviewsView({ live }: { live: ReviewHandoff[] }) {
       elsewhere: pick("elsewhere"),
       archived: pick("archived"),
     };
-  }, [all]);
+  }, [all, agent]);
+  const listHref = agent ? `/reviews?agent=${encodeURIComponent(agent)}` : "/reviews";
+  const hrefOf = (id: string) => hrefFor(id, undefined, agent);
 
   const routeId = pathname.startsWith("/reviews/") ? decodeURIComponent(pathname.slice("/reviews/".length)) : null;
   const selected =
@@ -443,7 +440,7 @@ export function ReviewsView({ live }: { live: ReviewHandoff[] }) {
   function open(e: React.MouseEvent, id: string) {
     if (!isPlainClick(e)) return;
     e.preventDefault();
-    window.history.pushState(null, "", hrefFor(id));
+    window.history.pushState(null, "", hrefFor(id, undefined, agent));
     if (!window.matchMedia("(min-width: 1024px)").matches) {
       requestAnimationFrame(() => document.getElementById("review-title")?.focus());
     }
@@ -452,12 +449,12 @@ export function ReviewsView({ live }: { live: ReviewHandoff[] }) {
   function back(e: React.MouseEvent) {
     if (!isPlainClick(e)) return;
     e.preventDefault();
-    window.history.pushState(null, "", "/reviews");
+    window.history.pushState(null, "", listHref);
   }
 
   function chooseTab(next: Tab) {
     if (!selected) return;
-    window.history.replaceState(null, "", hrefFor(selected.id, next));
+    window.history.replaceState(null, "", hrefFor(selected.id, next, agent));
   }
 
   function onTabKey(e: React.KeyboardEvent) {
@@ -506,6 +503,20 @@ export function ReviewsView({ live }: { live: ReviewHandoff[] }) {
         >
           Seeded, plus {liveCount} {liveCount === 1 ? "note" : "notes"} read live
         </ProvenanceTag>
+        {agent && (
+          <div className="mt-2 flex items-center gap-1.5">
+            <span className="inline-flex min-h-7 items-center rounded-md bg-[var(--aff-sel)] px-2 text-meta text-ink">
+              From {agentName}
+            </span>
+            <Link
+              href="/reviews"
+              aria-label={`Show handoffs from everyone, not only ${agentName}`}
+              className="aff flex h-7 w-7 items-center justify-center rounded-md text-ink-3 hover:text-ink"
+            >
+              <CloseIcon className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+        )}
       </div>
       <div className="px-2 pb-6" onKeyDown={onListKey}>
         <Group
@@ -514,6 +525,7 @@ export function ReviewsView({ live }: { live: ReviewHandoff[] }) {
           open={isOpen("needs")}
           onToggle={() => toggle("needs")}
           selectedId={selected?.id ?? null}
+          hrefOf={hrefOf}
           onOpen={open}
           empty="Nothing is waiting on you."
         />
@@ -523,6 +535,7 @@ export function ReviewsView({ live }: { live: ReviewHandoff[] }) {
           open={isOpen("reviewing")}
           onToggle={() => toggle("reviewing")}
           selectedId={selected?.id ?? null}
+          hrefOf={hrefOf}
           onOpen={open}
           empty="No review in progress."
         />
@@ -532,6 +545,7 @@ export function ReviewsView({ live }: { live: ReviewHandoff[] }) {
           open={isOpen("completed")}
           onToggle={() => toggle("completed")}
           selectedId={selected?.id ?? null}
+          hrefOf={hrefOf}
           onOpen={open}
           empty="Nothing completed yet."
         />
@@ -568,7 +582,7 @@ export function ReviewsView({ live }: { live: ReviewHandoff[] }) {
         <p className="text-body text-ink-3">
           {routeId ? "No handoff by that name. It may have been renamed." : "Nothing has been handed to you yet."}
         </p>
-        <Link href="/reviews" onClick={back} className="mt-2 inline-block text-meta text-ink-2 underline decoration-line-strong underline-offset-4">
+        <Link href={listHref} onClick={back} className="mt-2 inline-block text-meta text-ink-2 underline decoration-line-strong underline-offset-4">
           All reviews
         </Link>
       </div>
@@ -586,7 +600,7 @@ export function ReviewsView({ live }: { live: ReviewHandoff[] }) {
         <div className="border-b border-line px-4 pt-3 lg:px-6">
           <div className="flex min-h-8 items-center gap-2">
             <Link
-              href="/reviews"
+              href={listHref}
               onClick={back}
               className="aff -ml-1.5 flex h-8 items-center gap-1.5 rounded-md px-1.5 text-meta text-ink-2 hover:text-ink lg:hidden"
             >

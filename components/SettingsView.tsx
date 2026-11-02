@@ -12,7 +12,7 @@ import {
 } from "@/lib/settings";
 import { useReviewSettings } from "@/lib/useReviewSettings";
 import { AppShell } from "./AppShell";
-import { ChevronDownIcon } from "./Icons";
+import { Select, Switch } from "./Controls";
 
 function Card({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -41,68 +41,6 @@ function SettingRow({
       </div>
       <div className="shrink-0">{control}</div>
     </li>
-  );
-}
-
-function Switch({
-  id,
-  checked,
-  onChange,
-  labelledBy,
-}: {
-  id: string;
-  checked: boolean;
-  onChange: (v: boolean) => void;
-  labelledBy: string;
-}) {
-  return (
-    <button
-      id={id}
-      type="button"
-      role="switch"
-      aria-checked={checked}
-      aria-labelledby={labelledBy}
-      onClick={() => onChange(!checked)}
-      className="switch"
-    />
-  );
-}
-
-function Select<T extends string>({
-  id,
-  value,
-  options,
-  onChange,
-  disabled,
-  labelledBy,
-}: {
-  id: string;
-  value: T;
-  options: readonly { value: T; label: string }[];
-  onChange: (v: T) => void;
-  disabled?: boolean;
-  labelledBy: string;
-}) {
-  return (
-    <span className="relative inline-flex">
-      <select
-        id={id}
-        value={value}
-        disabled={disabled}
-        aria-labelledby={labelledBy}
-        onChange={(e) => onChange(e.target.value as T)}
-        className={`aff-fill h-8 min-w-[8.5rem] appearance-none rounded-md pl-2.5 pr-8 text-meta text-ink-2 hover:text-ink ${
-          disabled ? "cursor-not-allowed" : "cursor-pointer"
-        }`}
-      >
-        {options.map((o) => (
-          <option key={o.value} value={o.value}>
-            {o.label}
-          </option>
-        ))}
-      </select>
-      <ChevronDownIcon className="pointer-events-none absolute right-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-ink-3" />
-    </span>
   );
 }
 
@@ -213,6 +151,27 @@ export function SettingsView() {
                   onChange={(v) => update({ defaultReviewer: v })}
                 />
               }
+            />
+          </Card>
+
+          <h3
+            id="workspace"
+            className="mb-2 mt-8 scroll-mt-8 px-1 text-label font-semibold uppercase tracking-[0.06em] text-ink-3"
+          >
+            Workspace
+          </h3>
+          <Card label="Workspace">
+            <SettingRow
+              disabled
+              label="Invite people"
+              hint="Not built. Cohort has one person, you, and no model of who may approve what."
+              control={<span className="text-meta text-ink-3">Not yet</span>}
+            />
+            <SettingRow
+              disabled
+              label="Connect GitHub"
+              hint="Not built. Handoffs are read from Agents/handoffs/ in this repository, not from pull requests."
+              control={<span className="text-meta text-ink-3">Not yet</span>}
             />
           </Card>
 

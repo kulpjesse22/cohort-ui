@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
-import { useRouter } from "next/navigation";
 import type { ContextDoc } from "@/lib/harness";
 import { Sidebar } from "./Sidebar";
 import { ContextRail } from "./ContextRail";
@@ -86,7 +85,6 @@ export function AppShell({
   presence?: ReactNode;
   children: ReactNode;
 }) {
-  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [railOpen, setRailOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -147,9 +145,10 @@ export function AppShell({
       >
         <Sidebar
           activeChannelId={activeChannelId}
-          onSelect={(id) => {
+          onNavigate={() => setSidebarOpen(false)}
+          onSearch={() => {
             setSidebarOpen(false);
-            router.push(`/c/${id}`);
+            setSearchOpen(true);
           }}
         />
       </div>

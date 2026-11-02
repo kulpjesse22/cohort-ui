@@ -163,10 +163,7 @@ export function DemoTour() {
       <div
         className={`hidden transition-opacity duration-500 lg:block ${dim("sidebar", step.spotlight)}`}
       >
-        <Sidebar
-          activeChannelId={isProfile ? null : targetId}
-          onSelect={() => {}}
-        />
+        <Sidebar activeChannelId={isProfile ? null : targetId} />
       </div>
 
       {/* Main is not dimmed as a whole: the handoff sits in the header, and
