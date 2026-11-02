@@ -577,6 +577,59 @@ body * {
   }
 }
 
+/* --- Board -----------------------------------------------------------------
+   Columns are told apart by a faint ink wash, not a hue: hue is for verdicts.
+   Needs you takes a little more of it, because that column is the one asking
+   for a person. Cards have no border; they sit raised on the wash and answer
+   the hand with the same soft indent as every other control. */
+:root {
+  --col-tint: rgb(27 24 19 / 0.022);
+  --col-tint-strong: rgb(27 24 19 / 0.045);
+}
+.dark {
+  --col-tint: rgb(244 244 245 / 0.018);
+  --col-tint-strong: rgb(244 244 245 / 0.04);
+}
+.board-col {
+  background-color: var(--col-tint);
+}
+.board-col[data-strong] {
+  background-color: var(--col-tint-strong);
+}
+/* Sticky headers must be opaque, so the wash is laid over the canvas. */
+.board-col-head {
+  background: linear-gradient(var(--col-tint), var(--col-tint)), var(--canvas);
+}
+.board-col-head[data-strong] {
+  background: linear-gradient(var(--col-tint-strong), var(--col-tint-strong)), var(--canvas);
+}
+.board-card {
+  background-color: var(--raised);
+  outline: none;
+  transition-property: background-image, box-shadow;
+  transition-duration: 120ms;
+  transition-timing-function: ease-out;
+}
+@media (hover: hover) {
+  .board-card:hover {
+    background-image: linear-gradient(var(--aff-fill), var(--aff-fill));
+    box-shadow: var(--aff-inset);
+  }
+}
+.board-card:active {
+  background-image: linear-gradient(var(--aff-fill-press), var(--aff-fill-press));
+  box-shadow: var(--aff-inset-press);
+  transition-duration: 60ms;
+}
+.board-card:focus-visible {
+  box-shadow: var(--aff-inset), inset 0 0 0 1.5px var(--aff-focus);
+}
+@media (prefers-reduced-motion: reduce) {
+  .board-card {
+    transition: none;
+  }
+}
+
 /* --- Code ------------------------------------------------------------------
    The diff panel is the one place syntax hue appears, and it never leaves it.
    The hues are muted on purpose: the record is the subject, not the

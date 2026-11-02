@@ -6,6 +6,8 @@ const nextConfig: NextConfig = {
     "/api/doc": ["./Agents/**/*", "./Human/**/*"],
     "/reviews": ["./Agents/handoffs/**/*"],
     "/reviews/[id]": ["./Agents/handoffs/**/*"],
+    "/board": ["./Agents/handoffs/**/*"],
+    "/agents": ["./Agents/handoffs/**/*"],
   },
 };
 
