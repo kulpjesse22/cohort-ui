@@ -62,15 +62,21 @@ export function AppShell({
   loadingContext,
   liveStatuses,
   presence,
+  rail = true,
   children,
 }: {
   /** null on profile pages, so no channel row falsely reads as active. */
   activeChannelId: string | null;
   header: ReactNode;
-  contextDocs: ContextDoc[];
+  contextDocs?: ContextDoc[];
   /** Documents the agent surfaced in conversation, shown above channel pins. */
   citedDocs?: ContextDoc[];
-  loadingContext: boolean;
+  loadingContext?: boolean;
+  /**
+   * The pinned-context rail. Off where the page brings its own panels and has
+   * no repo documents to pin (reviews, settings).
+   */
+  rail?: boolean;
   /**
    * What the harness says agents are doing right now. When this is empty the
    * header falls back to the illustrative rotation, and says so when opened.
@@ -135,7 +141,7 @@ export function AppShell({
       )}
 
       <div
-        className={`fixed inset-y-0 left-0 z-40 transition-transform duration-200 lg:static lg:z-auto lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-40 transition-transform duration-200 motion-reduce:transition-none lg:static lg:z-auto lg:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -184,30 +190,34 @@ export function AppShell({
             </kbd>
           </button>
 
-          <button
-            aria-label="Open pinned context"
-            onClick={() => setRailOpen(true)}
-            className="aff flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-ink-3 hover:text-ink lg:hidden"
-          >
-            <InfoIcon />
-          </button>
+          {rail && (
+            <button
+              aria-label="Open pinned context"
+              onClick={() => setRailOpen(true)}
+              className="aff flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-ink-3 hover:text-ink lg:hidden"
+            >
+              <InfoIcon />
+            </button>
+          )}
         </header>
 
         {children}
       </main>
 
-      <div
-        className={`fixed inset-y-0 right-0 z-40 transition-transform duration-200 lg:static lg:z-auto lg:translate-x-0 ${
-          railOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <ContextRail
-          docs={contextDocs}
-          citedDocs={citedDocs}
-          channelId={activeChannelId ?? undefined}
-          loading={loadingContext}
-        />
-      </div>
+      {rail && (
+        <div
+          className={`fixed inset-y-0 right-0 z-40 transition-transform duration-200 motion-reduce:transition-none lg:static lg:z-auto lg:translate-x-0 ${
+            railOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          <ContextRail
+            docs={contextDocs ?? []}
+            citedDocs={citedDocs}
+            channelId={activeChannelId ?? undefined}
+            loading={loadingContext ?? false}
+          />
+        </div>
+      )}
 
       <CommandPalette open={searchOpen} onClose={() => setSearchOpen(false)} />
     </div>
