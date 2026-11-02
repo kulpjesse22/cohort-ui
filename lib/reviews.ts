@@ -501,7 +501,7 @@ export const SEEDED_HANDOFFS: ReviewHandoff[] = [
       { minutesAgo: 9 * H, actor: "claudia", kind: "handoff", text: "Assigned: empty tiers render as blank space.", path: "Agents/tasks/julius.md" },
       { minutesAgo: 6 * H, actor: "julius", kind: "change", text: "Wrote one sentence per tier." },
       { minutesAgo: 4 * H + 10, actor: "julius", kind: "handoff", text: "Handed to you for review." },
-      { minutesAgo: 3 * H, actor: "jesse", kind: "review", text: "You opened the review." },
+      { minutesAgo: 3 * H, actor: "jesse", kind: "review", text: "Opened the review." },
     ],
   },
   {
@@ -542,7 +542,7 @@ export const SEEDED_HANDOFFS: ReviewHandoff[] = [
     activity: [
       { minutesAgo: 30 * H, actor: "augustus", kind: "change", text: "Lengthened the heartbeat window." },
       { minutesAgo: 26 * H, actor: "augustus", kind: "handoff", text: "Handed to you for review." },
-      { minutesAgo: 22 * H, actor: "jesse", kind: "review", text: "You returned it: Revise, with two fixes assigned back to Augustus." },
+      { minutesAgo: 22 * H, actor: "jesse", kind: "review", text: "Returned it: Revise, with two fixes assigned back to Augustus." },
     ],
   },
   {
@@ -582,7 +582,7 @@ export const SEEDED_HANDOFFS: ReviewHandoff[] = [
     activity: [
       { minutesAgo: 3 * D + 2 * H, actor: "augustus", kind: "change", text: "Added the guide to the crit channel's pins." },
       { minutesAgo: 3 * D, actor: "augustus", kind: "handoff", text: "Handed to you for review." },
-      { minutesAgo: 2 * D + 5 * H, actor: "jesse", kind: "review", text: "You approved it." },
+      { minutesAgo: 2 * D + 5 * H, actor: "jesse", kind: "review", text: "Approved it." },
     ],
   },
   {
@@ -621,7 +621,7 @@ export const SEEDED_HANDOFFS: ReviewHandoff[] = [
     activity: [
       { minutesAgo: 7 * D + 3 * H, actor: "hephaestus", kind: "change", text: "Rewrote the title row of the scale." },
       { minutesAgo: 7 * D, actor: "hephaestus", kind: "handoff", text: "Handed to you for review." },
-      { minutesAgo: 6 * D, actor: "jesse", kind: "review", text: "You approved it with one fix." },
+      { minutesAgo: 6 * D, actor: "jesse", kind: "review", text: "Approved it with one fix." },
     ],
   },
   {
@@ -661,7 +661,7 @@ export const SEEDED_HANDOFFS: ReviewHandoff[] = [
     activity: [
       { minutesAgo: 42 * D + 2 * H, actor: "julius", kind: "change", text: "Split the # from the slug." },
       { minutesAgo: 42 * D, actor: "julius", kind: "handoff", text: "Handed to you for review." },
-      { minutesAgo: 41 * D, actor: "jesse", kind: "review", text: "You approved it." },
+      { minutesAgo: 41 * D, actor: "jesse", kind: "review", text: "Approved it." },
     ],
   },
 ];
