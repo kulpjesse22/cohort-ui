@@ -79,7 +79,10 @@ honesty, not a look.
 - **Light / dark:** both, as peer themes. Neither is the "real" one. Light is
   the default for a first-time visitor, matching the Slack-adjacent comp;
   the choice persists once made, and `prefers-color-scheme` seeds the
-  first visit.
+  first visit. `?theme=dark` or `?theme=light` on any route overrides it
+  for that tab's visit, before first paint and inside an iframe too. It is
+  never stored as the preference and is dropped from the URL; the toggle
+  ends it.
 
 ## Colors
 

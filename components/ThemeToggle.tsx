@@ -6,10 +6,17 @@ import { MoonIcon, SunIcon } from "./Icons";
 export type Theme = "light" | "dark";
 
 const STORAGE_KEY = "cohort-theme";
+/** Set by `?theme=` in the layout's init script; a choice made here replaces it. */
+const VISIT_KEY = "cohort-theme-visit";
 
 export function applyTheme(theme: Theme) {
   document.documentElement.classList.toggle("dark", theme === "dark");
-  localStorage.setItem(STORAGE_KEY, theme);
+  try {
+    sessionStorage.removeItem(VISIT_KEY);
+    localStorage.setItem(STORAGE_KEY, theme);
+  } catch {
+    // Storage blocked (some embeds, private modes): the choice holds for this page.
+  }
 }
 
 export function ThemeToggle() {

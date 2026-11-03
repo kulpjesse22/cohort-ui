@@ -55,14 +55,26 @@ export const viewport: Viewport = {
   ],
 };
 
-// Runs before first paint, so the stored choice is applied without a flash of
-// the wrong theme. Light is the default; the OS preference only seeds a first
+// Runs before first paint, so the theme is applied without a flash of the
+// wrong one. Light is the default; the OS preference only seeds a first
 // visit, and an explicit choice always wins.
+//
+// `?theme=dark|light` overrides that for the visit (this tab, reloads
+// included) and is never stored as the preference, so an embed or a demo link
+// cannot change what the person chose. The param is then dropped from the URL,
+// so a copied link does not carry it. The toggle ends the override.
 //
 // React logs "Encountered a script tag while rendering React component" for
 // this in dev. It is the standard no-flash pattern (next-themes does the same)
 // and the script does execute during SSR, which is the only time it needs to.
-const THEME_INIT = `(function(){try{var t=localStorage.getItem('cohort-theme');if(!t){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}if(t==='dark'){document.documentElement.classList.add('dark')}}catch(e){}})();`;
+const THEME_INIT = `(function(){var d=document.documentElement,t=null,K='cohort-theme',V='cohort-theme-visit';
+try{var u=new URL(location.href),p=u.searchParams.get('theme');
+if(p==='dark'||p==='light'){t=p;try{sessionStorage.setItem(V,p)}catch(e){}
+u.searchParams.delete('theme');try{history.replaceState(history.state,'',u.pathname+u.search+u.hash)}catch(e){}}}catch(e){}
+if(!t){try{t=sessionStorage.getItem(V)}catch(e){}}
+if(t!=='dark'&&t!=='light'){try{t=localStorage.getItem(K)}catch(e){}}
+if(t!=='dark'&&t!=='light'){try{t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}catch(e){t='light'}}
+d.classList.toggle('dark',t==='dark');})();`;
 
 export default async function RootLayout({
   children,
